@@ -7,9 +7,9 @@
         /*自定义弹出提示框*/
         .alert_box {
             position: absolute;
-            background: #95d8f2;
+            background: #f2eb0e;
             color: red;
-            border: 2px solid #35b3e4;
+            border: 2px solid #fffa6e;
             z-index: 99;
             margin: auto;
             padding: 3px;
@@ -33,164 +33,112 @@
 
         .alert_box:after {
             /*border-color: rgba(149, 216, 242, 0);*/
-            border-bottom-color: #95d8f2;
+            border-bottom-color: #f2eb0e;
             border-width: 10px;
             margin-left: -10px;
         }
 
         .alert_box:before {
             /*border-color: rgba(53, 179, 228, 0);*/
-            border-bottom-color: #35b3e4;
+            border-bottom-color: #f2eb0e;
             border-width: 13px;
             margin-left: -13px;
         }
+        /*自定义弹出提示框------*/
 
-        .little-question-title
+        /*选择的标题、设置relative 是让未选择提示框好便于定位*/
+        .question-title
         {
             position: relative;
         }
+        /*选择的标题、设置relative 是让未选择提示框好便于定位------*/
 
     </style>
     <script src="jslib/jquery/jquery-3.2.1.min.js"></script>
 </head>
 <body>
-<form name="examination" id="examination-from">
-    <div class="questions" id="questions">
 
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
+<div>
 
-        <ul class="little-question">
-            <li>
-                <div class="little-question-title">迄今为止，谁对您的影响最大1:</div>
-            </li>
-            <li><label><input type="radio" name="q-id-1" value="A 老师" class="q-id-1 q-select"> A 老师</label></li>
-            <li><label><input type="radio" name="q-id-1" value="B 老师" class="q-id-1 q-select"> B 老师</label></li>
-            <li><label><input type="radio" name="q-id-1" value="C 老师" class="q-id-1 q-select"> C 老师</label></li>
-            <li><label><input type="radio" name="q-id-1" value="D 老师" class="q-id-1 q-select"> D 老师</label></li>
-        </ul>
+    <div>
+        <form name="examination" id="examination">
 
 
-        <ul class="little-question">
-            <li>
-                <div class="little-question-title">迄今为止，谁对您的影响最大2:</div>
-            </li>
-            <li><label><input type="radio" name="q-id-2" value="A 老师" class="q-id-2 q-select"> A 老师</label></li>
-            <li><label><input type="radio" name="q-id-2" value="B 老师" class="q-id-2 q-select"> B 老师</label></li>
-            <li><label><input type="radio" name="q-id-2" value="C 老师" class="q-id-2 q-select"> C 老师</label></li>
-            <li><label><input type="radio" name="q-id-2" value="D 老师" class="q-id-2 q-select"> D 老师</label></li>
-        </ul>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <ul class="question">
+                <li>
+                    <div class="question-title">迄今为止，谁对您的影响最大1:</div>
+                </li>
+                <li><label><input type="radio" name="qid_1" value="A 老师" class="qid_1 q-select"> A 老师</label></li>
+                <li><label><input type="radio" name="qid_1" value="B 老师" class="qid_1 q-select"> B 老师</label></li>
+                <li><label><input type="radio" name="qid_1" value="C 老师" class="qid_1 q-select"> C 老师</label></li>
+                <li><label><input type="radio" name="qid_1" value="D 老师" class="qid_1 q-select"> D 老师</label></li>
+            </ul>
 
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
-        <h1>asdfhasd</h1>
+            <ul class="question">
+                <li>
+                    <div class="question-title">迄今为止，谁对您的影响最大2:</div>
+                </li>
+                <li><label><input type="radio" name="qid_2" value="A 老师" class="qid_2 q-select"> A 老师</label></li>
+                <li><label><input type="radio" name="qid_2" value="B 老师" class="qid_2 q-select"> B 老师</label></li>
+                <li><label><input type="radio" name="qid_2" value="C 老师" class="qid_2 q-select"> C 老师</label></li>
+                <li><label><input type="radio" name="qid_2" value="D 老师" class="qid_2 q-select"> D 老师</label></li>
+            </ul>
+
+            <ul class="question">
+                <li>
+                    <div class="question-title">迄今为止，谁对您的影响最大3:</div>
+                </li>
+                <li><label><input type="radio" name="qid_3" value="A 老师" class="qid_3 q-select"> A 老师</label></li>
+                <li><label><input type="radio" name="qid_3" value="B 老师" class="qid_3 q-select"> B 老师</label></li>
+                <li><label><input type="radio" name="qid_3" value="C 老师" class="qid_3 q-select"> C 老师</label></li>
+                <li><label><input type="radio" name="qid_3" value="D 老师" class="qid_3 q-select"> D 老师</label></li>
+            </ul>
+
+            <ul class="question">
+                <li>
+                    <div class="question-title">迄今为止，谁对您的影响最大3:</div>
+                </li>
+                <li><label><input type="radio" name="qid_4" value="A 老师" class="qid_4 q-select"> A 老师</label></li>
+                <li><label><input type="radio" name="qid_4" value="B 老师" class="qid_4 q-select"> B 老师</label></li>
+                <li><label><input type="radio" name="qid_4" value="C 老师" class="qid_4 q-select"> C 老师</label></li>
+                <li><label><input type="radio" name="qid_4" value="D 老师" class="qid_4 q-select"> D 老师</label></li>
+            </ul>
+
+            <div>
+                <button type="button" onclick="checkAnswer('examination');">提交试卷</button>
+            </div>
+
+        </form>
     </div>
 
-</form>
 
-
-    <button type="button" onclick="checkAnswer('examination-from');">提交试卷</button>
+</div>
 </body>
 <script>
+    //表单form标签 的 ID
+    function checkAnswer(from_id) {
 
-    function checkAnswer() {
-
-        $("#examination-from").find(".little-question").each(function () {
-            var val = $(this).find('input:radio:checked').val();
+        $("#" + from_id).find(".question").each(function () {
+            var val = $(this).find('input:radio:checked').val();  //通过判断radio元素的值来判断是否选中
             if(val === undefined){
                // alert("什么也没选中!");
-                var input_title_offset = $(this).offset().top;
+                var input_title_offset = $(this).offset().top;   //相对偏移量 用于自动滚动定位
                 console.log(input_title_offset);
-                $("html,body").animate({scrollTop:input_title_offset},800);
+                $("html,body").animate({scrollTop:input_title_offset},800);   //滚动到指定位置
 
-                $(this).find(".little-question-title").append("<div class='alert_box'>请选择此项目！</div>");
+                $(this).find(".question-title").append("<div class='alert_box'>请选择此项目！</div>");    //添加自定义提示框
                 $(".alert_box").fadeOut(4000);
-                return false;
+                return false;   //存在未选择项时返回false
 
             }
         });
-
-
-
+        return true; //已经全部选择时返回true
 
     }
 
