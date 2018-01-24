@@ -15,7 +15,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Title</title>
     <script type="text/javascript" src="jslib/jquery/jquery-3.2.1.min.js"></script>
     <style>
@@ -23,19 +23,28 @@
         /*margin: 0;*/
         /*padding: 0;*/
         /*}*/
-        .container{
-            padding: 212px 0;
-            background-image: url("img/login/background.png");
+        body
+        {
+            background-color: rgb(254, 255, 222);
+            margin:0;
+            padding:0;
+            background-image: url(img/login/background.png);
             background-size: 100% 100%;
             background-repeat: no-repeat;
-            height: auto;
+            background-attachment:fixed;
         }
-        .login{
-            width:350px;
+        .container {
+            /* padding: 212px 0; */
+            height: auto;
+            display: block;
+            overflow: hidden;
+        }
+        .login {
+            width: 350px;
             height: 500px;
-            margin:0 auto;
-            /*padding: 100px 0px;*/
-            /*margin-top: 5em;*/
+            margin: 12% auto;
+            /* padding: 100px 0px; */
+            /* margin-top: 5em; */
             box-shadow: 0px 0px 50px -10px white;
             transition: all 0.5s;
         }
@@ -114,6 +123,19 @@
             background-color: #60ace6;
 
             box-shadow: 0 0 40px -10px white;
+        }
+
+        @media screen and (max-width: 420px){
+            /*.login{*/
+                /*width: 100%;*/
+            /*}*/
+            .login {
+                /*width: 350px;*/
+                /*height: 500px;*/
+                /*margin: 15% auto;*/
+
+                box-shadow: none;
+            }
         }
 
     </style>
