@@ -151,6 +151,8 @@
 </div>
 </body>
 
+
+
 <script>
     $(document).ready(function(){
         $(".password-eye").mouseenter(function () {
@@ -162,9 +164,6 @@
             $("#password").attr("type","password");
         });
     });
-
-
-
 </script>
 
 </html>
