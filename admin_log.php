@@ -113,16 +113,8 @@
 
             background-color: #60ace6;
 
-            box-shadow: 0px 0px 40px -10px white;
+            box-shadow: 0 0 40px -10px white;
         }
-        /*@media screen and (max-width: 400px){*/
-        /*.login{*/
-        /*width: 100%;*/
-        /*box-shadow: none;*/
-        /*}*/
-        /*}*/
-
-
 
     </style>
 
