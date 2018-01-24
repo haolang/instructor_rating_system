@@ -33,7 +33,7 @@ Done_num
 表示完成了该题目的人数。
 
 ~~~~
-
+---
 ##### View_detail_score
 >所有结果选项的被选中数量,该视图为所有结果选项的被选中数量
 ~~~~
@@ -55,6 +55,9 @@ Selectoed_num
 Sum_score
 表示该条目统计所有被选中的总分。
 ~~~~
+
+---
+
 ##### View_detail_selector_with_title
 
 与view_detail_score基本一致，只是将其最后一项替换成了对应题目的题干内容content
@@ -86,6 +89,9 @@ score_percent
 selector_score
 选择该选项的分数
 ~~~~
+
+---
+
 ##### View_published_que
 >所有的问卷的题目
 ~~~~
@@ -101,6 +107,9 @@ Content
 Scores
 该条目对应的题目的分数
 ~~~~
+
+---
+
 ##### View_result_score_name
 
 >概略统计结果，对应统计界面-总览页面的数据
@@ -159,6 +168,9 @@ Number_distribution4
 Istribution4_per
 评价为50-59分的人数的百分比
 ~~~~
+
+---
+
 ##### View_selector_score
 
 >每一个选项的详细情况，选项在数据库的id、所属题目的id、选项标记符号、选项内容、选项权值、选择该选项该题的分数。
