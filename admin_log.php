@@ -6,7 +6,9 @@
 // * Time: 14:35
 // */
 //
-//?>
+
+
+?>
 
 
 <!DOCTYPE html>
@@ -15,14 +17,14 @@
     <meta charset="UTF-8">
     <!--<meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
     <title>Title</title>
-    <!--<script type="text/javascript" src="jslib/jquery/jquery-3.2.1.min.js"></script>-->
+    <script type="text/javascript" src="jslib/jquery/jquery-3.2.1.min.js"></script>
     <style>
         /**{*/
         /*margin: 0;*/
         /*padding: 0;*/
         /*}*/
         .container{
-            padding: 200px 0;
+            padding: 212px 0;
             background-image: url("img/login/background.png");
             background-size: 100% 100%;
             background-repeat: no-repeat;
@@ -45,11 +47,30 @@
             margin: 0 auto;
         }
         .login-input{
-            width: 255px;
+            width: 262px;
             margin-bottom: 10px;
             border-bottom:1px solid white;
             margin-top: 30px;
+            position: relative;
         }
+        .password-eye {
+            width: 26px;
+            height: 13px;
+            background-image: url(img/login/password_open_eye.png);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: 10px;
+            right: 2px;
+            /* z-index: 999; */
+        }
+        .password-eye:hover {
+            background-image: url(img/login/background.png);
+            /* z-index: 999; */
+        }
+        /*.password-eye*/
+
+
         .login-input input{
             background-color: rgba(0,0,0,0);
             height: 25px;
@@ -63,10 +84,14 @@
             color: white;
         }
         .login-a{
-            text-decoration: none;
-            color: white;
             font-size: 14px;
             margin-left: 125px;
+            text-align: end;
+        }
+        .login-a a{
+
+            text-decoration: none;
+            color: white;
         }
         .login-sub input{
             height: auto;
@@ -118,9 +143,13 @@
                 <div class="login-input">
                     <img src="img/login/password_icon.png" alt="">
                     <input type="password" name="password" id="password" placeholder="Password">
-                    <!--<a href="#"><img src="img/login/password_open_eye.png" alt=""></a>-->
+                    <div class="password-eye">
+<!--                        <img src="img/login/password_open_eye.png" alt="密码">-->
+                    </div>
                 </div>
-                <a href="#" class="login-a">忘记密码</a>
+                <div class="login-a">
+                    <a href="#" >忘记密码</a>
+                </div>
                 <div class="login-input login-sub">
                     <input type="submit" value="登&nbsp;&nbsp;录">
                 </div>
@@ -129,5 +158,21 @@
     </div>
 </div>
 </body>
+
+<script>
+    $(document).ready(function(){
+        $(".password-eye").mouseenter(function () {
+            console.log("test");
+            $("#password").attr("type","text");
+        });
+
+        $(".password-eye").mouseleave(function () {
+            $("#password").attr("type","password");
+        });
+    });
+
+
+
+</script>
 
 </html>
