@@ -6,17 +6,17 @@ fun开头的是函数
 sp开头的是存储过程
 ~~~~
 >视图
-- [View_detail_data](#view-detail-data-详细统计数据)
-- [View_detail_score](#view-detail-score)
-- [View_detail_selector_with_title](#view-detail-selector-with-title)
-- [View_published_que](#view-published-que)
-- [View_result_score_name](#view-result-score-name)
-- [View_selector_score](#view-selector-score)
+- [View_detail_data](#view_detail_data_详细统计数据)
+- [View_detail_score](#view_detail_score)
+- [View_detail_selector_with_title](#view_detail_selector_with_title)
+- [View_published_que](#view_published_que)
+- [View_result_score_name](#view_result_score_name)
+- [View_selector_score](#view_selector_score)
 >函数
-- [fun_is_complish](#fun-is-complish)
-- [fun_update_stuinfo](#fun-update-stuinfo)
+- [fun_is_complish](#fun_is_complish)
+- [fun_update_stuinfo](#fun_update_stuinfo)
 >存储过程
-- [sp_save_que](#sp-save-que)
+- [sp_save_que](#sp_save_que)
 
 
 ---
