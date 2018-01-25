@@ -251,7 +251,7 @@ Selector_score
 >
 >影响：tbl_resultdetail对应行中的selectoed_num字段将会加一；tbl_queresults中相应行中的done_num字段和number_distribution字段会加一；tbl_students中的is_done会被置为1。
 >
->返回值：(sp_rst)，1，保存完成；0，出错。
+>返回值：(sp_rst)，1，保存完成；0，表示出错。
 
 | 参数 - 类型                      | 描述                      |
 |:--------------------------------|:--------------------------|
