@@ -58,53 +58,42 @@
 </head>
 <body>
 
-<div>
+<div id="body-container">
 
-    <div>
+    <div id="form-examination">
         <form name="examination" id="examination">
 
+            <!--需要动态加载部分已经用*号标注-->
             <ul class="question">
                 <li>
-                    <div class="question-title">迄今为止，谁对您的影响最大1:</div>
+                    <div class="question-title">***********</div>
                 </li>
-                <li><label><input type="radio" name="qid_1" value="A 老师" class="qid_1 q-select"> A 老师</label></li>
-                <li><label><input type="radio" name="qid_1" value="B 老师" class="qid_1 q-select"> B 老师</label></li>
-                <li><label><input type="radio" name="qid_1" value="C 老师" class="qid_1 q-select"> C 老师</label></li>
-                <li><label><input type="radio" name="qid_1" value="D 老师" class="qid_1 q-select"> D 老师</label></li>
+                <li><label><input type="radio" name="qid_*" value="**" class="q-select">***</label></li>
+                <li><label><input type="radio" name="qid_*" value="**" class="q-select">***</label></li>
+                <li><label><input type="radio" name="qid_*" value="**" class="q-select">***</label></li>
             </ul>
 
             <ul class="question">
                 <li>
-                    <div class="question-title">迄今为止，谁对您的影响最大2:</div>
+                    <div class="question-title">将数据存储于数据库。:</div>
                 </li>
-                <li><label><input type="radio" name="qid_2" value="A 老师" class="qid_2 q-select"> A 老师</label></li>
-                <li><label><input type="radio" name="qid_2" value="B 老师" class="qid_2 q-select"> B 老师</label></li>
-                <li><label><input type="radio" name="qid_2" value="C 老师" class="qid_2 q-select"> C 老师</label></li>
-                <li><label><input type="radio" name="qid_2" value="D 老师" class="qid_2 q-select"> D 老师</label></li>
+                <li><label><input type="radio" name="qid_1" value="95" class="q-select">好</label></li>
+                <li><label><input type="radio" name="qid_1" value="80" class="q-select">一般</label></li>
             </ul>
 
             <ul class="question">
                 <li>
-                    <div class="question-title">迄今为止，谁对您的影响最大3:</div>
+                    <div class="question-title">将数据存储库。:</div>
                 </li>
-                <li><label><input type="radio" name="qid_3" value="A 老师" class="qid_3 q-select"> A 老师</label></li>
-                <li><label><input type="radio" name="qid_3" value="B 老师" class="qid_3 q-select"> B 老师</label></li>
-                <li><label><input type="radio" name="qid_3" value="C 老师" class="qid_3 q-select"> C 老师</label></li>
-                <li><label><input type="radio" name="qid_3" value="D 老师" class="qid_3 q-select"> D 老师</label></li>
+                <li><label><input type="radio" name="qid_2" value="95" class="q-select">好</label></li>
+                <li><label><input type="radio" name="qid_2" value="80" class="q-select">一般</label></li>
             </ul>
 
-            <ul class="question">
-                <li>
-                    <div class="question-title">迄今为止，谁对您的影响最大3:</div>
-                </li>
-                <li><label><input type="radio" name="qid_4" value="A 老师" class="qid_4 q-select"> A 老师</label></li>
-                <li><label><input type="radio" name="qid_4" value="B 老师" class="qid_4 q-select"> B 老师</label></li>
-                <li><label><input type="radio" name="qid_4" value="C 老师" class="qid_4 q-select"> C 老师</label></li>
-                <li><label><input type="radio" name="qid_4" value="D 老师" class="qid_4 q-select"> D 老师</label></li>
-            </ul>
+
+
 
             <div>
-                <button type="button" onclick="checkAnswer('examination');">提交试卷</button>
+                <button type="button" onclick="uploadAnswer('examination');">提交试卷</button>
             </div>
 
         </form>
@@ -114,7 +103,8 @@
 </div>
 </body>
 <script>
-    //表单form标签 的 ID
+    //用于检查某个问题是否选择，若未选择就自动滚动至第一个未选择位置并弹出自定义标签弹窗
+    //form_id : form标签的 id 字符串
     function checkAnswer(from_id) {
 
         $("#" + from_id).find(".question").each(function () {
@@ -126,14 +116,53 @@
                 $("html,body").animate({scrollTop:input_title_offset},800);   //滚动到指定位置
 
                 $(this).find(".question-title").append("<div class='alert_box'>请选择此项目！</div>");    //添加自定义提示框
-                $(".alert_box").fadeOut(4000);
+                $(".alert_box").fadeOut(2000);
                 return false;   //存在未选择项时返回false
-
             }
         });
         return true; //已经全部选择时返回true
-
     }
+
+
+    //下面的函数仅供参考，我从其他地方复制粘贴的
+    //form_id : form标签的 id 字符串
+    function uploadAnswer(from_id)
+    {
+        if(checkAnswer(from_id) === false)  //如果未全部选择完毕
+        {
+            return false;
+        }
+        var form = document.getElementById(from_id);
+        var formdata = new FormData(form);
+        var url_php = "php/que_result.php";
+
+        $.ajax({
+            url: url_php,
+            data:formdata,
+            type: 'POST',
+            // 告诉jQuery不要去处理发送的数据
+            processData : false,
+            // 告诉jQuery不要去设置Content-Type请求头
+            contentType : false,
+            success : function(response) {
+                if(response.status === "success")
+                {
+                    alert("提交成功！");
+                }
+                else if(response.status === "failed ")
+                {
+                    alert(response.Error);
+                    console.log(response.Error);
+                }
+                console.log(response);
+            },
+            error : function(result) {
+                console.log(result);   //----------------------------------------------------------------------------------------------- delete
+                alert("上传失败，请稍后重试！");
+            }
+        });
+    }
+
 
 </script>
 </html>
