@@ -1,3 +1,27 @@
+# 数据库说明
+~~~~
+使用的是MySQL 5.7版本数据库，MariaDB 5.5兼容
+view开头的是视图
+fun开头的是函数
+sp开头的是存储过程
+~~~~
+>视图
+- View_detail_data
+- View_detail_score
+- View_detail_selector_with_title
+- View_published_que
+- View_result_score_name
+- View_selector_score
+- View_selector_score
+>函数
+- fun_is_complish
+- fun_update_stuinfo
+>存储过程
+- sp_save_que
+
+
+---
+
 ##### View_detail_data-详细统计数据
 
 >详细统计数据，该视图对应统计页面-详情内的数据
