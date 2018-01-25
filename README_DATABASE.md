@@ -193,3 +193,71 @@ Score_percent
 Selector_score
 选择该选项的得分。
 ~~~~
+
+---
+
+##### View_selector_score
+
+>每一个选项的详细情况，选项在数据库的id、所属题目的id、选项标记符号、选项内容、选项权值、选择该选项该题的分数。
+~~~~
+~~~~
+
+---
+
+##### fun_is_complish
+>定义：fun_is_complish(ybid_par bigint) RETURNS tinyint(1)
+>
+>作用：返回学生是否完成了问卷。
+>
+>影响：无
+>
+>返回值：1表示已完成，0表示未完成
+
+| 参数 - 类型        | 描述             |
+|:------------------|:-----------------|
+| ybid_par - bigint | 查询的学生的易班id |
+
+---
+
+
+##### fun_update_stuinfo
+>定义：fun_update_stuinfo(ybid_par bigint,s_no_par varchar(45),name_par varchar(45),dep_par varchar(90),pro_par varchar(90),grade_par varchar(90),class_par varchar(90),depno_par varchar(20),prono_par varchar(20),classno_par varchar(20)) RETURNS tinyint(1)
+>
+>作用：保存学生的信息。
+>
+>影响：会在tbl_students表中插入一条新的数据。
+>
+>返回值：1，保存完成。
+
+| 参数 - 类型              | 描述          |
+|:------------------------|:--------------|
+| ybid_par - bigint       | 学生的易班id   |
+| s_no_par - varchar(45)  | 学生学号       |
+| name_par - varchar(45)  | 学生姓名       |
+| dep_par - varchar(90)     | 学生所属学院   |
+| pro_par - varchar(90)     | 学生专业       |
+| grade_par - varchar(90)   | 学生年级       |
+| class_par - varchar(90)   | 学生班级       |
+| depno_par - varchar(20)   | 学生学院代码   |
+| prono_par - varchar(20)   | 学生专业代码   |
+| classno_par - varchar(20) | 学生行政班代码 |
+
+---
+
+##### sp_save_que
+>定义：sp_save_que(IN stu_ybid_par bigint,IN publish_id int, IN selector_rst varchar(2000), OUT sp_rst tinyint)
+>
+>保存对老师评价的问卷结果。
+>
+>影响：tbl_resultdetail对应行中的selectoed_num字段将会加一；tbl_queresults中相应行中的done_num字段和number_distribution字段会加一；tbl_students中的is_done会被置为1。
+>
+>返回值：(sp_rst)，1，保存完成；0，出错。
+
+| 参数 - 类型                      | 描述                      |
+|:--------------------------------|:--------------------------|
+| IN stu_ybid_par - bigint        | 评价的学生的易班id          |
+| IN publish_id - int             | 评价的问卷的id             |
+| IN selector_rst - varchar(2000) | 选择选项的id，用分号“;”隔开 |
+| OUT sp_rst - tinyint            | 操作的结果                 |
+
+---
