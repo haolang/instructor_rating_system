@@ -42,7 +42,7 @@
         .login {
             width: 350px;
             height: 500px;
-            margin: 12% auto;
+            margin: 11% auto;
             /* padding: 100px 0px; */
             /* margin-top: 5em; */
             box-shadow: 0px 0px 50px -10px white;
@@ -126,13 +126,7 @@
         }
 
         @media screen and (max-width: 420px){
-            /*.login{*/
-                /*width: 100%;*/
-            /*}*/
             .login {
-                /*width: 350px;*/
-                /*height: 500px;*/
-                /*margin: 15% auto;*/
 
                 box-shadow: none;
             }
@@ -148,7 +142,7 @@
 
         </div>
         <div class="login-form">
-            <form action="">
+            <form action="" method="post">
                 <div class="login-input">
                     <img src="img/login/user_icon.png" alt="">
                     <input type="text"name="username" id="username" autocomplete="off"  placeholder="User name">
@@ -178,7 +172,7 @@
 <script>
     $(document).ready(function(){
         $(".password-eye").mouseenter(function () {
-            console.log("test");
+            //console.log("test");
             $("#password").attr("type","text");
         });
 
