@@ -6,7 +6,7 @@ fun开头的是函数
 sp开头的是存储过程
 ~~~~
 >视图
-- [View_detail_data](#view-detail-data-详细统计数据)
+- [View_detail_data](/README_DATABASE.md#view-detail-data-详细统计数据)
 - [View_detail_score](#view-detail-score)
 - [View_detail_selector_with_title](#view-detail-selector-with-title)
 - [View_published_que](#view-published-que)
