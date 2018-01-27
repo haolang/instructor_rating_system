@@ -36,7 +36,7 @@ if(empty($_SESSION['s_ybid'])||empty($_SESSION['paper_id']))
     $retResult->Error="session[s_ybid] or session[paper_id] is empty";
     $retResult->Ret_Data="";
     $dbcon->close();
-    exit(json_encode($retResult));//失败返回相关信息
+    exit(json_encode($retResult));//失败返回相关信
 }
 else
 {
