@@ -30,12 +30,12 @@ if(isset($_GET['code'])){
 
     if(isset($token_obj->code)){//判定请求是否成功
         curl_close($ch);
-        $_REQUEST_RESPONSE["data"] = $token_obj;
-        $_REQUEST_RESPONSE["status"] = 'failed';
-        $_REQUEST_RESPONSE["error"] = '请求access_token失败：'.$token_obj->code.'-'.$token_obj->msgCN;
-        $_REQUEST_RESPONSE["statusCode"] = 0;
+        $ret_data_struct["ret_data"] = $token_obj;
+        $ret_data_struct["status"] = 'failed';
+        $ret_data_struct["status_code"] = '0';
+        $ret_data_struct["error"] = '请求access_token失败：'.$token_obj->code.'-'.$token_obj->msgCN;
         $db_con->close();
-        exit(json_encode($_REQUEST_RESPONSE));//失败返回相关信息
+        exit(json_encode($ret_data_struct));//失败返回相关信息
     }
 }
 $token = $token_obj->access_token;//保存access_token
@@ -47,12 +47,12 @@ $userInfo = curl_exec($ch);
 
 $userInfo_obj = json_decode($userInfo);
 if($userInfo_obj->status != 'success'){//判定请求是否成功
-    $_REQUEST_RESPONSE["data"] = $userInfo_obj;
-    $_REQUEST_RESPONSE["status"] = 'failed';
-    $_REQUEST_RESPONSE["statusCode"] = 0;
-    $_REQUEST_RESPONSE["error"] = '请求用户信息失败：'.$userInfo_obj->info->code.'-'.$userInfo_obj->info->msgCN;
+    $ret_data_struct["ret_data"] = $userInfo_obj;
+    $ret_data_struct["status"] = 'failed';
+    $ret_data_struct["statusCode"] = 0;
+    $ret_data_struct["error"] = '请求用户信息失败：'.$userInfo_obj->info->code.'-'.$userInfo_obj->info->msgCN;
     $db_con->close();
-    exit(json_encode($_REQUEST_RESPONSE));//失败返回相关信息
+    exit(json_encode($ret_data_struct));//失败返回相关信息
 }
 
 curl_close($ch);
@@ -61,12 +61,12 @@ curl_close($ch);
 if($db_result = mysql_sql_exec($db_con,'select fun_save_update_users("'.$token_obj->userid.'","'.$userInfo_obj->info->yb_username.'","'.$userInfo_obj->info->yb_userhead.'")')){
 
 }else{
-    $_REQUEST_RESPONSE["data"] = "";
-    $_REQUEST_RESPONSE["status"] = 'failed';
-    $_REQUEST_RESPONSE["statusCode"] = 0;
-    $_REQUEST_RESPONSE["error"] = $_ERROR_INFO_TEXT['data_base']['sql_query_error'];
+    $ret_data_struct["data"] = "";
+    $ret_data_struct["status"] = 'failed';
+    $ret_data_struct["statusCode"] = 0;
+    $ret_data_struct["error"] = $_ERROR_INFO_TEXT['data_base']['sql_query_error'];
     $db_con->close();
-    exit(json_encode($_REQUEST_RESPONSE));
+    exit(json_encode($ret_data_struct));
 }
 $_SESSION['token'] = $token_obj->access_token;
 $_SESSION['ybid'] = $token_obj->userid;
