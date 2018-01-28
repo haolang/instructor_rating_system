@@ -6,6 +6,7 @@
  * Time: 14:35
  */
 header('Content-type: application/json');
+header('Access-Control-Allow-Origin:*');  //用于测试时可跨域请求  上线后需要删除
 
 echo '{
     "Status":"success",
