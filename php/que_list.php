@@ -5,8 +5,9 @@
  * Date: 2018/1/23
  * Time: 14:35
  */
-header('Content-type: application/json');
+header('Context-Type:text/json;charset=UTF-8');
 header('Access-Control-Allow-Origin:*');  //用于测试时可跨域请求  上线后需要删除
+
 
 echo '{
     "Status":"success",
@@ -51,12 +52,7 @@ echo '{
                     "percent":80
                 }
             ]
-        },
-        {
-
-        },
-        {
-
         }
     ]
-}';
+}'
+;
