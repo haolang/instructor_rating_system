@@ -52,6 +52,131 @@
             position: relative;
         }
         /*选择的标题、设置relative 是让未选择提示框好便于定位------*/
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        a{
+            text-decoration: none;
+        }
+        li{
+            list-style: none;
+        }
+        .show{
+            border: 0px solid black;
+        }
+        .clear{
+            clear: both;
+        }
+        #body-container{
+            width: 1024px;
+            margin: 0 auto;
+            box-shadow: 0 0 10px darkgray;
+            padding-bottom: 50px;
+        }
+        .hometop{
+            padding: 20px 0;
+            /*height: 186px;*/
+            width: 100%;
+            background-image: url("img/index/homephoto.jpg");
+            float: left;
+        }
+        /*.home-search{*/
+            /*margin: 20px auto;*/
+            /*width: 500px;*/
+            /*height: 25px;*/
+            /*background-color: white;*/
+            /*border-radius: 15px;*/
+        /*}*/
+        /*.home-search input{*/
+            /*width: 457px;*/
+            /*height: 25px;*/
+            /*border: none;*/
+            /*outline: none;*/
+            /*font-size: 18px;*/
+            /*margin-left: 12px;*/
+        /*}*/
+        /*.home-search img{*/
+            /*float: right;*/
+            /*margin-top: 5px;*/
+            /*margin-right: 10px;*/
+        /*}*/
+        .home-logo{
+            width: 150px;
+            height: 62px;
+            margin-left: 50px;
+            float: left;
+        }
+        .home-login{
+            width:198px;
+            height: 60px;
+            float: right;
+        }
+        .home-login img{
+            float: left;
+            margin-right: 30px;
+        }
+        .home-login span{
+            color: white;
+            line-height: 30px;
+        }
+        .home-login span a{
+            color: white;
+        }
+        .home-login .user-name{
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap; //文本不换行，这样超出一行的部分被截取，显示...
+        }
+        .home-title{
+            width: 1024px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        #form-examination{
+            width:800px;
+            margin: 0 auto;
+            margin-top: 20px;
+            box-shadow: 0 0 10px darkgray inset;
+        }
+        .exam{
+            width: 700px;
+            margin: 0 auto;
+            font-size: 20px;
+            color: #696969;
+        }
+        .question{
+            margin-top: 50px;
+        }
+        .q-answer{
+            float: left;
+            margin-right: 50px;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        .question-title{
+            font-size: 20px;
+        }
+        .que-block{
+            width: 700px;
+            border-bottom: 2px solid #898989;
+            padding-bottom: 15px;
+            float: left;
+        }
+        .q-sub button{
+            border: none;
+            outline: none;
+            width: 120px;
+            height:35px;
+            border-radius: 15px;
+            color: white;
+            background-color: #68adce;
+            font-size: 20px;
+            margin: 20px 290px;
+            cursor: pointer;
+        }
 
     </style>
     <script src="jslib/jquery/jquery-3.2.1.min.js"></script>
@@ -59,41 +184,55 @@
 <body>
 
 <div id="body-container">
+    <div class="hometop show">
+        <!--<div class="home-search show">-->
+            <!--<input type="text">-->
+            <!--<a href="#"><img src="img/index/found.png" alt="" width="15" height="15"></a>-->
+        <!--</div>-->
+        <div class="clear"></div>
+        <div class="home-icon">
+            <div class="home-logo show">
+                <img src="img/index/yibanlogo.png" alt="">
+            </div>
+            <div class="home-login show">
+                <img src="img/index/person.png" alt="">
+                <span>
+                    <p class="user-name">ID:1336123123</p>
+                    <a href="#">注销</a>
+                </span>
+            </div>
+        </div>
+        <div class="clear"></div>
+
+    </div>
+    <div class="clear"></div>
+
+    <div class="home-title show">
+        <h2>四川师范大学辅导员工作学生调查问卷</h2>
+    </div>
 
     <div id="form-examination">
-        <form name="examination" id="examination">
+        <form name="examination" id="examination" class="exam show">
 
             <!--需要动态加载部分已经用*号标注-->
-            <ul class="question">
-                <li>
-                    <div class="question-title">***********</div>
-                </li>
-                <li><label><input type="radio" name="qid_*" value="**" class="q-select">***</label></li>
-                <li><label><input type="radio" name="qid_*" value="**" class="q-select">***</label></li>
-                <li><label><input type="radio" name="qid_*" value="**" class="q-select">***</label></li>
-            </ul>
-
-            <ul class="question">
-                <li>
-                    <div class="question-title">将数据存储于数据库。:</div>
-                </li>
-                <li><label><input type="radio" name="qid_1" value="95" class="q-select">好</label></li>
-                <li><label><input type="radio" name="qid_1" value="80" class="q-select">一般</label></li>
-            </ul>
-
-            <ul class="question">
-                <li>
-                    <div class="question-title">将数据存储库。:</div>
-                </li>
-                <li><label><input type="radio" name="qid_2" value="95" class="q-select">好</label></li>
-                <li><label><input type="radio" name="qid_2" value="80" class="q-select">一般</label></li>
-            </ul>
+            <div class="que-block show" id="question-div">
+                <ul class="question">
+                    <li>
+                        <div class="question-title">***********</div>
+                    </li>
+                    <li class="q-answer"><label><input type="radio" name="qid_*" value="**" class="q-select">***</label></li>
+                    <li class="q-answer"><label><input type="radio" name="qid_*" value="**" class="q-select">***</label></li>
+                    <li class="q-answer"><label><input type="radio" name="qid_*" value="**" class="q-select">***</label></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
 
 
 
 
-            <div>
-                <button type="button" onclick="uploadAnswer('examination');">提交试卷</button>
+            <div class="q-sub">
+                <button type="button" onclick="uploadAnswer('examination');">提　交</button>
             </div>
 
         </form>
@@ -103,25 +242,37 @@
 </div>
 </body>
 <script>
+
+
+    $(document).ready(function(){
+        var examination_id = "question-div";
+        loadExamination(examination_id);
+    });
+
     //用于检查某个问题是否选择，若未选择就自动滚动至第一个未选择位置并弹出自定义标签弹窗
     //form_id : form标签的 id 字符串
     function checkAnswer(from_id) {
-
+        var return_val = true;
         $("#" + from_id).find(".question").each(function () {
             var val = $(this).find('input:radio:checked').val();  //通过判断radio元素的值来判断是否选中
             if(val === undefined){
-               // alert("什么也没选中!");
+                // alert("什么也没选中!");
                 var input_title_offset = $(this).offset().top;   //相对偏移量 用于自动滚动定位
                 console.log(input_title_offset);
-                $("html,body").animate({scrollTop:input_title_offset},800);   //滚动到指定位置
+                $("html,body").animate({scrollTop:input_title_offset},500);   //滚动到指定位置
 
-                $(this).find(".question-title").append("<div class='alert_box'>请选择此项目！</div>");    //添加自定义提示框
-                $(".alert_box").fadeOut(2000);
-                return false;   //存在未选择项时返回false
+                $(this).find(".question-title").append("<div class='alert_box'>请选择！</div>");    //添加自定义提示框
+                $(".alert_box").fadeOut(3000);
+                //return false;   //存在未选择项时返回false
+//                console.log("test");
+                return_val = false;
+
+                return false;   //结束循环，不再判断其他未选择项
             }
         });
-        return true; //已经全部选择时返回true
+        return return_val; //已经全部选择时返回true
     }
+
 
 
     //下面的函数仅供参考，我从其他地方复制粘贴的
@@ -159,6 +310,42 @@
             error : function(result) {
                 console.log(result);   //----------------------------------------------------------------------------------------------- delete
                 alert("上传失败，请稍后重试！");
+            }
+        });
+    }
+
+
+    function loadExamination(examination_id) {
+        $.ajax({
+            url: "php/que_list.php",
+            type:"GET",
+            success : function(response) {
+                var data = JSON.parse(response);
+                console.log(data);
+                var que_list = data.Ret_Data;
+                var content = '';
+                for(var i = 0;i < que_list.length; i++)
+                {
+                    var que = que_list[i];
+                    content += '<ul class="question">\n' +
+                        '                <li>\n' +
+                        '                    <div class="question-title">' +(i+1)+'、'+ que.content + '</div>\n' +
+                        '                </li>\n' ;
+                    for(var j = 0;j < que.selectors.length; j++)
+                    {
+                        var select = que.selectors[j];
+                        content += '<li class="q-answer"><label><input type="radio" name="qid_'+ que.q_id + '" value="'+ select.percent +'" class="q-select">'+select.mark+'、'+select.content+'</label></li>\n';
+                    }
+
+                    content +='            </ul>';
+                }
+
+                $("#" + examination_id).html(content);
+                console.log(content);
+            },
+            error : function(result) {
+//                console.log(result);
+                console.log("加载错误");
             }
         });
     }
