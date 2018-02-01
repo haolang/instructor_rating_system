@@ -63,7 +63,7 @@
             list-style: none;
         }
         .show{
-            border: 0px solid black;
+            border: 0 solid black;
         }
         .clear{
             clear: both;
@@ -81,26 +81,7 @@
             background-image: url("img/index/homephoto.jpg");
             float: left;
         }
-        /*.home-search{*/
-            /*margin: 20px auto;*/
-            /*width: 500px;*/
-            /*height: 25px;*/
-            /*background-color: white;*/
-            /*border-radius: 15px;*/
-        /*}*/
-        /*.home-search input{*/
-            /*width: 457px;*/
-            /*height: 25px;*/
-            /*border: none;*/
-            /*outline: none;*/
-            /*font-size: 18px;*/
-            /*margin-left: 12px;*/
-        /*}*/
-        /*.home-search img{*/
-            /*float: right;*/
-            /*margin-top: 5px;*/
-            /*margin-right: 10px;*/
-        /*}*/
+
         .home-logo{
             width: 150px;
             height: 62px;
@@ -116,11 +97,11 @@
             float: left;
             margin-right: 30px;
         }
-        .home-login span{
+        .home-login {
             color: white;
             line-height: 30px;
         }
-        .home-login span a{
+        .home-login a{
             color: white;
         }
         .home-login .user-name{
@@ -185,10 +166,6 @@
 
 <div id="body-container">
     <div class="hometop show">
-        <!--<div class="home-search show">-->
-            <!--<input type="text">-->
-            <!--<a href="#"><img src="img/index/found.png" alt="" width="15" height="15"></a>-->
-        <!--</div>-->
         <div class="clear"></div>
         <div class="home-icon">
             <div class="home-logo show">
@@ -196,10 +173,10 @@
             </div>
             <div class="home-login show">
                 <img src="img/index/person.png" alt="">
-                <span>
+                <div>
                     <p class="user-name">ID:1336123123</p>
                     <a href="#">注销</a>
-                </span>
+                </div>
             </div>
         </div>
         <div class="clear"></div>
@@ -314,14 +291,14 @@
         });
     }
 
-
+    //动态加载问卷
     function loadExamination(examination_id) {
         $.ajax({
             url: "php/que_list.php",
             type:"GET",
             success : function(response) {
                 var data = JSON.parse(response);
-                console.log(data);
+//                console.log(data);
                 var que_list = data.Ret_Data;
                 var content = '';
                 for(var i = 0;i < que_list.length; i++)
@@ -336,14 +313,13 @@
                         var select = que.selectors[j];
                         content += '<li class="q-answer"><label><input type="radio" name="qid_'+ que.q_id + '" value="'+ select.percent +'" class="q-select">'+select.mark+'、'+select.content+'</label></li>\n';
                     }
-
                     content +='            </ul>';
                 }
 
                 $("#" + examination_id).html(content);
-                console.log(content);
+//                console.log(content);
             },
-            error : function(result) {
+            error : function() {
 //                console.log(result);
                 console.log("加载错误");
             }
