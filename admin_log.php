@@ -132,6 +132,8 @@
             }
         }
 
+
+
     </style>
 
 </head>
@@ -141,11 +143,11 @@
         <div class="login-logo">
 
         </div>
-        <div class="login-form">
+        <div class="login-form" >
             <form action="" method="post">
                 <div class="login-input">
                     <img src="img/login/user_icon.png" alt="">
-                    <input type="text"name="username" id="username" autocomplete="off"  placeholder="User name">
+                    <input type = "text"name="username" id="username" autocomplete="off"  placeholder="User name">
                     <!--<a href="#"><img src="img/login/up_arrows.png" alt=""></a>-->
                 </div>
                 <div class="login-input">
