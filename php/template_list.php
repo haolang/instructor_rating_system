@@ -31,9 +31,9 @@ if($result=mysqli_query($dbcon,$sql))
     $retResult->Error="";
     while($row=$result->fetch_assoc())
     {
-        $template['title']=$row['template_id'];
+        $template['title']=$row['template_title'];
         $template['c_time']=$row['c_time'];
-        $template['template_title']=$row['template_title'];
+        $template['template_id']=$row['template_id'];
         array_push($retResult->Ret_Data, $template);
     }
     mysqli_free_result($result);
