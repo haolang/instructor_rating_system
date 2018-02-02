@@ -20,7 +20,7 @@ $template=array(
     "title"=>"",
     "c_time"=>"",
     "template_id"=>"",
-    "distribution1_num"=>''  //不清楚这个是什么
+
 );
 $sql='SELECT * FROM tbl_quetemplate  ';
 if($result=mysqli_query($dbcon,$sql))
