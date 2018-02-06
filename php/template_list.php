@@ -5,6 +5,8 @@
  * Date: 2018/1/21
  * Time: 22:11
  */
+
+header('Context-Type:text/json;charset=UTF-8');
 class requestResponse {
     public $Status = "";
     public $StatusCode = "";
@@ -31,7 +33,7 @@ if($result=mysqli_query($dbcon,$sql))
     $retResult->Error="";
     while($row=$result->fetch_assoc())
     {
-        $template['title']=$row['template_id'];
+        $template['template_id']=$row['template_id'];
         $template['c_time']=$row['c_time'];
         $template['template_title']=$row['template_title'];
         array_push($retResult->Ret_Data, $template);
