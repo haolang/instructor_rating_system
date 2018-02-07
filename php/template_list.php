@@ -5,8 +5,6 @@
  * Date: 2018/1/21
  * Time: 22:11
  */
-
-header('Context-Type:text/json;charset=UTF-8');
 class requestResponse {
     public $Status = "";
     public $StatusCode = "";
@@ -22,7 +20,7 @@ $template=array(
     "title"=>"",
     "c_time"=>"",
     "template_id"=>"",
-    "distribution1_num"=>''  //不清楚这个是什么
+
 );
 $sql='SELECT * FROM tbl_quetemplate  ';
 if($result=mysqli_query($dbcon,$sql))
@@ -33,9 +31,9 @@ if($result=mysqli_query($dbcon,$sql))
     $retResult->Error="";
     while($row=$result->fetch_assoc())
     {
-        $template['template_id']=$row['template_id'];
+        $template['title']=$row['template_title'];
         $template['c_time']=$row['c_time'];
-        $template['template_title']=$row['template_title'];
+        $template['template_id']=$row['template_id'];
         array_push($retResult->Ret_Data, $template);
     }
     mysqli_free_result($result);

@@ -18,7 +18,7 @@ $retResult = new requestResponse();//一个返回对象
 $template_id=$_GET['template_id'];//
 if(!empty($template_id))
 {
-    $sql='SELECT * FROM tbl_quetemplate WHERE template_id = "'.$template_id.'"';//利用教师yb_id来查找其身份
+    $sql='DELETE  FROM tbl_quetemplate WHERE template_id = "'.$template_id.'"';//利用教师yb_id来查找其身份
     if($result=mysqli_query($dbcon,$sql))
     {
         $retResult->Status = "success";

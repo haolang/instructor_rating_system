@@ -14,49 +14,67 @@ class requestResponse {
 }
 include_once'json_admin.php';
 $retResult = new requestResponse();//一个返回对象
-if(!empty($_POST['template_name'])&&!empty($_POST['q_1_content']&&!empty('q_1_score')))
-{
-    $template_name=$_POST['template_name'];
-    $t =date('Y-m-d H:i:s');
-    $sql='insert into tbl_quetemplate (template_title,c_time)
-    VALUES (\''.$template_name.'\',\''.$t.'\')';//  插入到表tbl_quetemplate中
-    if(mysqli_query($dbcon,$sql))
-    {
-        $sql="select * from tbl_quetemplate  ORDER BY template_id publish_id DESC ";
-        if($result = mysqli_query($dbcon, $sql))
-        {
+if(!empty($_POST['new_examination'])) {
+    header('Access-Control-Allow-Origin:*');//注意！跨域要加这个头 上面那个没有
+    $student = $_POST['new_examination'];
+    echo $student['name'];
+    echo $student['age'];
+    echo $student['sex'];
+    $template_name = $student['Title'];
+    $t = date('Y-m-d H:i:s');
+    $sql = 'insert into tbl_quetemplate (template_title,c_time)
+    VALUES (\'' . $template_name . '\',\'' . $t . '\')';//  插入到表tbl_quetemplate中
+    if (mysqli_query($dbcon, $sql)) {
+        $sql = "select * from tbl_quetemplate  ORDER BY template_id DESC ";
+        if ($result = mysqli_query($dbcon, $sql)) {
             $row = $result->fetch_assoc();
-            $template_id=$row['template_id'];
-        }
-        foreach ($_POST as $key => $value) {//发送的参数格式{(内容，分数),()}
-            $cognizz=substr($key,-7);//获取qid后面的题目号并且存入字符串
-            if($cognizz=='content')
-            {
-                $cut=strpos($key, '_');
-                $quescore='q_'.$cut[1].'_score';
-                $score=$_POST[$quescore];//分数为指定的接收到的
-                $sql='insert into tbl_queitems (template_id,content,scores)
-            VALUES (\''.$template_id.'\',\''.$value.'\',\''.$score.'\')';//  插入到表tbl_quetemplate中
-                if(!mysqli_query($dbcon,$sql))
-                {
-                    $retResult->Status= "failed";
-                    $retResult->StatusCode = 0;
-                    $retResult->Description="";
-                    $retResult->Error="插入到 tbl_queitems（表）sql语句执行错误";
-                    $retResult->Ret_Data="";
-                    $dbcon->close();
-                    exit(json_encode($retResult));//失败返回相关信息
+            $template_id = $row['template_id'];//获取得到template_id
+            $questions = $student['Ret_Data'];
+            for ($i = 0; $i < sizeof($questions); $i++) {
+                $details = $questions[$i];
+                $content = $details['content'];
+                $que_score = $details['score'];
+                $sql = 'insert into tbl_queitems (template_id,content,scores)
+                VALUES (\'' . $template_id . '\',\'' . $content . '\',\'' . $que_score . '\')';//  插入que_id自增
+                if ($result = mysqli_query($dbcon, $sql)) {
+                    $sql = "select * from tbl_queitems ORDER BY que_id DESC ";
+                    if ($result = mysqli_query($dbcon, $sql)) {
+                        $row = $result->fetch_assoc();
+                        $que_id = $row['que_id'];//获取得到que_id
+                        $selectors = $details['selectors'];
+                        $mark = $selectors['mark'];
+                        $selector_content = $selectors['content'];
+                        $selector_percent = $selectors['percent'];
+                        for ($i = 0; $i < sizeof($selectors); $i++) {
+                            $seletor_detail = $selectors[$i];
+                            $sql = 'insert into tbl_queselectors (que_id,selector_mark,content,score_percent)
+                           VALUES (\'' . $que_id . '\',\'' . $mark . '\',\'' . $selector_content . '\',\'' . $selector_percent . '\')';//  插入que_id自增
+                            if ($result = mysqli_query($dbcon, $sql)) {
+                                continue;
+                            } else {
+                                //失败
+                            }
 
 
+                        }
+
+                    } else {
+                        //失败
+                    }
+                } else {
+                    //失败
                 }
 
-            }
-            else
-            {
-                continue;
-            }
 
+            }
+            //成功
+        } else {
+            //失败
         }
+    }
+}
+
+ /*
         $retResult->Status= "success";
         $retResult->StatusCode = 1;
         $retResult->Description="";
@@ -86,3 +104,4 @@ else{
     $dbcon->close();
     exit(json_encode($retResult));//失败返回相关信息
 }
+ */
