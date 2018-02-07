@@ -28,7 +28,8 @@
     <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
     <script src="jslib/bootstrap-4.0.0-dist/js/bootstrap.min.js"></script>
     <style>
-        /*自定义弹出提示框************************************/
+
+        /*自定义弹出提示框******************************************************************/
         .alert_box {
             position: absolute;
             background: #f2eb0e;
@@ -68,19 +69,22 @@
             border-width: 13px;
             margin-left: -13px;
         }
-        /************************************自定义弹出提示框*/
+        /***************************************************************自定义弹出提示框*/
+
         /*大标题*/
         .top-container
         {
             margin-top:20px;
         }
 
-        /*左边部分*/
+        /*左边部分*******************************************************************************************/
         .template_list p
         {
             margin: 0;
             padding:0;
         }
+
+        /*******************************************************************************************左边部分*/
 
 
         /*右边部分******************************************************************************************/
@@ -116,7 +120,7 @@
             font-size: 20px;
         }
 
-        /*模板div******************************************/
+        /*模板列表div**************************************************************/
 
         /*模板列表删除修改按钮div*/
         .template_list_buttons_item
@@ -132,7 +136,7 @@
             display: block;
         }
 
-        /******************************************模板div*/
+        /**************************************************************模板列表div*/
 
 
         .right-container-title
@@ -159,7 +163,7 @@
 <div class="container-fluid">
     <div class="row clearfix">
         <div class="col-md-12 column">
-            <div class="top-container alert alert-dark">
+            <div class="top-container alert alert-secondary">
                 <h1 style="text-align: center">模板管理</h1>
             </div>
         </div>
@@ -169,6 +173,7 @@
                     <h4>历史模板列表</h4>
                 </div>
                 <div class="list-group template_list">
+
 
 <!--                    <a href="#" class="list-group-item list-group-item-action">-->
 <!---->
@@ -277,10 +282,11 @@
     </div>
 </div>
 
+
 </body>
 <script>
 
-    //模板事件
+    //右侧模板事件
     var ExamEvent = {
         bindClick:function () {
             var that = this;
@@ -572,10 +578,11 @@
         }
 
     }
+
     };
 
-    var TempListEvent =
-        {
+    //左侧模板列表事件
+    var TempListEvent = {
             bindClick:function () {
                 var that = this;
                 //模板设置为问卷按钮
@@ -631,47 +638,46 @@
                 });
             },
 
-
             //加载左边模板列表
             loadList:function() {
-        $.ajax({
-            url: "php/template_list.php",
-            type:"GET",
-            success : function(response) {
-//                var response =
-                console.log(response);
-                var data = JSON.parse(response);
-                console.log(data);
-                if(data.Status === 'success' || data.StatusCode === 1){
-                    var html_list = '';
-//                    console.log( data.Ret_Data[0].template_title.toString() );
-                    for(var i = 0;i < data.Ret_Data.length;i++)
-                    {
-                        html_list += '<a href="#" class="list-group-item list-group-item-action template_list_item" template_id="' + data.Ret_Data[i].template_id + '">\n' +
-                            '\n' +
-                            '                        <p class="text-left">' + data.Ret_Data[i].template_title + '</p>\n' +
-                            '                        <p class="text-right small">' + data.Ret_Data[i].c_time + '</p>\n' +
-                            '                        <div class="template_list_buttons_item">' +
-                            '<button class="btn btn-success btn-sm set_paper_new">设为问卷</button>' +
-                            '<button class="btn btn-warning btn-sm template_delete">删除</button>' +
-                            '</div>\n' +
-                            '                    </a>';
+                $.ajax({
+                url: "php/template_list.php",
+                type:"GET",
+                success : function(response) {
+    //                var response =
+                    console.log(response);
+                    var data = JSON.parse(response);
+                    console.log(data);
+                    if(data.Status === 'success' || data.StatusCode === 1){
+                        var html_list = '';
+    //                    console.log( data.Ret_Data[0].template_title.toString() );
+                        for(var i = 0;i < data.Ret_Data.length;i++)
+                        {
+                            html_list += '<a href="#" class="list-group-item list-group-item-action template_list_item" template_id="' + data.Ret_Data[i].template_id + '">\n' +
+                                '\n' +
+                                '                        <p class="text-left">' + data.Ret_Data[i].template_title + '</p>\n' +
+                                '                        <p class="text-right small">' + data.Ret_Data[i].c_time + '</p>\n' +
+                                '                        <div class="template_list_buttons_item">' +
+                                '<button class="btn btn-success btn-sm set_paper_new">设为问卷</button>' +
+                                '<button class="btn btn-warning btn-sm template_delete">删除</button>' +
+                                '</div>\n' +
+                                '                    </a>';
+                        }
+
+                        $(".left-container .template_list").append(html_list);
+    //                    console.log(html_list);
+
                     }
-
-                    $(".left-container .template_list").append(html_list);
-//                    console.log(html_list);
-
+                    else if(data.Status === 'failed' || data.StatusCode === 0)
+                    {
+                        alert("模板列表数据请求失败！");
+                    }
+                },
+                error : function(result) {
+                    console.log("加载错误!");
                 }
-                else
-                {
-
-                }
+            });
             },
-            error : function(result) {
-                console.log("加载错误!");
-            }
-        });
-    },
             //根据模板id加载模板
             loadTemplate:function(template_id) {
                 $.ajax({
@@ -683,7 +689,52 @@
                     success : function(response) {
                         var data = JSON.parse(response);
                         if(data.Status === 'success' || data.StatusCode === 1){
+                            var que_list = data.Ret_Data;
 
+                            $("#examination .examination-title .title").val(data.Title);  //动态加载标题
+
+                            var JQ_questions = $("#examination .questions");
+
+                            var JQ_question_div = JQ_questions.children(".question-div");
+                            for(var i = 0;i < que_list.length; i++)
+                            {
+                                var que = que_list[i];
+                                if(i >= JQ_question_div.length)  //添加问题
+                                {
+                                    $(".btn-add-question").click();
+                                    JQ_question_div = JQ_questions.children(".question-div");
+                                    console.log(JQ_question_div.length);
+                                }
+
+                                JQ_question_div.eq(i).find(".score").val(que.score);  //数据加载至页面
+                                JQ_question_div.eq(i).find(".content").val(que.content); //数据加载至页面
+
+                                console.log("i = " + i);
+                                var JQ_que_selects = JQ_question_div.eq(i).find(".que-select");
+                                console.log(JQ_que_selects);
+                                for(var j = 0;j < que.selectors.length; j++)
+                                {
+
+                                    var select = que.selectors[j];
+//                                    console.log(JQ_que_select);
+                                    if(j >= JQ_que_selects.length)
+                                    {
+                                        JQ_question_div.eq(i).find(".btn-add-select").click();
+//                                        console.log("click");
+                                    }
+                                    JQ_que_selects = JQ_question_div.eq(i).find(".que-select");
+
+                                    JQ_que_selects.eq(j).find(".percent").val(select.percent);
+                                    JQ_que_selects.eq(j).find(".content").val(select.content);
+
+
+
+//                                    content += '<li class="q-answer"><label><input type="radio" name="qid_'+ que.q_id + '" value="'+ select.percent +'" class="q-select">'+select.mark+'、'+select.content+'</label></li>\n';
+                                }
+//                                content +='            </ul>';
+                            }
+
+                            console.log(data);
                         }
                         else if(data.Status === 'failed' || data.StatusCode === 0)
                         {
@@ -701,9 +752,14 @@
 
     $(document).ready(function(){
 
-        TempListEvent.bindClick(); //绑定点击事件
-        TempListEvent.loadList();
-        ExamEvent.bindClick();
+        //TODO 添加ifLog 判断登陆后执行下面代码块
+
+        {
+
+            TempListEvent.bindClick(); //绑定右侧模板点击事件
+            TempListEvent.loadList();  //异步加载左侧模板列表  todo 添加ifLog后删除
+            ExamEvent.bindClick();   //绑定左侧模板列表点击事件
+        }
 
     });
 
@@ -720,7 +776,7 @@
                 }
                 else if(data.Status === "success" || data.StatusCode === 1)
                 {
-                    // loadList();
+                    //TempListEvent.loadList();  //异步加载左侧模板列表 todo 完善登陆后取消注释
                 }
             },
             error : function(result) {
@@ -729,9 +785,6 @@
             }
         });
     }
-
-
-
 
 
 
