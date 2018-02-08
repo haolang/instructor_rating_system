@@ -15,6 +15,7 @@ class requestResponse {
 include_once'json_admin.php';
 $retResult = new requestResponse();//一个返回对象
 if(!empty($_POST['new_examination'])) {
+    mysqli_query('BEGIN') ;//或者事务处理的开始;
     header('Access-Control-Allow-Origin:*');//注意！跨域要加这个头 上面那个没有
     $student = $_POST['new_examination'];
     echo $student['name'];
@@ -32,6 +33,7 @@ if(!empty($_POST['new_examination'])) {
             $questions = $student['Ret_Data'];
             for ($i = 0; $i < sizeof($questions); $i++) {
                 $details = $questions[$i];
+
                 $content = $details['content'];
                 $que_score = $details['score'];
                 $sql = 'insert into tbl_queitems (template_id,content,scores)
@@ -52,56 +54,88 @@ if(!empty($_POST['new_examination'])) {
                             if ($result = mysqli_query($dbcon, $sql)) {
                                 continue;
                             } else {
-                                //失败
+                                mysqli_query("ROLLBACK");//事务回滚
+                                mysqli_query("END");//结束
+                                $retResult->Status= "failed";
+                                $retResult->StatusCode = 0;
+                                $retResult->Description="";
+                                $retResult->Error="选项插入失败";
+                                $retResult->Ret_Data="";
+                                $dbcon->close();
+                                exit(json_encode($retResult));//失败返回相关信息
                             }
 
 
                         }
 
                     } else {
-                        //失败
+                        mysqli_query("ROLLBACK");//事务回滚
+                        mysqli_query("END");//结束
+                        $retResult->Status= "failed";
+                        $retResult->StatusCode = 0;
+                        $retResult->Description="";
+                        $retResult->Error="获取得到q_id失败";
+                        $retResult->Ret_Data="";
+                        $dbcon->close();
+                        exit(json_encode($retResult));//失败返回相关信息
                     }
                 } else {
-                    //失败
+                    mysqli_query("ROLLBACK");//事务回滚
+                    mysqli_query("END");//结束
+                    $retResult->Status= "failed";
+                    $retResult->StatusCode = 0;
+                    $retResult->Description="";
+                    $retResult->Error="插入新模板失败";
+                    $retResult->Ret_Data="";
+                    $dbcon->close();
+                    exit(json_encode($retResult));//失败返回相关信息
                 }
 
 
             }
-            //成功
+            mysqli_query("COMMIT");//事务处理的提交。
+            mysqli_query("END");//结束
+            $retResult->Status= "success";
+            $retResult->StatusCode = 1;
+            $retResult->Description="";
+            $retResult->Error="";
+            $retResult->Ret_Data="";
+            $dbcon->close();
+            exit(json_encode($retResult));
         } else {
-            //失败
+            mysqli_query("ROLLBACK");//数据回滚
+            mysqli_query("END");//结束
+            $retResult->Status= "failed";
+            $retResult->StatusCode = 0;
+            $retResult->Description="";
+            $retResult->Error="获取得到template_id失败";
+            $retResult->Ret_Data="";
+            $dbcon->close();
+            exit(json_encode($retResult));//失败返回相关信息
         }
     }
-}
-
- /*
-        $retResult->Status= "success";
-        $retResult->StatusCode = 1;
-        $retResult->Description="";
-        $retResult->Error="";
-        $retResult->Ret_Data="";
-        $dbcon->close();
-        exit(json_encode($retResult));
-    }
     else{
+        mysqli_query("ROLLBACK");//数据回滚
+        mysqli_query("END");//结束
         $retResult->Status= "failed";
         $retResult->StatusCode = 0;
         $retResult->Description="";
-        $retResult->Error="插入到模板（表）sql语句执行错误";
+        $retResult->Error="插入到表tbl_quetemplate失败";
         $retResult->Ret_Data="";
         $dbcon->close();
         exit(json_encode($retResult));//失败返回相关信息
 
     }
-
 }
-else{
+else
+{
     $retResult->Status= "failed";
     $retResult->StatusCode = 0;
     $retResult->Description="";
-    $retResult->Error="template_new.php缺少参数";
+    $retResult->Error="$_POST[new_examination]为空";
     $retResult->Ret_Data="";
     $dbcon->close();
     exit(json_encode($retResult));//失败返回相关信息
+
 }
- */
+
