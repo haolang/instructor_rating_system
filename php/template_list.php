@@ -15,6 +15,7 @@ class requestResponse {
     );
 }
 include_once'json_admin.php';
+//安全起见，将template_new,delete,paper_new.php全部再进行一次管理员是否登录的判断
 $retResult = new requestResponse();//一个返回对象
 $template=array(
     "title"=>"",
