@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>辅导员评价系统</title>
+    <script src="jslib/jquery/jquery-3.2.1.min.js"></script>
+
+    <!--&lt;!&ndash; 新 Bootstrap4 核心 CSS 文件 &ndash;&gt;-->
+    <!--<link rel="stylesheet" href="jslib/bootstrap-4.0.0-dist/css/bootstrap.min.css">-->
+
+    <!--&lt;!&ndash; 最新的 Bootstrap4 核心 JavaScript 文件 &ndash;&gt;-->
+    <!--<script src="jslib/bootstrap-4.0.0-dist/js/bootstrap.min.js"></script>-->
     <style>
-        /*自定义弹出提示框*/
+        /*自定义弹出提示框********************************************************************/
         .alert_box {
             position: absolute;
             background: #f2eb0e;
@@ -44,14 +51,13 @@
             border-width: 13px;
             margin-left: -13px;
         }
-        /*自定义弹出提示框------*/
+        /********************************************************************自定义弹出提示框*/
 
         /*选择的标题、设置relative 是让未选择提示框好便于定位*/
         .question-title
         {
             position: relative;
         }
-        /*选择的标题、设置relative 是让未选择提示框好便于定位------*/
         *{
             margin: 0;
             padding: 0;
@@ -146,21 +152,35 @@
             padding-bottom: 15px;
             float: left;
         }
+        /*.q-sub*/
+        /*{*/
+            /*margin: 10px;*/
+        /*}*/
+
+
         .q-sub button{
             border: none;
             outline: none;
             width: 120px;
             height:35px;
-            border-radius: 15px;
+            border-radius: 5px;
             color: white;
             background-color: #68adce;
             font-size: 20px;
             margin: 20px 290px;
-            cursor: pointer;
+            /*cursor: pointer;*/
         }
 
+        .q-sub button:hover {
+            background-color: #5689ac;
+            /*border: none;*/
+        }
+
+        .q-sub button:focus
+        {
+            border: 3px solid #79848a;
+        }
     </style>
-    <script src="jslib/jquery/jquery-3.2.1.min.js"></script>
 </head>
 <body>
 
@@ -192,7 +212,7 @@
         <form name="examination" id="examination" class="exam show">
 
             <!--需要动态加载部分已经用*号标注-->
-            <div class="que-block show" id="question-div">
+            <div class="que-block show" id="questions-div">
                 <ul class="question">
                     <li>
                         <div class="question-title">***********</div>
@@ -209,7 +229,7 @@
 
 
             <div class="q-sub">
-                <button type="button" onclick="uploadAnswer('examination');">提　交</button>
+                <button type="button"  id="upload-answer">提　交</button>
             </div>
 
         </form>
@@ -219,80 +239,12 @@
 </div>
 </body>
 <script>
-
-
-    $(document).ready(function(){
-        var examination_id = "question-div";
-        loadExamination(examination_id);
-    });
-
-    //用于检查某个问题是否选择，若未选择就自动滚动至第一个未选择位置并弹出自定义标签弹窗
-    //form_id : form标签的 id 字符串
-    function checkAnswer(from_id) {
-        var return_val = true;
-        $("#" + from_id).find(".question").each(function () {
-            var val = $(this).find('input:radio:checked').val();  //通过判断radio元素的值来判断是否选中
-            if(val === undefined){
-                // alert("什么也没选中!");
-                var input_title_offset = $(this).offset().top;   //相对偏移量 用于自动滚动定位
-                console.log(input_title_offset);
-                $("html,body").animate({scrollTop:input_title_offset},500);   //滚动到指定位置
-
-                $(this).find(".question-title").append("<div class='alert_box'>请选择！</div>");    //添加自定义提示框
-                $(".alert_box").fadeOut(3000);
-                //return false;   //存在未选择项时返回false
-//                console.log("test");
-                return_val = false;
-
-                return false;   //结束循环，不再判断其他未选择项
-            }
-        });
-        return return_val; //已经全部选择时返回true
-    }
-
-
-
-    //下面的函数仅供参考，我从其他地方复制粘贴的
-    //form_id : form标签的 id 字符串
-    function uploadAnswer(from_id)
-    {
-        if(checkAnswer(from_id) === false)  //如果未全部选择完毕
-        {
-            return false;
-        }
-        var form = document.getElementById(from_id);
-        var formdata = new FormData(form);
-        var url_php = "php/que_result.php";
-
-        $.ajax({
-            url: url_php,
-            data:formdata,
-            type: 'POST',
-            // 告诉jQuery不要去处理发送的数据
-            processData : false,
-            // 告诉jQuery不要去设置Content-Type请求头
-            contentType : false,
-            success : function(response) {
-                if(response.status === "success")
-                {
-                    alert("提交成功！");
-                }
-                else if(response.status === "failed ")
-                {
-                    alert(response.Error);
-                    console.log(response.Error);
-                }
-                console.log(response);
-            },
-            error : function(result) {
-                console.log(result);   //----------------------------------------------------------------------------------------------- delete
-                alert("上传失败，请稍后重试！");
-            }
-        });
-    }
-
-    //动态加载问卷
-    function loadExamination(examination_id) {
+    // 试卷相关
+    var Examination = {
+        questions_id:"questions-div",
+        from_id:"examination",
+        //动态加载问卷
+        loadExamination:function(questions_id) {
         $.ajax({
             url: "php/que_list.php",
             type:"GET",
@@ -316,7 +268,7 @@
                     content +='            </ul>';
                 }
 
-                $("#" + examination_id).html(content);
+                $("#" + questions_id).html(content);
 //                console.log(content);
             },
             error : function() {
@@ -324,8 +276,77 @@
                 console.log("加载错误");
             }
         });
-    }
+    },
+        //用于检查某个问题是否选择，若未选择就自动滚动至第一个未选择位置并弹出自定义标签弹窗
+        //form_id : form标签的 id 字符串
+        checkAnswer:function() {
+        var return_val = true;
+        $("#" + this.from_id).find(".question").each(function () {
+            var val = $(this).find('input:radio:checked').val();  //通过判断radio元素的值来判断是否选中
+            if(val === undefined){
+                // alert("什么也没选中!");
+                var input_title_offset = $(this).offset().top;   //相对偏移量 用于自动滚动定位
+                console.log(input_title_offset);
+                $("html,body").animate({scrollTop:input_title_offset},500);   //滚动到指定位置
 
+                $(this).find(".question-title").append("<div class='alert_box'>请选择！</div>");    //添加自定义提示框
+                $(".alert_box").fadeOut(3000);
+                //return false;   //存在未选择项时返回false
+//                console.log("test");
+                return_val = false;
 
+                return false;   //结束循环，不再判断其他未选择项
+            }
+        });
+        return return_val; //已经全部选择时返回true
+    },
+        //下面的函数仅供参考，我从其他地方复制粘贴的
+        //form_id : form标签的 id 字符串
+        uploadAnswer:function() {
+            if(this.checkAnswer(this.from_id) === false)  //如果未全部选择完毕
+            {
+                return false;
+            }
+            var form = document.getElementById(this.from_id);
+            var formdata = new FormData(form);
+            var url_php = "php/que_result.php";
+
+            $.ajax({
+                url: url_php,
+                data:formdata,
+                type: 'POST',
+                // 告诉jQuery不要去处理发送的数据
+                processData : false,
+                // 告诉jQuery不要去设置Content-Type请求头
+                contentType : false,
+                success : function(response) {
+                    if(response.status === "success")
+                    {
+                        alert("提交成功！");
+                    }
+                    else if(response.status === "failed ")
+                    {
+                        alert(response.Error);
+                        console.log(response.Error);
+                    }
+                    console.log(response);
+                },
+                error : function(result) {
+                    console.log(result);   //----------------------------------------------------------------------------------------------- delete
+                    alert("上传失败，请稍后重试！");
+                }
+            });
+        }
+
+    };
+    //基本HTML页面加载完成后
+    $(document).ready(function(){
+        //动态加载问卷
+        Examination.loadExamination(Examination.questions_id);
+        //将上传函数绑定至上传函数
+        $("#upload-answer").click(function () {
+            Examination.uploadAnswer();
+        });
+    });
 </script>
 </html>
