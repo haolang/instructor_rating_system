@@ -15,10 +15,22 @@ class requestResponse {
 include_once'json_admin.php';
 include_once'verify.php';
 $retResult = new requestResponse();//一个返回对象
+if (!isset($_SESSION["admin_id"]) || !empty($_SESSION["admin_id"])||
+    !isset($_SESSION["admin_name"])||!empty($_SESSION["admin_name"])
+)//登陆判断如果没有登陆，是否需要跳转***oauth_log.php
+{
+    $retResult->Status= "failed";
+    $retResult->StatusCode = 0;
+    $retResult->Description="";
+    $retResult->Error="管理员未登录";
+    $retResult->Ret_Data="";
+    $dbcon->close();
+    exit(json_encode($retResult));//失败返回相关信息
+}
 if(!empty($_POST['new_examination'])) {
     mysqli_query($dbcon,'BEGIN') ;//或者事务处理的开始;
     header('Access-Control-Allow-Origin:*');//注意！跨域要加这个头 上面那个没有
-    $student =  mysqli_real_escape_string($dbcon,$_POST['new_examination']);
+    $student =  mysqli_real_escape_string($dbcon,$_POST['new_examination']);//对sql关键字转义
     $template_name = $student['Title'];
     $t = date('Y-m-d H:i:s');
     $sql = 'insert into tbl_quetemplate (template_title,c_time)
