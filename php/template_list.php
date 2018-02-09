@@ -15,6 +15,7 @@ class requestResponse {
     );
 }
 include_once'json_admin.php';
+//安全起见，将template_new,delete,paper_new.php全部再进行一次管理员是否登录的判断
 $retResult = new requestResponse();//一个返回对象
 $template=array(
     "title"=>"",
@@ -31,7 +32,7 @@ if($result=mysqli_query($dbcon,$sql))
     $retResult->Error="";
     while($row=$result->fetch_assoc())
     {
-        $template['template_title']=$row['template_title'];
+        $template['title']=$row['template_title'];
         $template['c_time']=$row['c_time'];
         $template['template_id']=$row['template_id'];
         array_push($retResult->Ret_Data, $template);

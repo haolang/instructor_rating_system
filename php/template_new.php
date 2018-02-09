@@ -13,14 +13,12 @@ class requestResponse {
     public $Ret_Data="";
 }
 include_once'json_admin.php';
+include_once'verify.php';
 $retResult = new requestResponse();//一个返回对象
 if(!empty($_POST['new_examination'])) {
-    mysqli_query('BEGIN') ;//或者事务处理的开始;
+    mysqli_query($dbcon,'BEGIN') ;//或者事务处理的开始;
     header('Access-Control-Allow-Origin:*');//注意！跨域要加这个头 上面那个没有
-    $student = $_POST['new_examination'];
-    echo $student['name'];
-    echo $student['age'];
-    echo $student['sex'];
+    $student =  mysqli_real_escape_string($dbcon,$_POST['new_examination']);
     $template_name = $student['Title'];
     $t = date('Y-m-d H:i:s');
     $sql = 'insert into tbl_quetemplate (template_title,c_time)
@@ -36,6 +34,20 @@ if(!empty($_POST['new_examination'])) {
 
                 $content = $details['content'];
                 $que_score = $details['score'];
+                if(data_validation($que_score,'Number')!=1)//检验是否为纯数字
+                {
+                    mysqli_query($dbcon,"ROLLBACK");//事务回滚
+                    mysqli_query($dbcon,"END");//结束
+                    $retResult->Status= "failed";
+                    $retResult->StatusCode = 0;
+                    $retResult->Description="";
+                    $retResult->Error="分数不为数字";
+                    $retResult->Ret_Data="";
+                    $dbcon->close();
+                    exit(json_encode($retResult));//失败返回相关信息
+
+
+                }
                 $sql = 'insert into tbl_queitems (template_id,content,scores)
                 VALUES (\'' . $template_id . '\',\'' . $content . '\',\'' . $que_score . '\')';//  插入que_id自增
                 if ($result = mysqli_query($dbcon, $sql)) {
@@ -47,6 +59,20 @@ if(!empty($_POST['new_examination'])) {
                         $mark = $selectors['mark'];
                         $selector_content = $selectors['content'];
                         $selector_percent = $selectors['percent'];
+                        if(data_validation( $selector_percent,' "Realnumber"')!=1)//检验是否为纯数字
+                        {
+                            mysqli_query($dbcon,"ROLLBACK");//事务回滚
+                            mysqli_query($dbcon,"END");//结束
+                            $retResult->Status= "failed";
+                            $retResult->StatusCode = 0;
+                            $retResult->Description="";
+                            $retResult->Error="百分比不为实数";
+                            $retResult->Ret_Data="";
+                            $dbcon->close();
+                            exit(json_encode($retResult));//失败返回相关信息
+
+
+                        }
                         for ($i = 0; $i < sizeof($selectors); $i++) {
                             $seletor_detail = $selectors[$i];
                             $sql = 'insert into tbl_queselectors (que_id,selector_mark,content,score_percent)
@@ -54,8 +80,8 @@ if(!empty($_POST['new_examination'])) {
                             if ($result = mysqli_query($dbcon, $sql)) {
                                 continue;
                             } else {
-                                mysqli_query("ROLLBACK");//事务回滚
-                                mysqli_query("END");//结束
+                                mysqli_query($dbcon,"ROLLBACK");//事务回滚
+                                mysqli_query($dbcon,"END");//结束
                                 $retResult->Status= "failed";
                                 $retResult->StatusCode = 0;
                                 $retResult->Description="";
@@ -69,8 +95,8 @@ if(!empty($_POST['new_examination'])) {
                         }
 
                     } else {
-                        mysqli_query("ROLLBACK");//事务回滚
-                        mysqli_query("END");//结束
+                        mysqli_query($dbcon,"ROLLBACK");//事务回滚
+                        mysqli_query($dbcon,"END");//结束
                         $retResult->Status= "failed";
                         $retResult->StatusCode = 0;
                         $retResult->Description="";
@@ -80,8 +106,8 @@ if(!empty($_POST['new_examination'])) {
                         exit(json_encode($retResult));//失败返回相关信息
                     }
                 } else {
-                    mysqli_query("ROLLBACK");//事务回滚
-                    mysqli_query("END");//结束
+                    mysqli_query($dbcon,"ROLLBACK");//事务回滚
+                    mysqli_query($dbcon,"END");//结束
                     $retResult->Status= "failed";
                     $retResult->StatusCode = 0;
                     $retResult->Description="";
@@ -93,8 +119,8 @@ if(!empty($_POST['new_examination'])) {
 
 
             }
-            mysqli_query("COMMIT");//事务处理的提交。
-            mysqli_query("END");//结束
+            mysqli_query($dbcon,"COMMIT");//事务处理的提交。
+            mysqli_query($dbcon,"END");//结束
             $retResult->Status= "success";
             $retResult->StatusCode = 1;
             $retResult->Description="";
@@ -103,8 +129,8 @@ if(!empty($_POST['new_examination'])) {
             $dbcon->close();
             exit(json_encode($retResult));
         } else {
-            mysqli_query("ROLLBACK");//数据回滚
-            mysqli_query("END");//结束
+            mysqli_query($dbcon,"ROLLBACK");//数据回滚
+            mysqli_query($dbcon,"END");//结束
             $retResult->Status= "failed";
             $retResult->StatusCode = 0;
             $retResult->Description="";
@@ -115,8 +141,8 @@ if(!empty($_POST['new_examination'])) {
         }
     }
     else{
-        mysqli_query("ROLLBACK");//数据回滚
-        mysqli_query("END");//结束
+        mysqli_query($dbcon,"ROLLBACK");//数据回滚
+        mysqli_query($dbcon,"END");//结束
         $retResult->Status= "failed";
         $retResult->StatusCode = 0;
         $retResult->Description="";
