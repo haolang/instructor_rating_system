@@ -6,9 +6,7 @@
  * Time: 22:21
  */
 
-include 'auto_loader.php'; // 引入加载器
-spl_autoload_register('auto_loader::autoload'); // 注册自动加载
-
+include 'auto_load_register.php';
 include 'php_lib/db_con_test.php';
 
 $sql = 'select * from tbl_quepublish';
