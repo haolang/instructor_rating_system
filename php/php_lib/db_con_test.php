@@ -11,7 +11,7 @@ $db_username = "test";//用户名
 $db_password = "testqwe147";//密码
 
 //连接数据库
-$db_con = mysqli_connect("$_G_DB_SERVER", "$db_username", "$db_password", "$_DB_NAME");
+$db_con = mysqli_connect("$_G_DB_SERVER", "$db_username", "$db_password", "$_G_DB_NAME");
 if ($db_con->connect_error)
 {
     die('<script>alert('.$_G_ERROR_TEXT['db']['con'].')</script>');

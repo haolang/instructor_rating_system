@@ -12,7 +12,7 @@ $_G_DB_NAME = 'counselorquestionnaire';
 $_G_YB_APP_ID = '08d85c3b31fd7aea';
 $_G_YB_APP_SECRET = 'fd9a6d25ad92f0f2567f522d2cc6ee13';
 $_G_REDIRECT_URI = 'http://202.115.195.224/news_sys/index.html&state=3';
-$_G_OAUTH_ADDR = 'https://oauth.yiban.cn/code/html?client_id='.$_YB_APP_ID.'&redirect_uri='.$_REDIRECT_URI;
+$_G_OAUTH_ADDR = 'https://oauth.yiban.cn/code/html?client_id='.$_G_YB_APP_ID.'&redirect_uri='.$_G_REDIRECT_URI;
 
 $ret_data_struct = array(
     "Status"=>'',
