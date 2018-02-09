@@ -16,6 +16,18 @@ class requestResponse {
 }
 include_once'json_admin.php';
 //安全起见，将template_new,delete,paper_new.php全部再进行一次管理员是否登录的判断
+if (!isset($_SESSION["admin_id"]) || !empty($_SESSION["admin_id"])||
+    !isset($_SESSION["admin_name"])||!empty($_SESSION["admin_name"])
+)//登陆判断如果没有登陆，是否需要跳转***oauth_log.php
+{
+    $retResult->Status= "failed";
+    $retResult->StatusCode = 0;
+    $retResult->Description="";
+    $retResult->Error="管理员未登录";
+    $retResult->Ret_Data="";
+    $dbcon->close();
+    exit(json_encode($retResult));//失败返回相关信息
+}
 $retResult = new requestResponse();//一个返回对象
 $template=array(
     "title"=>"",
