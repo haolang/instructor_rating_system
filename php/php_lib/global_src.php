@@ -6,13 +6,22 @@
  * Time: 13:10
  */
 
-$_G_APP_ROOT = 'http://leseg.top/instructor_rating_system/';
+$config = array(
+    'AppID'         => '08d85c3b31fd7aea',  //此处填写你的appid
+    'AppSecret'     => 'fd9a6d25ad92f0f2567f522d2cc6ee13',  //此处填写你的AppSecret
+    'CallBack'      => 'http://202.115.195.224/news_sys/index.html&state=1',  //此处填写你的授权回调地址
+    'AppUrlRoot'    => '',  //app网络地址根地址
+);
+
+$_G_APP_ROOT = 'http://localhost/instructor_rating_system/';
 $_G_DB_SERVER = '45.78.24.43';
 $_G_DB_NAME = 'counselorquestionnaire';
 $_G_YB_APP_ID = '08d85c3b31fd7aea';
 $_G_YB_APP_SECRET = 'fd9a6d25ad92f0f2567f522d2cc6ee13';
-$_G_REDIRECT_URI = 'http://202.115.195.224/news_sys/index.html&state=3';
-$_G_OAUTH_ADDR = 'https://oauth.yiban.cn/code/html?client_id='.$_YB_APP_ID.'&redirect_uri='.$_REDIRECT_URI;
+$_G_REDIRECT_URI = 'http://202.115.195.224/news_sys/index.html&state=1';
+$_G_OAUTH_ADDR = 'https://oauth.yiban.cn/code/html?client_id='.$_G_YB_APP_ID.'&redirect_uri='.$_G_REDIRECT_URI;
+
+session_set_cookie_params(3600 * 2);
 
 $ret_data_struct = array(
     "Status"=>'',
