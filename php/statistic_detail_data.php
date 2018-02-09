@@ -15,6 +15,7 @@ class requestResponse {
     );
 }
 include_once'json_teacher.php';
+include_once'verify.php';
 $retResult = new requestResponse();//一个返回对象
 $detail=array(
     'que_content'=>'',
@@ -27,6 +28,17 @@ $detail=array(
 );
 $que_id=$_GET['que_id'];
 $t_id=$_GET['t_id'];
+if(data_validation($t_id,'Number')!=1)//检验是否为纯数字
+{
+    $retResult->Status = "failed";//注意这里
+    $retResult->StatusCode = 0;
+    $retResult->Description="";
+    $retResult->Error = "参数t_id不为纯数字";
+    $retResult->Ret_Data="";
+    $dbcon->close();
+    exit(json_encode($retResult));
+
+}
 if(!empty($que_id)&&!empty($t_id))
 {
     $retResult->Status = "success";//注意这里
