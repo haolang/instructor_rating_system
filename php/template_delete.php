@@ -16,6 +16,18 @@ class requestResponse {
 include_once'json_admin.php';
 $retResult = new requestResponse();//一个返回对象
 $template_id=$_GET['template_id'];//
+if (!isset($_SESSION["admin_id"]) || !empty($_SESSION["admin_id"])||
+    !isset($_SESSION["admin_name"])||!empty($_SESSION["admin_name"])
+)//登陆判断如果没有登陆，是否需要跳转***oauth_log.php
+{
+    $retResult->Status= "failed";
+    $retResult->StatusCode = 0;
+    $retResult->Description="";
+    $retResult->Error="管理员未登录";
+    $retResult->Ret_Data="";
+    $dbcon->close();
+    exit(json_encode($retResult));//失败返回相关信息
+}
 if(!empty($template_id))
 {
     $sql='DELETE  FROM tbl_quetemplate WHERE template_id = "'.$template_id.'"';//利用教师yb_id来查找其身份
