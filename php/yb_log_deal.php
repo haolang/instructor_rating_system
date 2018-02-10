@@ -53,7 +53,7 @@ if($userInfo_array['status'] == 'success'){
             $db_con->close();
         }else{
             $db_con->close();
-            throw new YBException('database error '.$db_con->error);
+            die('database error '.$db_con->error);
         }
         echo 'jj';
 
@@ -70,7 +70,7 @@ if($userInfo_array['status'] == 'success'){
         curl_setopt($ch, CURLOPT_URL, $url);
         $curl_result = curl_exec($ch);
         if($curl_result == false) {
-            throw new YBException(curl_error($ch));
+            die(curl_error($ch));
         }
         curl_close($ch);
         $api_result = json_decode($curl_result,true);
@@ -103,9 +103,9 @@ if($userInfo_array['status'] == 'success'){
             //处理完成，重定向至首页
             header("location: ".$_G_APP_ROOT."index.html");
         }else{
-            throw new YBException('教务处接口请求处理失败');
+            die('教务处接口请求处理失败');
         }
     }
 }else{
-    throw new YBException('易班接口请求处理失败');
+    die('易班接口请求处理失败');
 }
