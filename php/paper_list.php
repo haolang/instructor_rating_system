@@ -17,17 +17,12 @@ if(!($result = $db_con->query($sql))){
     $row = $result->fetch_all();
     if($row != null){
         $ret_array = array();
-        /*$temp_row = array(
-            'title'         => '',
-            'c_time'        => '',
-            'paper_id'      => '',
-            'template_id'   => ''
-        );*/
         foreach ($row as $fec_index => $fec_val){
             $temp_row['title']          = $fec_val[2];
             $temp_row['c_time']         = $fec_val[5];
             $temp_row['paper_id']       = $fec_val[0];
             $temp_row['template_id']    = $fec_val[1];
+            $temp_row['status']         = $fec_val[4];
             array_push($ret_array,$temp_row);
         }
     }
