@@ -39,6 +39,17 @@ public $Ret_Data=array(
 include_once'json_teacher.php';
 $retResult = new requestResponse();//一个返回对象
 $start=$_GET['p_start'];//开始页码
+if($start<0)
+{
+    $retResult->Status= "failed";
+    $retResult->StatusCode = 0;
+    $retResult->Description="";
+    $retResult->Error="参数(开始页码)<0";
+    $retResult->Ret_Data="";
+    $dbcon->close();
+    exit(json_encode($retResult));//失败返回相关信息
+
+}
 $limit=$_GET['limit'];
 $id=$_GET['que_id'];//问卷id
 $detail=array(

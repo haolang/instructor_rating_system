@@ -13,13 +13,24 @@ class requestResponse {
     public $Ret_Data="";
 }
 include_once'json_admin.php';
+include_once'verify.php';
 $retResult = new requestResponse();//一个返回对象
+if (!isset($_SESSION["admin_id"]) || !empty($_SESSION["admin_id"])||
+    !isset($_SESSION["admin_name"])||!empty($_SESSION["admin_name"])
+)//登陆判断如果没有登陆，是否需要跳转***oauth_log.php
+{
+    $retResult->Status= "failed";
+    $retResult->StatusCode = 0;
+    $retResult->Description="";
+    $retResult->Error="管理员未登录";
+    $retResult->Ret_Data="";
+    $dbcon->close();
+    exit(json_encode($retResult));//失败返回相关信息
+}
 if(!empty($_POST['new_examination'])) {
+    mysqli_query($dbcon,'BEGIN') ;//或者事务处理的开始;
     header('Access-Control-Allow-Origin:*');//注意！跨域要加这个头 上面那个没有
-    $student = $_POST['new_examination'];
-    echo $student['name'];
-    echo $student['age'];
-    echo $student['sex'];
+    $student =  mysqli_real_escape_string($dbcon,$_POST['new_examination']);//对sql关键字转义
     $template_name = $student['Title'];
     $t = date('Y-m-d H:i:s');
     $sql = 'insert into tbl_quetemplate (template_title,c_time)
@@ -32,8 +43,23 @@ if(!empty($_POST['new_examination'])) {
             $questions = $student['Ret_Data'];
             for ($i = 0; $i < sizeof($questions); $i++) {
                 $details = $questions[$i];
+
                 $content = $details['content'];
                 $que_score = $details['score'];
+                if(data_validation($que_score,'Number')!=1)//检验是否为纯数字
+                {
+                    mysqli_query($dbcon,"ROLLBACK");//事务回滚
+                    mysqli_query($dbcon,"END");//结束
+                    $retResult->Status= "failed";
+                    $retResult->StatusCode = 0;
+                    $retResult->Description="";
+                    $retResult->Error="分数不为数字";
+                    $retResult->Ret_Data="";
+                    $dbcon->close();
+                    exit(json_encode($retResult));//失败返回相关信息
+
+
+                }
                 $sql = 'insert into tbl_queitems (template_id,content,scores)
                 VALUES (\'' . $template_id . '\',\'' . $content . '\',\'' . $que_score . '\')';//  插入que_id自增
                 if ($result = mysqli_query($dbcon, $sql)) {
@@ -45,6 +71,20 @@ if(!empty($_POST['new_examination'])) {
                         $mark = $selectors['mark'];
                         $selector_content = $selectors['content'];
                         $selector_percent = $selectors['percent'];
+                        if(data_validation( $selector_percent,' "Realnumber"')!=1)//检验是否为纯数字
+                        {
+                            mysqli_query($dbcon,"ROLLBACK");//事务回滚
+                            mysqli_query($dbcon,"END");//结束
+                            $retResult->Status= "failed";
+                            $retResult->StatusCode = 0;
+                            $retResult->Description="";
+                            $retResult->Error="百分比不为实数";
+                            $retResult->Ret_Data="";
+                            $dbcon->close();
+                            exit(json_encode($retResult));//失败返回相关信息
+
+
+                        }
                         for ($i = 0; $i < sizeof($selectors); $i++) {
                             $seletor_detail = $selectors[$i];
                             $sql = 'insert into tbl_queselectors (que_id,selector_mark,content,score_percent)
@@ -52,56 +92,88 @@ if(!empty($_POST['new_examination'])) {
                             if ($result = mysqli_query($dbcon, $sql)) {
                                 continue;
                             } else {
-                                //失败
+                                mysqli_query($dbcon,"ROLLBACK");//事务回滚
+                                mysqli_query($dbcon,"END");//结束
+                                $retResult->Status= "failed";
+                                $retResult->StatusCode = 0;
+                                $retResult->Description="";
+                                $retResult->Error="选项插入失败";
+                                $retResult->Ret_Data="";
+                                $dbcon->close();
+                                exit(json_encode($retResult));//失败返回相关信息
                             }
 
 
                         }
 
                     } else {
-                        //失败
+                        mysqli_query($dbcon,"ROLLBACK");//事务回滚
+                        mysqli_query($dbcon,"END");//结束
+                        $retResult->Status= "failed";
+                        $retResult->StatusCode = 0;
+                        $retResult->Description="";
+                        $retResult->Error="获取得到q_id失败";
+                        $retResult->Ret_Data="";
+                        $dbcon->close();
+                        exit(json_encode($retResult));//失败返回相关信息
                     }
                 } else {
-                    //失败
+                    mysqli_query($dbcon,"ROLLBACK");//事务回滚
+                    mysqli_query($dbcon,"END");//结束
+                    $retResult->Status= "failed";
+                    $retResult->StatusCode = 0;
+                    $retResult->Description="";
+                    $retResult->Error="插入新模板失败";
+                    $retResult->Ret_Data="";
+                    $dbcon->close();
+                    exit(json_encode($retResult));//失败返回相关信息
                 }
 
 
             }
-            //成功
+            mysqli_query($dbcon,"COMMIT");//事务处理的提交。
+            mysqli_query($dbcon,"END");//结束
+            $retResult->Status= "success";
+            $retResult->StatusCode = 1;
+            $retResult->Description="";
+            $retResult->Error="";
+            $retResult->Ret_Data="";
+            $dbcon->close();
+            exit(json_encode($retResult));
         } else {
-            //失败
+            mysqli_query($dbcon,"ROLLBACK");//数据回滚
+            mysqli_query($dbcon,"END");//结束
+            $retResult->Status= "failed";
+            $retResult->StatusCode = 0;
+            $retResult->Description="";
+            $retResult->Error="获取得到template_id失败";
+            $retResult->Ret_Data="";
+            $dbcon->close();
+            exit(json_encode($retResult));//失败返回相关信息
         }
     }
-}
-
- /*
-        $retResult->Status= "success";
-        $retResult->StatusCode = 1;
-        $retResult->Description="";
-        $retResult->Error="";
-        $retResult->Ret_Data="";
-        $dbcon->close();
-        exit(json_encode($retResult));
-    }
     else{
+        mysqli_query($dbcon,"ROLLBACK");//数据回滚
+        mysqli_query($dbcon,"END");//结束
         $retResult->Status= "failed";
         $retResult->StatusCode = 0;
         $retResult->Description="";
-        $retResult->Error="插入到模板（表）sql语句执行错误";
+        $retResult->Error="插入到表tbl_quetemplate失败";
         $retResult->Ret_Data="";
         $dbcon->close();
         exit(json_encode($retResult));//失败返回相关信息
 
     }
-
 }
-else{
+else
+{
     $retResult->Status= "failed";
     $retResult->StatusCode = 0;
     $retResult->Description="";
-    $retResult->Error="template_new.php缺少参数";
+    $retResult->Error="$_POST[new_examination]为空";
     $retResult->Ret_Data="";
     $dbcon->close();
     exit(json_encode($retResult));//失败返回相关信息
+
 }
- */
+

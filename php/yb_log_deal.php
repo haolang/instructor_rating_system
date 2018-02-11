@@ -6,74 +6,106 @@
  * Time: 20:04
  */
 
-include_once 'php_lib/db_con_test.php';
-session_set_cookie_params(3600 * 2);
-session_start();
-$ch = curl_init();
-$opts = array(
-    CURLOPT_HEADER => false,
-    CURLOPT_POST => false,
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_SSL_VERIFYPEER => false,
-);//配置选项
-curl_setopt_array($ch,$opts);
-if(isset($_GET['code'])){
-    //接受到code并请求一个token
-    $code = $_GET['code'];
-    $url = "https://oauth.yiban.cn/token/info?code=$code&client_id=$_G_YB_APP_ID&client_secret=$_G_YB_APP_SECRET&redirect_uri=$_G_REDIRECT_URI";
-    //接受到token
-    curl_setopt($ch,CURLOPT_URL,$url);
+/**
+ * 包含SDK
+ */
+require("classes/yb-globals.inc.php");
+//配置文件
+require_once 'php_lib/global_src.php';
 
-    $token = curl_exec($ch);
+//初始化
+$api = YBOpenApi::getInstance()->init($config['AppID'], $config['AppSecret'], $config['CallBack']);
+$au  = $api->getAuthorize();
 
-    $token_obj = json_decode($token);
+//网站接入获取access_token，未授权则跳转至授权页面
+$info = $au->getToken();
+if(!$info['status']) {//授权失败
+    echo $info['msg'];
+    die;
+}
+$token = $info['token'];//网站接入获取的token
 
-    if(isset($token_obj->code)){//判定请求是否成功
+//var_dump($info);
+$api->bind($token);
+$userInfo_array = $api->request('user/verify_me');
+
+if($userInfo_array['status'] == 'success'){
+    $info_array = $userInfo_array['info'];
+    //判断是学生还是教师
+    if($info_array['yb_employid'] != ''){
+        //教师
+        include 'php_lib/db_con_test.php';
+        $sql = 'select checker_name, worker_no, identify from tbl_infochecker where checker_ybid = '.$info_array['yb_userid'];
+        if($db_result = $db_con->query($sql)){
+            $row = $db_result->fetch_array();
+            if($row != null){
+                session_start();
+                $_SESSION['t_ybid']     = $info_array['yb_userid'];
+                $_SESSION['t_name']     = $row[0];
+                $_SESSION['t_no']       = $row[1];
+                $_SESSION['t_identify'] = $row[2];
+                $_SESSION['access_token'] = $token;
+                //处理完成，重定向至首页
+                header("location: ".$_G_APP_ROOT."statistic.html");
+            }else{
+                echo '您不是辅导员';
+            }
+            $db_con->close();
+        }else{
+            $db_con->close();
+            die('database error '.$db_con->error);
+        }
+        echo 'jj';
+
+    }else{
+        //学生
+        //根据学号从教务处接口获取学籍信息
+        $url = 'http://202.115.195.224/api/get_stuinfo.php?studentid='.$info_array['yb_studentid'].'&valid_c=test_api_pass';
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        $curl_result = curl_exec($ch);
+        if($curl_result == false) {
+            die(curl_error($ch));
+        }
         curl_close($ch);
-        $ret_data_struct["ret_data"] = $token_obj;
-        $ret_data_struct["status"] = 'failed';
-        $ret_data_struct["status_code"] = '0';
-        $ret_data_struct["error"] = '请求access_token失败：'.$token_obj->code.'-'.$token_obj->msgCN;
-        $db_con->close();
-        exit(json_encode($ret_data_struct));//失败返回相关信息
+        $api_result = json_decode($curl_result,true);
+        //判断处理是否成功
+        if($api_result['status'] == 'success'){
+            $api_info_array = $api_result['ret_Data']['table'][0];
+
+            //将请求得到的信息保存到数据库
+            include 'php_lib/db_con_test.php';
+            $sql = 'select fun_update_stuinfo(
+                    "'.$info_array['yb_userid'].'",
+                    "'.$info_array['yb_studentid'].'",
+                    "'.$api_info_array['xm'].'",
+                    "'.$api_info_array['xy'].'",
+                    "'.$api_info_array['zy'].'",
+                    "'.$api_info_array['nj'].'",
+                    "'.$api_info_array['bj'].'",
+                    "'.$api_info_array['xydm'].'",
+                    "'.$api_info_array['zydm'].'",
+                    "'.$api_info_array['bjdm'].'"
+                    )';
+            $db_con->query($sql);
+            $db_con->close();
+            //将有关信息保存至session
+            session_start();
+            $_SESSION['stu_name']   = $api_info_array['xm'];
+            $_SESSION['stu_no']     = $info_array['yb_studentid'];
+            $_SESSION['stu_ybid']   = $info_array['yb_userid'];
+            $_SESSION['access_token'] = $token;
+            //处理完成，重定向至首页
+            header("location: ".$_G_APP_ROOT."index.html");
+        }else{
+            die('教务处接口请求处理失败');
+        }
     }
-}
-$token = $token_obj->access_token;//保存access_token
-//使用access_token请求用户信息
-$url = "https://openapi.yiban.cn/user/me?access_token=$token";
-
-curl_setopt($ch,CURLOPT_URL,$url);
-$userInfo = curl_exec($ch);
-
-$userInfo_obj = json_decode($userInfo);
-if($userInfo_obj->status != 'success'){//判定请求是否成功
-    $ret_data_struct["ret_data"] = $userInfo_obj;
-    $ret_data_struct["status"] = 'failed';
-    $ret_data_struct["statusCode"] = 0;
-    $ret_data_struct["error"] = '请求用户信息失败：'.$userInfo_obj->info->code.'-'.$userInfo_obj->info->msgCN;
-    $db_con->close();
-    exit(json_encode($ret_data_struct));//失败返回相关信息
-}
-
-curl_close($ch);
-
-//将用户数据存储或更新
-if($db_result = mysql_sql_exec($db_con,'select fun_save_update_users("'.$token_obj->userid.'","'.$userInfo_obj->info->yb_username.'","'.$userInfo_obj->info->yb_userhead.'")')){
-
 }else{
-    $ret_data_struct["data"] = "";
-    $ret_data_struct["status"] = 'failed';
-    $ret_data_struct["statusCode"] = 0;
-    $ret_data_struct["error"] = $_ERROR_INFO_TEXT['data_base']['sql_query_error'];
-    $db_con->close();
-    exit(json_encode($ret_data_struct));
+    die('易班接口请求处理失败');
 }
-$_SESSION['token'] = $token_obj->access_token;
-$_SESSION['ybid'] = $token_obj->userid;
-$_SESSION['user_name'] = $userInfo_obj->info->yb_username;
-$_SESSION['avatar'] = $userInfo_obj->info->yb_userhead;
-
-$db_con->close();
-
-//var_dump($_SESSION);
-header("location: index.php");
