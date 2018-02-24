@@ -2,9 +2,456 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>总览页面</title>
+    <!-- 新 Bootstrap4 核心 CSS 文件 -->
+    <link rel="stylesheet" href="jslib/bootstrap-4.0.0-dist/css/bootstrap.min.css">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="jslib/jquery/jquery-3.2.1.min.js"></script>
+    <script src="jslib/jquery/jquery.table2excel.js"></script>
+
+    <!-- popper.min.js 用于弹窗、提示、下拉菜单 -->
+    <script src="jslib/bootstrap-4.0.0-dist/js/popper.min.js"></script>
+
+    <script src="jslib/bootstrap-4.0.0-dist/js/bootstrap.min.js"></script>
+    <style>
+        /*大标题*/
+        .top-container
+        {
+            margin:20px 0;
+            padding: 10px;
+            background-color: #e2e3e5;
+            border-radius: .25rem;
+        }
+
+        /*顶部搜索按钮部分*/
+        .top-control
+        {
+            margin-bottom: 10px;
+        }
+        /*登陆者相关信息*/
+        .login-info
+        {
+            background-color: #dddddd;
+            padding: 15px;
+            bottom: 0;
+            /*position: absolute;*/
+            border-radius: .25rem;
+        }
+
+        .input-group-addon {
+            padding: 6px 12px;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1;
+            color: #555;
+            text-align: center;
+            background-color: #eee;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        /*表格***************************************************************************************************/
+        .statistic-data-table
+        {
+            width: 100%;
+            font-size: 13px;
+            text-align: center;
+        }
+        .statistic-data-table thead
+        {
+            background-color: #d5d5d5;
+
+        }
+        /***************************************************************************************************表格*/
+
+
+
+        @media print {
+            .no-print{
+                display:none;   /*隐藏不打印的部分*/
+            }
+        }
+
+    </style>
 </head>
 <body>
+
+<div class="container">
+    <div class="row clearfix no-print">
+        <div class="col-md-12 column">
+
+            <div class="top-container">
+                <div class="row">
+                    <div class="col-md-10">
+
+                        <div class="dropdown">
+                            <button style="font-size: 30px" type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                                总览页面
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="admin.html">管理页面</a>
+                                <a class="dropdown-item" href="statistic_detail.html">详情页面</a>
+                                <a class="dropdown-item" href="statistic.html">总览页面</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+
+                        <div class="login-info">
+                            郎浩（123123）
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <form class="search-data no-print" name="search_data">
+
+                <div class="row top-control">
+                <div class="col-md-3 column">
+
+                    <div class="input-group paper-select-div ">
+                        <span class="input-group-addon departments">问卷：</span>
+                        <select class="paper-select" name="que_id">
+                            <option value="**paper_id**">as当阿斯扥啊就</option>
+                            <option value="**paper_id**">森工扥扥杠灯风骚</option>
+                            <option value="**paper_id**">森工扥扥杠灯风骚</option>
+                            <option value="**paper_id**">地理与资源科学学院</option>
+                            <option value="**paper_id**">森工扥扥杠灯风骚</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="col-md-3 column">
+
+
+                    <div class="input-group">
+                        <span class="input-group-addon">院系：</span>
+                        <select class="academy-select" name="academy">
+
+                                <option value="#" selected>--学院--</option>
+                                <option value="文学院">文学院</option>
+                                <option value="马克思主义学院">马克思主义学院</option>
+                                <option value="外国语学院">外国语学院</option>
+                                <option value="法学院">法学院</option>
+                                <option value="教育科学学院">教育科学学院</option>
+                                <option value="历史文化与旅游学院">历史文化与旅游学院</option>
+                                <option value="国际教育学院">国际教育学院</option>
+
+                                <option value="数学与软件科学学院">数学与软件科学学院</option>
+                                <option value="物理与电子工程学院">物理与电子工程学院</option>
+                                <option value="化学与材料科学学院">化学与材料科学学院</option>
+                                <option value="生命科学学院">生命科学学院</option>
+                                <option value="地理与资源科学学院">地理与资源科学学院</option>
+                                <option value="计算机科学学院">计算机科学学院</option>
+
+                                <option value="经济与管理学院">经济与管理学院</option>
+                                <option value="体育学院">体育学院</option>
+                                <option value="工学院">工学院</option>
+                                <option value="商学院">商学院</option>
+                                <option value="影视与传媒学院">影视与传媒学院</option>
+
+                                <option value="基础教学学院">基础教学学院</option>
+                                <option value="教师教育与心理学院">教师教育与心理学院</option>
+                                <option value="美术学院">美术学院</option>
+                                <option value="音乐学院">音乐学院</option>
+                                <option value="舞蹈学院">舞蹈学院</option>
+
+                                <option value="服装与设计艺术学院">服装与设计艺术学院</option>
+                                <option value="MBA/MPA教育中心">MBA/MPA教育中心</option>
+                                <option value="职业技术学院">职业技术学院</option>
+                                <option value="应用技术学院">应用技术学院</option>
+
+                            </select>
+                    </div>
+                </div>
+                <div class="col-md-3 column">
+                    <div class="input-group">
+                        <span class="input-group-addon instructor-name">姓名：</span>
+                        <input type="text">
+                    </div>
+                </div>
+                <div class="col-md-3 column">
+
+                    <button type="button" class="btn btn-sm">查询</button>
+                    <button type="button" class="btn btn-sm">重置</button>
+                    <button type="button" class="btn btn-sm btn-export-Excel">导出Excel</button>
+                    <button type="button" class="btn btn-sm btn-print">打印</button>
+
+                </div>
+            </div>
+
+            </form>
+
+            <div class="row">
+                <div class="col-md-12 statistic-data-table-div">
+                    <div class="table-responsive">
+
+                        <table class="statistic-data-table table table-bordered">
+                            <thead>
+                                <tr>
+                                    <td rowspan="2">序号</td>
+                                    <td rowspan="2">辅导员姓名</td>
+                                    <td rowspan="2">院系</td>
+                                    <td rowspan="2">院评价</td>
+                                    <td rowspan="2">平均分</td>
+                                    <td rowspan="2">考评参与人数</td>
+                                    <td rowspan="2">在校学生人数</td>
+                                    <td rowspan="2">评价学生比例</td>
+                                    <td rowspan="2">优良率</td>
+                                    <td rowspan="2">差率</td>
+                                    <td colspan="2">(95--85)分</td>
+                                    <td colspan="2">(84--75)分</td>
+                                    <td colspan="2">(74--60)分</td>
+                                    <td colspan="2">60分以下</td>
+                                </tr>
+                                <tr>
+                                    <td>人</td>
+                                    <td>%</td>
+                                    <td>人</td>
+                                    <td>%</td>
+                                    <td>人</td>
+                                    <td>%</td>
+                                    <td>人</td>
+                                    <td>%</td>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>热夫木切</td>
+                                    <td>服装与设计艺术学院</td>
+                                    <td>&nbsp;</td>
+                                    <td>87.54</td>
+                                    <td>242</td>
+                                    <td>265</td>
+                                    <td>91.32%</td>
+                                    <td>88.1%</td>
+                                    <td>3.1%</td>
+                                    <td>177</td>
+                                    <td>73.14%</td>
+                                    <td>28</td>
+                                    <td>11.57%</td>
+                                    <td>24</td>
+                                    <td>9.92%</td>
+                                    <td>11</td>
+                                    <td>4.55%</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>罗瑶</td>
+                                    <td>服装与设计艺术学院</td>
+                                    <td>&nbsp;</td>
+                                    <td>87.54</td>
+                                    <td>242</td>
+                                    <td>265</td>
+                                    <td>91.32%</td>
+                                    <td>88.1%</td>
+                                    <td>3.1%</td>
+                                    <td>177</td>
+                                    <td>73.14%</td>
+                                    <td>28</td>
+                                    <td>11.57%</td>
+                                    <td>24</td>
+                                    <td>9.92%</td>
+                                    <td>11</td>
+                                    <td>4.55%</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>杨凌霄</td>
+                                    <td>服装与设计艺术学院</td>
+                                    <td>&nbsp;</td>
+                                    <td>87.54</td>
+                                    <td>242</td>
+                                    <td>265</td>
+                                    <td>91.32%</td>
+                                    <td>88.1%</td>
+                                    <td>3.1%</td>
+                                    <td>177</td>
+                                    <td>73.14%</td>
+                                    <td>28</td>
+                                    <td>11.57%</td>
+                                    <td>24</td>
+                                    <td>9.92%</td>
+                                    <td>11</td>
+                                    <td>4.55%</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>齐栋</td>
+                                    <td>服装与设计艺术学院</td>
+                                    <td>&nbsp;</td>
+                                    <td>87.54</td>
+                                    <td>242</td>
+                                    <td>265</td>
+                                    <td>91.32%</td>
+                                    <td>88.1%</td>
+                                    <td>3.1%</td>
+                                    <td>177</td>
+                                    <td>73.14%</td>
+                                    <td>28</td>
+                                    <td>11.57%</td>
+                                    <td>24</td>
+                                    <td>9.92%</td>
+                                    <td>11</td>
+                                    <td>4.55%</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>邓超</td>
+                                    <td>服装与设计艺术学院</td>
+                                    <td>&nbsp;</td>
+                                    <td>87.54</td>
+                                    <td>242</td>
+                                    <td>265</td>
+                                    <td>91.32%</td>
+                                    <td>88.1%</td>
+                                    <td>3.1%</td>
+                                    <td>177</td>
+                                    <td>73.14%</td>
+                                    <td>28</td>
+                                    <td>11.57%</td>
+                                    <td>24</td>
+                                    <td>9.92%</td>
+                                    <td>11</td>
+                                    <td>4.55%</td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>谢威海</td>
+                                    <td>服装与设计艺术学院</td>
+                                    <td>&nbsp;</td>
+                                    <td>87.54</td>
+                                    <td>242</td>
+                                    <td>265</td>
+                                    <td>91.32%</td>
+                                    <td>88.1%</td>
+                                    <td>3.1%</td>
+                                    <td>177</td>
+                                    <td>73.14%</td>
+                                    <td>28</td>
+                                    <td>11.57%</td>
+                                    <td>24</td>
+                                    <td>9.92%</td>
+                                    <td>11</td>
+                                    <td>4.55%</td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>郭怡燃</td>
+                                    <td>服装与设计艺术学院</td>
+                                    <td>&nbsp;</td>
+                                    <td>87.54</td>
+                                    <td>242</td>
+                                    <td>265</td>
+                                    <td>91.32%</td>
+                                    <td>88.1%</td>
+                                    <td>3.1%</td>
+                                    <td>177</td>
+                                    <td>73.14%</td>
+                                    <td>28</td>
+                                    <td>11.57%</td>
+                                    <td>24</td>
+                                    <td>9.92%</td>
+                                    <td>11</td>
+                                    <td>4.55%</td>
+                                </tr>
+                                <tr>
+                                    <td>8</td>
+                                    <td>李婉萍</td>
+                                    <td>服装与设计艺术学院</td>
+                                    <td>&nbsp;</td>
+                                    <td>87.54</td>
+                                    <td>242</td>
+                                    <td>265</td>
+                                    <td>91.32%</td>
+                                    <td>88.1%</td>
+                                    <td>3.1%</td>
+                                    <td>177</td>
+                                    <td>73.14%</td>
+                                    <td>28</td>
+                                    <td>11.57%</td>
+                                    <td>24</td>
+                                    <td>9.92%</td>
+                                    <td>11</td>
+                                    <td>4.55%</td>
+                                </tr>
+                            </tbody>
+
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(".btn-export-Excel").click(function(){
+        var file_name = $(".paper-select option:selected").text();
+        var academy_name = $(".academy-select").val();
+        if(academy_name !== "#")
+        {
+            file_name = file_name + '-' + academy_name;
+        }
+        console.log(file_name);
+
+
+        $(".statistic-data-table").table2excel({
+            exclude: ".noExl",  //有class = “noExl” 的行不被导出；
+            name: "Excel Document Name",
+            filename: file_name,
+            exclude_img: true,
+            exclude_links: true,
+            exclude_inputs: true
+        });
+
+    });
+    $(".btn-print").click(function(){
+        window.print();
+    });
+
+
+
+    //老师登陆判断
+    //////////////////////////////////////////////////////////////////////////////
+    function teacherIfLog() {
+        $.ajax({
+            url: "php/向teacher_log_valid.php",
+            type:"GET",
+            success : function(response) {
+                var data = JSON.parse(response);
+                if(data.Status === 'failed' || data.StatusCode === 0){
+                    location.href = 'php/oauth_log.php';
+                }
+                else if(data.Status === "success" || data.StatusCode === 1)
+                {
+                    var t_ybid = data.Ret_Data.t_ybid;
+                    var t_name = data.Ret_Data.t_name;
+                      // todo --ifLog-- 登陆后执行代码
+                }
+            },
+            error : function(result) {
+                console.log("加载错误");
+
+            }
+        });
+    }
+//    1.向teacher_log_valid.php发送无参数get请求，判断老师是否登陆，没有登陆则将本页重定向跳转至oauth_log.php。
+//    2.向statistic_data.php发出get请求，获取到返回结果并呈现，实现统计数据呈现功能。
+//    3.向statistic_data.php发出带相应参数的get请求实现搜索功能，实现统计数据呈现功能。
+</script>
 
 </body>
 </html>

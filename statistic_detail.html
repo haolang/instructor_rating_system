@@ -1,7 +1,296 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Shinelon
- * Date: 2018/1/23
- * Time: 14:19
- */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>详情页面</title>
+    <!-- 新 Bootstrap4 核心 CSS 文件 -->
+    <link rel="stylesheet" href="jslib/bootstrap-4.0.0-dist/css/bootstrap.min.css">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="jslib/jquery/jquery-3.2.1.min.js"></script>
+    <script src="jslib/jquery/jquery.table2excel.js"></script>
+
+    <!-- popper.min.js 用于弹窗、提示、下拉菜单 -->
+    <script src="jslib/bootstrap-4.0.0-dist/js/popper.min.js"></script>
+
+    <script src="jslib/bootstrap-4.0.0-dist/js/bootstrap.min.js"></script>
+    <style>
+
+        /*大标题*/
+        .top-container
+        {
+            margin:20px 0;
+            padding: 10px;
+            background-color: #e2e3e5;
+            border-radius: .25rem;
+        }
+        /*顶部搜索按钮部分*/
+        .top-control
+        {
+            margin-bottom: 10px;
+        }
+        /*登陆者相关信息*/
+        .login-info
+        {
+            background-color: #dddddd;
+            padding: 15px;
+            bottom: 0;
+            /*position: absolute;*/
+            border-radius: .25rem;
+        }
+        .user-info
+        {
+            height: 50px;
+        }
+        .user-info-item
+        {
+            float: left;
+            padding-right: 30px;
+        }
+        .user-info-item strong
+        {
+            padding-right: 10px;
+        }
+
+        /*表格***************************************************************************************************/
+        .statistic-data-table
+        {
+            width: 100%;
+            font-size: 13px;
+            text-align: center;
+        }
+        .statistic-data-table thead
+        {
+            background-color: #d5d5d5;
+
+        }
+        /***************************************************************************************************表格*/
+
+
+
+        @media print {
+            .no-print{
+                display:none;   /*隐藏不打印的部分*/
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row clearfix no-print">
+        <div class="col-md-12 column">
+
+            <div class="top-container">
+                <div class="row">
+                    <div class="col-md-10">
+
+                        <div class="dropdown">
+                            <button style="font-size: 30px" type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                                详情页面
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="admin.html">管理页面</a>
+                                <a class="dropdown-item" href="statistic_detail.html">详情页面</a>
+                                <a class="dropdown-item" href="statistic.html">总览页面</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+
+                        <div class="login-info">
+                            郎浩（123123）
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 column">
+
+            <div class="row top-control no-print">
+                <div class="col-md-3 column">
+                    <button type="button" class="btn btn-sm btn-export-Excel">导出Excel</button>
+                    <button type="button" class="btn btn-sm btn-print">打印</button>
+                </div>
+            </div>
+
+            <div class="detail-title text-center">
+                <h1>fudkasdfasdf</h1>
+            </div>
+            <div class="user-info">
+                <div class="user-info-item"><p><strong>姓名:</strong><span class="t-name">郎浩</span></p></div>
+                <div class="user-info-item"><p><strong>学院:</strong><span>计算机科学学院</span></p></div>
+                <div class="user-info-item"><p><strong>分数:</strong><span>98.45</span></p></div>
+                <div class="user-info-item"><p><strong>优良率:</strong><span>88.56%阿斯扥啊</span></p></div>
+                <div class="user-info-item"><p><strong>差率:</strong><span>3.123%</span></p></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 statistic-data-table-div">
+                    <div class="table-responsive">
+                        <table class="statistic-data-table table table-bordered">
+                            <thead>
+                                <tr>
+                                    <td rowspan="2">序号</td>
+                                    <td rowspan="2">题目</td>
+                                    <td rowspan="2">总评数</td>
+                                    <td colspan="2">选择A</td>
+                                    <td colspan="2">选择B</td>
+                                    <td colspan="2">选择C</td>
+                                    <td colspan="2">选择D</td>
+                                    <td colspan="2">选择E</td>
+                                </tr>
+                                <tr>
+                                    <td>数量</td>
+                                    <td>%</td>
+                                    <td>数量</td>
+                                    <td>%</td>
+                                    <td>数量</td>
+                                    <td>%</td>
+                                    <td>数量</td>
+                                    <td>%</td>
+                                    <td>数量</td>
+                                    <td>%</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                <td>1</td>
+                                <td>辅导员的理论水平</td>
+                                <td>241</td>
+                                <td>181</td>
+                                <td>75.10</td>
+                                <td>37</td>
+                                <td>15.35</td>
+                                <td>18</td>
+                                <td>7.47</td>
+                                <td>2</td>
+                                <td>0.83</td>
+                                <td>3</td>
+                                <td>1.24</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>辅导员的道德品质</td>
+                                    <td>241</td>
+                                    <td>181</td>
+                                    <td>75.10</td>
+                                    <td>37</td>
+                                    <td>15.35</td>
+                                    <td>18</td>
+                                    <td>7.47</td>
+                                    <td>2</td>
+                                    <td>0.83</td>
+                                    <td>3</td>
+                                    <td>1.24</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>你从辅导员工作中感受到的关爱度</td>
+                                    <td>241</td>
+                                    <td>181</td>
+                                    <td>75.10</td>
+                                    <td>37</td>
+                                    <td>15.35</td>
+                                    <td>18</td>
+                                    <td>7.47</td>
+                                    <td>2</td>
+                                    <td>0.83</td>
+                                    <td>3</td>
+                                    <td>1.24</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>辅导员的工作能力</td>
+                                    <td>241</td>
+                                    <td>181</td>
+                                    <td>75.10</td>
+                                    <td>37</td>
+                                    <td>15.35</td>
+                                    <td>18</td>
+                                    <td>7.47</td>
+                                    <td>2</td>
+                                    <td>0.83</td>
+                                    <td>3</td>
+                                    <td>1.24</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>辅导员的工作作风</td>
+                                    <td>241</td>
+                                    <td>181</td>
+                                    <td>75.10</td>
+                                    <td>37</td>
+                                    <td>15.35</td>
+                                    <td>18</td>
+                                    <td>7.47</td>
+                                    <td>2</td>
+                                    <td>0.83</td>
+                                    <td>3</td>
+                                    <td>1.24</td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>辅导员是否经常深入教室、学生寝室</td>
+                                    <td>241</td>
+                                    <td>181</td>
+                                    <td>75.10</td>
+                                    <td>37</td>
+                                    <td>15.35</td>
+                                    <td>18</td>
+                                    <td>7.47</td>
+                                    <td>2</td>
+                                    <td>0.83</td>
+                                    <td>3</td>
+                                    <td>1.24</td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>辅导员是否经常与同学谈心</td>
+                                    <td>241</td>
+                                    <td>181</td>
+                                    <td>75.10</td>
+                                    <td>37</td>
+                                    <td>15.35</td>
+                                    <td>18</td>
+                                    <td>7.47</td>
+                                    <td>2</td>
+                                    <td>0.83</td>
+                                    <td>3</td>
+                                    <td>1.24</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(".btn-export-Excel").click(function(){
+        var file_name = $(".detail-title h1").text() + '_' + $(".t-name ").text();
+
+        console.log(file_name);
+
+
+        $(".statistic-data-table").table2excel({
+            exclude: ".noExl",  //有class = “noExl” 的行不被导出；
+            name: "Excel Document Name",
+            filename: file_name,
+            exclude_img: true,
+            exclude_links: true,
+            exclude_inputs: true
+        });
+
+    });
+    $(".btn-print").click(function(){
+        window.print();
+    });
+</script>
+</body>
+</html>
