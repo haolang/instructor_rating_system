@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Title</title>
+    <title>管理页面</title>
     <!-- 新 Bootstrap4 核心 CSS 文件 -->
     <link rel="stylesheet" href="jslib/bootstrap-4.0.0-dist/css/bootstrap.min.css">
 
@@ -11,7 +11,7 @@
     <script src="jslib/jquery/jquery-3.2.1.min.js"></script>
 
     <!-- popper.min.js 用于弹窗、提示、下拉菜单 -->
-<!--    <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>-->
+    <script src="jslib/bootstrap-4.0.0-dist/js/popper.min.js"></script>
 
     <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
     <script src="jslib/bootstrap-4.0.0-dist/js/bootstrap.min.js"></script>
@@ -62,7 +62,19 @@
         /*大标题*/
         .top-container
         {
-            margin-top:20px;
+            margin:20px 0;
+            padding: 10px;
+            background-color: #e2e3e5;
+            border-radius: .25rem;
+        }
+        /*登陆者相关信息*/
+        .login-info
+        {
+            background-color: #dddddd;
+            padding: 15px;
+            bottom: 0;
+            /*position: absolute;*/
+            border-radius: .25rem;
         }
 
         /*左边部分*******************************************************************************************/
@@ -269,14 +281,31 @@
 <body>
 
 
-
-
-
 <div class="container-fluid">
     <div class="row clearfix">
         <div class="col-md-12 column">
-            <div class="top-container alert alert-secondary">
-                <h1 style="text-align: center">模板管理</h1>
+            <div class="top-container">
+                <div class="row">
+                    <div class="col-md-10">
+
+                        <div class="dropdown">
+                            <button style="font-size: 30px" type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                                管理页面
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="admin.html">管理页面</a>
+                                <a class="dropdown-item" href="statistic_detail.html">详情页面</a>
+                                <a class="dropdown-item" href="statistic.html">总览页面</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+
+                        <div class="login-info">
+                            郎浩（123123）
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-md-2 column">
