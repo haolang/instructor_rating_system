@@ -13,7 +13,7 @@ $sql = 'select * from tbl_quepublish';
 
 $ret_obj = new classes\return_data();
 
-if(!($result = $db_con->query($sql))){
+if($result = $db_con->query($sql)){
     $row = $result->fetch_all();
     if($row != null){
         $ret_array = array();

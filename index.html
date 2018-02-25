@@ -95,7 +95,7 @@
             float: left;
         }
         .home-login{
-            width:198px;
+            width:250px;
             height: 60px;
             float: right;
         }
@@ -183,6 +183,22 @@
     </style>
 </head>
 <body>
+<div style="
+    width: 100%;
+    position: fixed;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.55);
+" id="loading-progress">
+    <progress style="
+    position: relative;
+    display:  block;
+    margin:  auto;
+    margin-top: 20%;
+"></progress>
+    <div style="text-align: center;">
+        加载中...
+    </div>
+</div>
 
 <div id="body-container">
     <div class="hometop show">
@@ -205,7 +221,7 @@
     <div class="clear"></div>
 
     <div class="home-title show">
-        <h2>四川师范大学辅导员工作学生调查问卷</h2>
+        <h2 id="paper_title">四川师范大学辅导员工作学生调查问卷</h2>
     </div>
 
     <div id="form-examination">
@@ -251,6 +267,7 @@
             success : function(response) {
                 var data = JSON.parse(response);
 //                console.log(data);
+                $('#paper_title').html(data.Description);
                 var que_list = data.Ret_Data;
                 var content = '';
                 for(var i = 0;i < que_list.length; i++)
@@ -265,10 +282,11 @@
                         var select = que.selectors[j];
                         content += '<li class="q-answer"><label><input type="radio" name="qid_'+ que.q_id + '" value="'+ select.percent +'" class="q-select">'+select.mark+'、'+select.content+'</label></li>\n';
                     }
-                    content +='            </ul>';
+                    content +='</ul>';
                 }
 
                 $("#" + questions_id).html(content);
+                $("#loading-progress").remove();
 //                console.log(content);
             },
             error : function() {
@@ -332,21 +350,29 @@
                     console.log(response);
                 },
                 error : function(result) {
-                    console.log(result);   //----------------------------------------------------------------------------------------------- delete
+                    console.log(result);
                     alert("上传失败，请稍后重试！");
                 }
             });
         }
-
     };
     //基本HTML页面加载完成后
     $(document).ready(function(){
-        //动态加载问卷
-        Examination.loadExamination(Examination.questions_id);
-        //将上传函数绑定至上传函数
-        $("#upload-answer").click(function () {
-            Examination.uploadAnswer();
-        });
+        $.get('php/stu_log_valid.php',function (data) {
+            console.log(data);
+            if(data.Status == 'failed'){
+                window.location.href = 'php/yb_log_deal.php';
+            }else{
+                $('.user-name').html(data.Ret_Data.s_name+'('+data.Ret_Data.s_stuid+')');
+
+                //动态加载问卷
+                Examination.loadExamination(Examination.questions_id);
+                //将上传函数绑定至上传函数
+                $("#upload-answer").click(function () {
+                    Examination.uploadAnswer();
+                });
+            }
+        },'json');
     });
 </script>
 </html>

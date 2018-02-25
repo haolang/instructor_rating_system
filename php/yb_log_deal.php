@@ -58,7 +58,7 @@ if($userInfo_array['status'] == 'success'){
         echo 'jj';
 
     }else{
-        //学生
+        /*//学生
         //根据学号从教务处接口获取学籍信息
         $url = 'http://202.115.195.224/api/get_stuinfo.php?studentid='.$info_array['yb_studentid'].'&valid_c=test_api_pass';
         $ch = curl_init();
@@ -104,7 +104,15 @@ if($userInfo_array['status'] == 'success'){
             header("location: ".$_G_APP_ROOT."index.html");
         }else{
             die('教务处接口请求处理失败');
-        }
+        }*/
+        //test todo
+        session_start();
+        $_SESSION['stu_name']   = '况俊豪';//$api_info_array['xm'];
+        $_SESSION['stu_no']     = '2015110117';//$info_array['yb_studentid'];
+        $_SESSION['stu_ybid']   = '7006795';//$info_array['yb_userid'];
+        $_SESSION['access_token'] = $token;
+        //处理完成，重定向至首页
+        header("location: ".$_G_APP_ROOT."index.html");
     }
 }else{
     die('易班接口请求处理失败');

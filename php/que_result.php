@@ -23,17 +23,20 @@ foreach ($_GET as $key => $value) {
     if($answer_num!=null)
     {
         $answer_total=$answer_total.$answer_num.";";
-
     }
 }
+session_start();
 $answer_total=substr($answer_total,0,-1);//去除末尾最后一个：
-if(empty($_SESSION['s_ybid'])||empty($_SESSION['paper_id']))
+if (isset($_SESSION["stu_name"]) && !empty($_SESSION["stu_name"]) &&
+    isset($_SESSION["stu_no"]) && !empty($_SESSION["stu_no"]) &&
+    isset($_SESSION["stu_ybid"])&&!empty($_SESSION["stu_ybid"])
+)
 {
     $retResult->Status= "failed";
     $retResult->StatusCode = 0;
 
     $retResult->Description="";
-    $retResult->Error="session[s_ybid] or session[paper_id] is empty";
+    $retResult->Error="未登录";
     $retResult->Ret_Data="";
     $dbcon->close();
     exit(json_encode($retResult));//失败返回相关信
@@ -68,8 +71,6 @@ if(mysqli_query($dbcon ,$sql))
         exit(json_encode($retResult));//失败返回相关信息
 
     }
-
-
 }
 else{
     $retResult->Status= "failed";
@@ -79,5 +80,4 @@ else{
     $retResult->Ret_Data="";
     $dbcon->close();
     exit(json_encode($retResult));//失败返回相关信息
-
 }
