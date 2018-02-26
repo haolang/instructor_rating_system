@@ -756,7 +756,7 @@
 
                             html_list += '<a href="#" style="' + template_list_item_style + '" class="list-group-item list-group-item-action template-list-item" template_id="' + data.Ret_Data[i].template_id + '">\n' +
                                 '\n' +
-                                '                        <p class="text-left template-title">' + data.Ret_Data[i].template_title + '</p>\n' +
+                                '                        <p class="text-left template-title">' + data.Ret_Data[i].title + '</p>\n' +
                                 '                        <p class="text-right small">' + data.Ret_Data[i].c_time + '</p>\n' +
                                 '                        <div class="template-list-buttons-item">';
 
@@ -1310,10 +1310,10 @@
         $.ajax({
             url: "php/admin_log_valid.php",
             type:"GET",
-            success : function(response) {
-                var data = JSON.parse(response);
+            dataType:"json",
+            success : function(data) {
                 if(data.Status === 'failed' || data.StatusCode === 0){
-                    location.href = 'php/oauth_log.php';
+                    location.href = 'admin_log.html';
                 }
                 else if(data.Status === "success" || data.StatusCode === 1)
                 {
@@ -1327,9 +1327,7 @@
         });
     }
 
-
-
-
+    ifLog();
 
 </script>
 </html>

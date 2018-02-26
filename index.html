@@ -280,7 +280,7 @@
                     for(var j = 0;j < que.selectors.length; j++)
                     {
                         var select = que.selectors[j];
-                        content += '<li class="q-answer"><label><input type="radio" name="qid_'+ que.q_id + '" value="'+ select.percent +'" class="q-select">'+select.mark+'、'+select.content+'</label></li>\n';
+                        content += '<li class="q-answer"><label><input type="radio" name="'+ que.q_id + '" value="'+ select.percent +'" class="q-select">'+select.mark+'、'+select.content+'</label></li>\n';
                     }
                     content +='</ul>';
                 }

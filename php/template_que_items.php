@@ -83,18 +83,18 @@ $queSelector=array(
 include_once'json_admin.php';
 $queResult = new queResponse();//一个返回对象
 $new="";
-if (!isset($_SESSION["admin_id"]) || !empty($_SESSION["admin_id"])||
-    !isset($_SESSION["admin_name"])||!empty($_SESSION["admin_name"])
+/*if (!isset($_SESSION["admin_id"]) || empty($_SESSION["admin_id"])||
+    !isset($_SESSION["admin_name"])||empty($_SESSION["admin_name"])
 )//登陆判断如果没有登陆，是否需要跳转***oauth_log.php
 {
-    $retResult->Status= "failed";
-    $retResult->StatusCode = 0;
-    $retResult->Description="";
-    $retResult->Error="管理员未登录";
-    $retResult->Ret_Data="";
+    $queResult->Status= "failed";
+    $queResult->StatusCode = 0;
+    $queResult->Description="";
+    $queResult->Error="管理员未登录";
+    $queResult->Ret_Data="";
     $dbcon->close();
-    exit(json_encode($retResult));//失败返回相关信息
-}
+    exit(json_encode($queResult));//失败返回相关信息
+}*/
 if(!empty($_GET['template_id']))
 {   $template_id=mysqli_real_escape_string($dbcon,$_GET['template_id']);
     $sql='SELECT * FROM tbl_quetemplate WHERE template_id = "'.$template_id .'"';
@@ -117,24 +117,23 @@ if(!empty($_GET['template_id']))
 
         }
         $sqlone = 'SELECT * FROM tbl_queitems WHERE template_id = "' . $template_id . '"';
-        if ($result = mysqli_query($dbcon, $sqlone)) {
-            while ($row = $result->fetch_assoc())//取一行作为关联数组,遍历所有模板号相同的que_id
+        if ($result1 = mysqli_query($dbcon, $sqlone)) {
+            while ($row1 = $result1->fetch_assoc())//取一行作为关联数组,遍历所有模板号相同的que_id
             {
-                $que_id = $row['que_id'];
+                $que_id = $row1['que_id'];
                 $queOne['q_id'] = $que_id;
-                $queOne['content'] = $row['content'];
-                $queOne['score'] = $row['scores'];
+                $queOne['content'] = $row1['content'];
+                $queOne['score'] = $row1['scores'];
                 array_push($queResult->Ret_Data, $queOne);// 将该题目的内容分数等，即数组q_one添加入数组$queone
                 $sqltwo = 'SELECT * FROM tbl_queselectors WHERE que_id = "' . $que_id . '"';
-                if ($result = mysqli_query($dbcon, $sqltwo)) {
-                    while ($row = $result->fetch_assoc()) {
-                        $queSelector['s_id'] = $row['selector_id'];//题目的选项、标识、百分比
-                        $queSelector['mark'] = $row['selector_mark'];
-                        $queSelector['percent'] = $row['score_percent'];
-                        $queSelector['content'] = $row['content'];
+                if ($result2 = mysqli_query($dbcon, $sqltwo)) {
+                    while ($row2 = $result2->fetch_assoc()) {
+                        $queSelector['s_id'] = $row2['selector_id'];//题目的选项、标识、百分比
+                        $queSelector['mark'] = $row2['selector_mark'];
+                        $queSelector['percent'] = $row2['score_percent'];
+                        $queSelector['content'] = $row2['content'];
                         array_push($queResult->Ret_Data[count($queResult->Ret_Data) - 1]['selectors'], $queSelector);//array_push每一题的选项
                     }
-
                 } else {
                     $queResult->Status = "failed";
                     $queResult->StatusCode = 0;
@@ -143,13 +142,10 @@ if(!empty($_GET['template_id']))
                     $queResult->Ret_Data = "";
                     $dbcon->close();
                     exit(json_encode($queResult));//失败返回相关信息
-
                 }
             }
             $dbcon->close();
             exit(json_encode($queResult));//成功返回
-
-
         } else {
             $queResult->Status = "failed";
             $queResult->StatusCode = 0;
@@ -158,7 +154,6 @@ if(!empty($_GET['template_id']))
             $queResult->Ret_Data = "";
             $dbcon->close();
             exit(json_encode($queResult));//失败返回相关信息
-
         }
     }
     else{
@@ -179,5 +174,4 @@ else{
     $queResult->Ret_Data = "_GET[template_id参数为空";
     $dbcon->close();
     exit(json_encode($queResult));//失败返回相关信息
-
 }
