@@ -112,9 +112,6 @@
 
 
         /**************************************************************模板列表div*/
-
-
-
         .paper
         {
             margin-top: 5px;
@@ -279,8 +276,6 @@
     </style>
 </head>
 <body>
-
-
 <div class="container-fluid">
     <div class="row clearfix">
         <div class="col-md-12 column">
@@ -300,7 +295,6 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-
                         <div class="login-info">
                             郎浩（123123）
                         </div>
@@ -309,9 +303,7 @@
             </div>
         </div>
         <div class="col-md-2 column">
-
             <div class="left-container">
-
                     <div class="card template">
                         <div class="card-header">
                             <a class="card-link" data-toggle="collapse" href="#collapseOne">
@@ -445,6 +437,37 @@
     </div>
 </div>
 
+<!-- 模态框（Modal）新建问卷 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">
+                    新建问卷
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="new-paper-title"
+                               placeholder="请输入问卷名称">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button type="button" class="btn btn-primary" id="new-paper-btn">
+                    新建
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
 <div class="alert-modal">
     <div class="alert-paper-content">
         <div class="alert-paper">
@@ -487,23 +510,14 @@
 
         html_paper_id : "paper-questions",
 
-
-        bindClick:function () {
-            var that = this;
-            //模板设置为问卷按钮
-            $(document).on("click",".set-paper-new",function() {
-                console.log("设为问卷");
-                var Paper_title = $(this).parent().siblings(".template-title").text();
-                var Template_id = $(this).parent().parent().attr("template_id");
-    //                    console.log("Paper_title = " + Paper_title);
-    //                    console.log("Template_id = " + Template_id);
-
-                $.ajax({
+        //新建问卷
+        new_paper_request:function (Template_id) {
+            $.ajax({
                     url: "php/paper_new.php",
                     type:"POST",
                     data:{
-                        "Paper_title" : Paper_title,
-                        "Template_id" : Template_id
+                        "paper_title" : $('#new-paper-title').val(),
+                        "template_id" : Template_id
                     },
                     success : function(response) {
                         var data = JSON.parse(response);
@@ -522,7 +536,16 @@
                         console.log("数据传输错误!");
                     }
                 });
-
+        },
+        bindClick:function () {
+            var that = this;
+            //模板设置为问卷按钮
+            $(document).on("click",".set-paper-new",function() {
+                var Paper_title = $(this).parent().siblings(".template-title").text();
+                var Template_id = $(this).parent().parent().attr("template_id");
+                $('#myModalLabel').html('由“'+Paper_title+'”新建问卷');
+                $('#new-paper-btn').attr('onclick','TempListEvent.new_paper_request('+Template_id+')');
+                $('#myModal').modal('show');
             });
             //删除模板按钮
             $(document).on("click",".template-delete",function() {
@@ -589,9 +612,6 @@
                 }
 
             });
-
-
-
 
             //问卷启用按钮
             $(document).on("click",".paper-enable",function() {
@@ -743,7 +763,7 @@
 
                             var btn_set_paper = true;
                             var template_list_item_style = "";
-                            for(var j = 0; j < array_paper_template_id.length;j++)
+                            /*for(var j = 0; j < array_paper_template_id.length;j++)
                             {
                                 if(parseInt(array_paper_template_id[j]) === parseInt(data.Ret_Data[i].template_id))
                                 {
@@ -751,24 +771,17 @@
                                     template_list_item_style = "opacity:0.5";
                                     break;
                                 }
-                            }
+                            }*/
 
 
                             html_list += '<a href="#" style="' + template_list_item_style + '" class="list-group-item list-group-item-action template-list-item" template_id="' + data.Ret_Data[i].template_id + '">\n' +
                                 '\n' +
                                 '                        <p class="text-left template-title">' + data.Ret_Data[i].title + '</p>\n' +
                                 '                        <p class="text-right small">' + data.Ret_Data[i].c_time + '</p>\n' +
-                                '                        <div class="template-list-buttons-item">';
-
-                            if(btn_set_paper)
-                            {
-                                html_list += '<button class="btn btn-success btn-sm set-paper-new">设为问卷</button>';
-                            }
-
-
-                            html_list += '<button class="btn btn-warning btn-sm template-delete">删除</button>' +
-                                '</div>\n' +
-                                '                    </a>';
+                                '                        <div class="template-list-buttons-item">' +
+                                '<button class="btn btn-success btn-sm set-paper-new">设为问卷</button>' +
+                                '<button class="btn btn-warning btn-sm template-delete">删除</button>' +
+                                '</div>\n</a>';
                         }
 
                         $(".left-container .template-list").append(html_list);
@@ -1063,6 +1076,8 @@
             que.append(add_select_html);
 //        console.log(select_count);
         },
+
+
         //删除问题下的选项
         deleteSelect:function(control) {
 
@@ -1190,7 +1205,9 @@
             $.ajax({
                 url: "php/template_new.php",
                 type:"POST",
-                data:json_str,
+                data:{
+                    new_examination: json_str
+                },
                 success : function(response) {
                     var data = JSON.parse(response);
                     if(data.Status === 'success' || data.StatusCode === 1){
@@ -1262,7 +1279,7 @@
                     var mark = $(this).find(".mark").text().substr(0,1);
                     var s_id = mark.charCodeAt() - 64;
                     var content = trim($(this).find(".content").val());
-                    var percent = $(this).find(".content").val();
+                    var percent = $(this).find(".percent").val();
 //                    console.log("mark = " + mark + "s_id = " + s_id);
                     var selectors = {
                         "s_id":s_id,
@@ -1321,8 +1338,7 @@
                 }
             },
             error : function(result) {
-                console.log("加载错误");
-
+                console.log("请求服务器错误");
             }
         });
     }
