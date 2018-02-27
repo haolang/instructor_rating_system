@@ -27,7 +27,6 @@ if (!(isset($_SESSION["admin_id"]) && !empty($_SESSION["admin_id"]) &&
     $retResult->Description = "";
     $retResult->Error = "管理员未登录";
     $retResult->Ret_Data = "";
-    $dbcon->close();
     exit(json_encode($retResult));//失败返回相关信息
 }
 
