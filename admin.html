@@ -282,7 +282,7 @@
                     </div>
                     <div class="col-md-2">
                         <div class="login-info">
-                            郎浩（123123）
+
                         </div>
                     </div>
                 </div>
@@ -1274,6 +1274,7 @@
                 }
                 else if (data.Status === "success" || data.StatusCode === 1) {
                     //TempListEvent.loadTempList();  //异步加载左侧模板列表 todo --ifLog-- 完善登陆后取消注释
+                    $('.login-info').html('<button class="btn btn-primary btn-sm" onclick="logout_request();">('+data.Ret_Data.admin_name+')注销&times;</button>');
                 }
             },
             error: function (result) {
@@ -1282,6 +1283,11 @@
         });
     }
 
+    function logout_request() {
+        $.get('php/admin_logout.php',function (data) {
+            window.location.reload();
+        });
+    }
     ifLog();
 
 </script>
