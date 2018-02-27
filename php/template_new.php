@@ -43,7 +43,7 @@ if (isset($_POST['new_examination']) && !empty($_POST['new_examination'])) {
     $dbcon->query($sql_set_title);
     $template_id = $dbcon->insert_id;
     foreach ($temp_assoc['Ret_Data'] as $fec_idx1 => $fec_val1) {
-        $temp_que_content = $fec_val1['content'];
+        $temp_que_content = $dbcon->real_escape_string($fec_val1['content']);
         $temp_que_score = intval($fec_val1['score']);
         $sql_set_item = 'insert into tbl_queitems (template_id, content, scores) values 
                         ("'.$template_id.'","'.$temp_que_content.'","'.$temp_que_score.'")';
@@ -52,7 +52,7 @@ if (isset($_POST['new_examination']) && !empty($_POST['new_examination'])) {
         $temp_que_selectors = $fec_val1['selectors'];
         foreach ($temp_que_selectors as $fec_idx2 => $fec_val2){
             $sql_set_selector = 'insert into tbl_queselectors (que_id, selector_mark, content, score_percent) VALUES 
-                                ("'.$que_item_id.'","'.$fec_val2['mark'].'","'.$fec_val2['content'].'","'.$fec_val2['percent'].'")';
+                                ("'.$que_item_id.'","'.$fec_val2['mark'].'","'.$dbcon->real_escape_string($fec_val2['content']).'","'.$fec_val2['percent'].'")';
             $dbcon->query($sql_set_selector);
         }
     }
