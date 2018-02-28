@@ -17,22 +17,20 @@
     <script src="jslib/bootstrap-4.0.0-dist/js/bootstrap.min.js"></script>
     <style>
         /*大标题*/
-        .top-container
-        {
-            margin:20px 0;
+        .top-container {
+            margin: 20px 0;
             padding: 10px;
             background-color: #e2e3e5;
             border-radius: .25rem;
         }
 
         /*顶部搜索按钮部分*/
-        .top-control
-        {
+        .top-control {
             margin-bottom: 10px;
         }
+
         /*登陆者相关信息*/
-        .login-info
-        {
+        .login-info {
             background-color: #dddddd;
             padding: 15px;
             bottom: 0;
@@ -53,25 +51,24 @@
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
         }
+
         /*表格***************************************************************************************************/
-        .statistic-data-table
-        {
+        .statistic-data-table {
             width: 100%;
             font-size: 13px;
             text-align: center;
         }
-        .statistic-data-table thead
-        {
+
+        .statistic-data-table thead {
             background-color: #d5d5d5;
 
         }
+
         /***************************************************************************************************表格*/
 
-
-
         @media print {
-            .no-print{
-                display:none;   /*隐藏不打印的部分*/
+            .no-print {
+                display: none; /*隐藏不打印的部分*/
             }
         }
 
@@ -88,7 +85,8 @@
                     <div class="col-md-10">
 
                         <div class="dropdown">
-                            <button style="font-size: 30px" type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                            <button style="font-size: 30px" type="button" class="btn dropdown-toggle"
+                                    data-toggle="dropdown">
                                 总览页面
                             </button>
                             <div class="dropdown-menu">
@@ -101,7 +99,7 @@
                     <div class="col-md-2">
 
                         <div class="login-info">
-                            郎浩（123123）
+
                         </div>
                     </div>
                 </div>
@@ -114,28 +112,23 @@
             <form class="search-data no-print" name="search_data">
 
                 <div class="row top-control">
-                <div class="col-md-3 column">
+                    <div class="col-md-3 column">
 
-                    <div class="input-group paper-select-div ">
-                        <span class="input-group-addon departments">问卷：</span>
-                        <select class="paper-select" name="que_id">
-                            <option value="**paper_id**">as当阿斯扥啊就</option>
-                            <option value="**paper_id**">森工扥扥杠灯风骚</option>
-                            <option value="**paper_id**">森工扥扥杠灯风骚</option>
-                            <option value="**paper_id**">地理与资源科学学院</option>
-                            <option value="**paper_id**">森工扥扥杠灯风骚</option>
-                        </select>
+                        <div class="input-group paper-select-div ">
+                            <span class="input-group-addon departments">问卷：</span>
+                            <select class="paper-select" name="que_id" id="paper-select">
+
+                            </select>
+                        </div>
+
                     </div>
-
-                </div>
-                <div class="col-md-3 column">
+                    <div class="col-md-3 column">
 
 
-                    <div class="input-group">
-                        <span class="input-group-addon">院系：</span>
-                        <select class="academy-select" name="academy">
-
-                                <option value="#" selected>--学院--</option>
+                        <div class="input-group">
+                            <span class="input-group-addon">院系：</span>
+                            <select class="academy-select" name="academy" id="dep-select">
+                                <option value="0" selected>--学院--</option>
                                 <option value="文学院">文学院</option>
                                 <option value="马克思主义学院">马克思主义学院</option>
                                 <option value="外国语学院">外国语学院</option>
@@ -169,23 +162,23 @@
                                 <option value="应用技术学院">应用技术学院</option>
 
                             </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3 column">
+                        <div class="input-group">
+                            <span class="input-group-addon instructor-name">姓名：</span>
+                            <input type="text" id="name-keyword" />
+                        </div>
+                    </div>
+                    <div class="col-md-3 column">
+
+                        <button type="button" class="btn btn-sm" id="keyword-search">查询</button>
+                        <button type="button" class="btn btn-sm">重置</button>
+                        <button type="button" class="btn btn-sm btn-export-Excel">导出Excel</button>
+                        <button type="button" class="btn btn-sm btn-print">打印</button>
+
                     </div>
                 </div>
-                <div class="col-md-3 column">
-                    <div class="input-group">
-                        <span class="input-group-addon instructor-name">姓名：</span>
-                        <input type="text">
-                    </div>
-                </div>
-                <div class="col-md-3 column">
-
-                    <button type="button" class="btn btn-sm">查询</button>
-                    <button type="button" class="btn btn-sm">重置</button>
-                    <button type="button" class="btn btn-sm btn-export-Excel">导出Excel</button>
-                    <button type="button" class="btn btn-sm btn-print">打印</button>
-
-                </div>
-            </div>
 
             </form>
 
@@ -195,199 +188,38 @@
 
                         <table class="statistic-data-table table table-bordered">
                             <thead>
-                                <tr>
-                                    <td rowspan="2">序号</td>
-                                    <td rowspan="2">辅导员姓名</td>
-                                    <td rowspan="2">院系</td>
-                                    <td rowspan="2">院评价</td>
-                                    <td rowspan="2">平均分</td>
-                                    <td rowspan="2">考评参与人数</td>
-                                    <td rowspan="2">在校学生人数</td>
-                                    <td rowspan="2">评价学生比例</td>
-                                    <td rowspan="2">优良率</td>
-                                    <td rowspan="2">差率</td>
-                                    <td colspan="2">(95--85)分</td>
-                                    <td colspan="2">(84--75)分</td>
-                                    <td colspan="2">(74--60)分</td>
-                                    <td colspan="2">60分以下</td>
-                                </tr>
-                                <tr>
-                                    <td>人</td>
-                                    <td>%</td>
-                                    <td>人</td>
-                                    <td>%</td>
-                                    <td>人</td>
-                                    <td>%</td>
-                                    <td>人</td>
-                                    <td>%</td>
+                            <tr>
+                                <td rowspan="2">序号</td>
+                                <td rowspan="2">辅导员姓名</td>
+                                <td rowspan="2">院系</td>
+                                <td rowspan="2">院评价</td>
+                                <td rowspan="2">平均分</td>
+                                <td rowspan="2">考评参与人数</td>
+                                <td rowspan="2">在校学生人数</td>
+                                <td rowspan="2">评价学生比例</td>
+                                <td rowspan="2">优良率</td>
+                                <td rowspan="2">差率</td>
+                                <td colspan="2">(95--85)分</td>
+                                <td colspan="2">(84--75)分</td>
+                                <td colspan="2">(74--60)分</td>
+                                <td colspan="2">60分以下</td>
+                            </tr>
+                            <tr>
+                                <td>人</td>
+                                <td>%</td>
+                                <td>人</td>
+                                <td>%</td>
+                                <td>人</td>
+                                <td>%</td>
+                                <td>人</td>
+                                <td>%</td>
 
-                                </tr>
+                            </tr>
                             </thead>
 
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>热夫木切</td>
-                                    <td>服装与设计艺术学院</td>
-                                    <td>&nbsp;</td>
-                                    <td>87.54</td>
-                                    <td>242</td>
-                                    <td>265</td>
-                                    <td>91.32%</td>
-                                    <td>88.1%</td>
-                                    <td>3.1%</td>
-                                    <td>177</td>
-                                    <td>73.14%</td>
-                                    <td>28</td>
-                                    <td>11.57%</td>
-                                    <td>24</td>
-                                    <td>9.92%</td>
-                                    <td>11</td>
-                                    <td>4.55%</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>罗瑶</td>
-                                    <td>服装与设计艺术学院</td>
-                                    <td>&nbsp;</td>
-                                    <td>87.54</td>
-                                    <td>242</td>
-                                    <td>265</td>
-                                    <td>91.32%</td>
-                                    <td>88.1%</td>
-                                    <td>3.1%</td>
-                                    <td>177</td>
-                                    <td>73.14%</td>
-                                    <td>28</td>
-                                    <td>11.57%</td>
-                                    <td>24</td>
-                                    <td>9.92%</td>
-                                    <td>11</td>
-                                    <td>4.55%</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>杨凌霄</td>
-                                    <td>服装与设计艺术学院</td>
-                                    <td>&nbsp;</td>
-                                    <td>87.54</td>
-                                    <td>242</td>
-                                    <td>265</td>
-                                    <td>91.32%</td>
-                                    <td>88.1%</td>
-                                    <td>3.1%</td>
-                                    <td>177</td>
-                                    <td>73.14%</td>
-                                    <td>28</td>
-                                    <td>11.57%</td>
-                                    <td>24</td>
-                                    <td>9.92%</td>
-                                    <td>11</td>
-                                    <td>4.55%</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>齐栋</td>
-                                    <td>服装与设计艺术学院</td>
-                                    <td>&nbsp;</td>
-                                    <td>87.54</td>
-                                    <td>242</td>
-                                    <td>265</td>
-                                    <td>91.32%</td>
-                                    <td>88.1%</td>
-                                    <td>3.1%</td>
-                                    <td>177</td>
-                                    <td>73.14%</td>
-                                    <td>28</td>
-                                    <td>11.57%</td>
-                                    <td>24</td>
-                                    <td>9.92%</td>
-                                    <td>11</td>
-                                    <td>4.55%</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>邓超</td>
-                                    <td>服装与设计艺术学院</td>
-                                    <td>&nbsp;</td>
-                                    <td>87.54</td>
-                                    <td>242</td>
-                                    <td>265</td>
-                                    <td>91.32%</td>
-                                    <td>88.1%</td>
-                                    <td>3.1%</td>
-                                    <td>177</td>
-                                    <td>73.14%</td>
-                                    <td>28</td>
-                                    <td>11.57%</td>
-                                    <td>24</td>
-                                    <td>9.92%</td>
-                                    <td>11</td>
-                                    <td>4.55%</td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>谢威海</td>
-                                    <td>服装与设计艺术学院</td>
-                                    <td>&nbsp;</td>
-                                    <td>87.54</td>
-                                    <td>242</td>
-                                    <td>265</td>
-                                    <td>91.32%</td>
-                                    <td>88.1%</td>
-                                    <td>3.1%</td>
-                                    <td>177</td>
-                                    <td>73.14%</td>
-                                    <td>28</td>
-                                    <td>11.57%</td>
-                                    <td>24</td>
-                                    <td>9.92%</td>
-                                    <td>11</td>
-                                    <td>4.55%</td>
-                                </tr>
-                                <tr>
-                                    <td>7</td>
-                                    <td>郭怡燃</td>
-                                    <td>服装与设计艺术学院</td>
-                                    <td>&nbsp;</td>
-                                    <td>87.54</td>
-                                    <td>242</td>
-                                    <td>265</td>
-                                    <td>91.32%</td>
-                                    <td>88.1%</td>
-                                    <td>3.1%</td>
-                                    <td>177</td>
-                                    <td>73.14%</td>
-                                    <td>28</td>
-                                    <td>11.57%</td>
-                                    <td>24</td>
-                                    <td>9.92%</td>
-                                    <td>11</td>
-                                    <td>4.55%</td>
-                                </tr>
-                                <tr>
-                                    <td>8</td>
-                                    <td>李婉萍</td>
-                                    <td>服装与设计艺术学院</td>
-                                    <td>&nbsp;</td>
-                                    <td>87.54</td>
-                                    <td>242</td>
-                                    <td>265</td>
-                                    <td>91.32%</td>
-                                    <td>88.1%</td>
-                                    <td>3.1%</td>
-                                    <td>177</td>
-                                    <td>73.14%</td>
-                                    <td>28</td>
-                                    <td>11.57%</td>
-                                    <td>24</td>
-                                    <td>9.92%</td>
-                                    <td>11</td>
-                                    <td>4.55%</td>
-                                </tr>
+                            <tbody id="statistic-data-tbl">
+
                             </tbody>
-
-
                         </table>
                     </div>
                 </div>
@@ -398,59 +230,202 @@
 
 
 <script>
-    $(".btn-export-Excel").click(function(){
-        var file_name = $(".paper-select option:selected").text();
-        var academy_name = $(".academy-select").val();
-        if(academy_name !== "#")
-        {
-            file_name = file_name + '-' + academy_name;
-        }
-        console.log(file_name);
+    page_func = {
+        //btn bind function
+        bind_func:function () {
+            var _self_ = this;
+            $('#keyword-search').click(function (e) {
+                _self_.statistic_data_request(0, 20, $('#paper-select').val(), $('#dep-select').val());
+            });
 
-
-        $(".statistic-data-table").table2excel({
-            exclude: ".noExl",  //有class = “noExl” 的行不被导出；
-            name: "Excel Document Name",
-            filename: file_name,
-            exclude_img: true,
-            exclude_links: true,
-            exclude_inputs: true
-        });
-
-    });
-    $(".btn-print").click(function(){
-        window.print();
-    });
-
-
-
-    //老师登陆判断
-    //////////////////////////////////////////////////////////////////////////////
-    function teacherIfLog() {
-        $.ajax({
-            url: "php/向teacher_log_valid.php",
-            type:"GET",
-            success : function(response) {
-                var data = JSON.parse(response);
-                if(data.Status === 'failed' || data.StatusCode === 0){
-                    location.href = 'php/oauth_log.php';
+            $(".btn-export-Excel").click(function () {
+                var file_name = $(".paper-select option:selected").text();
+                var academy_name = $(".academy-select").val();
+                if (academy_name !== "#") {
+                    file_name = file_name + '-' + academy_name;
                 }
-                else if(data.Status === "success" || data.StatusCode === 1)
+                console.log(file_name);
+
+
+                $(".statistic-data-table").table2excel({
+                    exclude: ".noExl",  //有class = “noExl” 的行不被导出；
+                    name: "Excel Document Name",
+                    filename: file_name,
+                    exclude_img: true,
+                    exclude_links: true,
+                    exclude_inputs: true
+                });
+
+            });
+            $(".btn-print").click(function () {
+                window.print();
+            });
+        },
+        //get/post请求函数
+        ajax_request:function (req_type,req_url,req_data,load_anim,callBack) {
+            $.ajax({
+                url:req_url,
+                type:req_type,
+                data:req_data,
+                dataType:'json',
+                beforeSend:function (xhr) {
+                    if(load_anim == true){
+                        $('body').append('<div style="\n' +
+                            '    width: 100%;\n' +
+                            '    position: fixed;\n' +
+                            '    top: 0; ' +
+                            '    left: 0;' +
+                            '    height: 100%;\n' +
+                            '    background-color: rgba(255, 255, 255, 0.55);\n' +
+                            '" id="loading-progress">\n' +
+                            '    <progress style="\n' +
+                            '    position: relative;\n' +
+                            '    display:  block;\n' +
+                            '    margin:  auto;\n' +
+                            '    margin-top: 20%;\n' +
+                            '"></progress>\n' +
+                            '    <div style="text-align: center;">\n' +
+                            '        加载中...\n' +
+                            '    </div>\n' +
+                            '</div>');
+                    }
+                },
+                success:function (result,status,xhr) {
+                    callBack(result);
+                },
+                complete:function(xhr,status){
+                    if(load_anim == true){
+                        $('#loading-progress').remove();
+                    }
+                }
+            });
+        },
+        //统计数据请求
+        statistic_data_request:function (start_par, limit_par, paper_id_par, dep_par) {
+            var _self_ = this;
+            this.ajax_request(
+                'get',
+                'php/statistic_data.php',
                 {
-                    var t_ybid = data.Ret_Data.t_ybid;
-                    var t_name = data.Ret_Data.t_name;
-                      // todo --ifLog-- 登陆后执行代码
+                    p_start: start_par === undefined ? 0 : start_par,
+                    p_limit: limit_par === undefined ? 20 : limit_par,
+                    paper_id: paper_id_par === undefined ? 0 : paper_id_par,
+                    dep: dep_par === undefined ? 0 : dep_par,
+                    name_keyword: $('#name-keyword').val()
+                },
+                true,
+                function (result_data) {
+                    _self_.statistic_data_append(result_data);
                 }
-            },
-            error : function(result) {
-                console.log("加载错误");
-
+            );
+        },
+        //填充数据表格
+        statistic_data_append:function (src_data) {
+            console.log(src_data);
+            if(src_data.Status === 'success'){
+                var data_tbl = $('#statistic-data-tbl');
+                var html_text = '';
+                var data_lists = $(src_data.Ret_Data);
+                var no_num = 1;
+                data_lists.each(function () {
+                    html_text += '<tr>\n' +
+                        '                                <td>'+no_num+'</td>\n' +
+                        '                                <td>'+this.t_name+'</td>\n' +
+                        '                                <td>'+this.t_dep+'</td>\n' +
+                        '                                <td> </td>\n' +
+                        '                                <td>'+this.t_dep_average+'</td>\n' +
+                        '                                <td>'+this.done_num+'</td>\n' +
+                        '                                <td>'+this.all_num+'</td>\n' +
+                        '                                <td>'+this.done_percent+'</td>\n' +
+                        '                                <td>'+this.good_percent+'</td>\n' +
+                        '                                <td>'+this.bad_percent+'</td>\n' +
+                        '                                <td>'+this.distribution_A+'</td>\n' +
+                        '                                <td>'+this.distribution_A / this.all_num+'</td>\n' +
+                        '                                <td>'+this.distribution_B+'</td>\n' +
+                        '                                <td>'+this.distribution_B / this.all_num+'</td>\n' +
+                        '                                <td>'+this.distribution_C+'</td>\n' +
+                        '                                <td>'+this.distribution_C / this.all_num+'</td>\n' +
+                        '                                <td>'+this.distribution_D+'</td>\n' +
+                        '                                <td>'+this.distribution_D / this.all_num+'</td>\n' +
+                        '                            </tr>'
+                    no_num++;
+                });
+                if(no_num === 1){
+                    html_text = '<tr><td></td><td></td><td>没</td><td>有</td><td>数</td><td>据</td>' +
+                        '<td>或</td><td>没</td><td>有</td><td>权</td>' +
+                        '<td>限</td><td>查</td><td>看</td><td></td><td></td><td></td><td></td><td></td></tr>';
+                }
+                data_tbl.children().remove();
+                data_tbl.append(html_text);
+            }else{
+                alert(data.Error);
             }
-        });
-    }
-//    1.向teacher_log_valid.php发送无参数get请求，判断老师是否登陆，没有登陆则将本页重定向跳转至oauth_log.php。
-//    2.向statistic_data.php发出get请求，获取到返回结果并呈现，实现统计数据呈现功能。
-//    3.向statistic_data.php发出带相应参数的get请求实现搜索功能，实现统计数据呈现功能。
+        },
+        //老师登陆判断
+        teacherIfLog: function () {
+            var _self_ = this;
+            $.ajax({
+                url: "php/teacher_log_valid.php",
+                type: "GET",
+                dataType: 'json',
+                success: function (response) {
+                    var data = response;
+                    if (data.Status === 'failed') {
+                        window.location.href = 'php/yb_log_deal.php';
+                    }
+                    else{
+                        var t_ybid = data.Ret_Data.t_ybid;
+                        var t_name = data.Ret_Data.t_name;
+                        $('.login-info').html(
+                            '<button class="btn btn-primary btn-sm" onclick="logout_request();">(' + t_name + ')注销</button>'
+                        );
+                        _self_.statistic_data_request();
+                        _self_.paper_lsit_request();
+                    }
+                },
+                error: function (result) {
+                    console.log("加载错误");
+                }
+            });
+        },
+        //问卷列表选项填充
+        paper_list_append:function (src_data) {
+            var lists = $(src_data.Ret_Data);
+            var html_text = '';
+            lists.each(function () {
+                html_text += '<option value="'+this.paper_id+'">'+this.title+'</option>'
+            });
+            $('#paper-select').html(html_text);
+        },
+        //问卷列表请求
+        paper_lsit_request:function () {
+            var _self_ = this;
+            _self_.ajax_request(
+                'get',
+                'php/paper_list.php',
+                {},
+                false,
+                function (data) {
+                    if(data.Status === 'success'){
+                        _self_.paper_list_append(data);
+                    }else{
+                        alert(data.Error);
+                    }
+                }
+            )
+        },
+        //page_init
+        page_init:function () {
+            this.bind_func();
+            this.teacherIfLog();
+        }
+    };
+
+    page_func.page_init();
+
+    //    1.向teacher_log_valid.php发送无参数get请求，判断老师是否登陆，没有登陆则将本页重定向跳转至oauth_log.php。
+    //    2.向statistic_data.php发出get请求，获取到返回结果并呈现，实现统计数据呈现功能。
+    //    3.向statistic_data.php发出带相应参数的get请求实现搜索功能，实现统计数据呈现功能。
 </script>
 
 </body>
