@@ -9,7 +9,7 @@
 include 'auto_load_register.php';
 include 'php_lib/db_con_test.php';
 
-$sql = 'select * from tbl_quepublish';
+$sql = 'select * from tbl_quepublish ORDER BY publish_id DESC ';
 
 $ret_obj = new classes\return_data();
 
@@ -25,8 +25,8 @@ if($result = $db_con->query($sql)){
             $temp_row['status']         = $fec_val[4];
             array_push($ret_array,$temp_row);
         }
+        $ret_obj->Ret_Data = $ret_array;
     }
-    $ret_obj->Ret_Data = $ret_array;
     $ret_obj->Status = 'success';
     $ret_obj->StatusCode = '1';
 

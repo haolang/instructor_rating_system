@@ -42,9 +42,8 @@ if(!preg_match('/[0-9]+/',$start.$limit.$paper_id))
     $retResult->Status= "failed";
     $retResult->StatusCode = 0;
     $retResult->Description="";
-    $retResult->Error="参数(开始页码)<0";
+    $retResult->Error="参数错误";
     $retResult->Ret_Data="";
-    $dbcon->close();
     exit(json_encode($retResult));//失败返回相关信息
 }
 
@@ -54,11 +53,10 @@ if (isset($_SESSION["t_ybid"]) && !empty($_SESSION["t_ybid"]) &&
     isset($_SESSION["t_name"])&&!empty($_SESSION["t_name"]) &&
     isset($_SESSION["t_no"])&&!empty($_SESSION["t_no"]) &&
     isset($_SESSION["t_identify"])&&!empty($_SESSION["t_identify"])
-)
-{
+) {
     include_once'json_teacher.php';
-    $ybid = 3;//$_SESSION["t_ybid"];
-    $identify = 3;//$_SESSION["t_identify"];
+    $ybid = $_SESSION["t_ybid"];
+    $identify = $_SESSION["t_identify"];
     if($identify == 1){
         //辅导员
         $sql = 'select * from view_result_score_name where teacher_ybid = '.$ybid;
@@ -86,7 +84,8 @@ if (isset($_SESSION["t_ybid"]) && !empty($_SESSION["t_ybid"]) &&
     $sql .= ' limit '.$start.','.$limit;
     if($sql_result = $dbcon->query($sql)){
         while ($sql_row = $sql_result->fetch_assoc()){
-            $detail['teacher_id']=1;
+            $detail['teacher_id']=$sql_row['teacher_ybid'];
+            $detail['paper_id']=$sql_row['que_publish_id'];
             $detail['t_name']=$sql_row['checker_name'];
             $detail['t_dep']=$sql_row['in_dep'];
             $detail['t_dep_comment']="";

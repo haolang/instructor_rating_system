@@ -64,6 +64,9 @@
 
         }
 
+        #name-keyword{
+            width: 160px;
+        }
         /***************************************************************************************************表格*/
 
         @media print {
@@ -230,6 +233,31 @@
 
 
 <script>
+    load_animation = {
+        showAnim : function () {
+            $('body').append('<div style="\n' +
+                '    width: 100%;\n' +
+                '    position: fixed;\n' +
+                '    top: 0; ' +
+                '    left: 0;' +
+                '    height: 100%;\n' +
+                '    background-color: rgba(255, 255, 255, 0.55);\n' +
+                '" id="loading-progress">\n' +
+                '    <progress style="\n' +
+                '    position: relative;\n' +
+                '    display:  block;\n' +
+                '    margin:  auto;\n' +
+                '    margin-top: 20%;\n' +
+                '"></progress>\n' +
+                '    <div style="text-align: center;">\n' +
+                '        加载中...\n' +
+                '    </div>\n' +
+                '</div>');
+        },
+        removeAnim:function () {
+            $('#loading-progress').remove();
+        }
+    };
     page_func = {
         //btn bind function
         bind_func:function () {
@@ -270,24 +298,7 @@
                 dataType:'json',
                 beforeSend:function (xhr) {
                     if(load_anim == true){
-                        $('body').append('<div style="\n' +
-                            '    width: 100%;\n' +
-                            '    position: fixed;\n' +
-                            '    top: 0; ' +
-                            '    left: 0;' +
-                            '    height: 100%;\n' +
-                            '    background-color: rgba(255, 255, 255, 0.55);\n' +
-                            '" id="loading-progress">\n' +
-                            '    <progress style="\n' +
-                            '    position: relative;\n' +
-                            '    display:  block;\n' +
-                            '    margin:  auto;\n' +
-                            '    margin-top: 20%;\n' +
-                            '"></progress>\n' +
-                            '    <div style="text-align: center;">\n' +
-                            '        加载中...\n' +
-                            '    </div>\n' +
-                            '</div>');
+                        load_animation.showAnim();
                     }
                 },
                 success:function (result,status,xhr) {
@@ -295,7 +306,7 @@
                 },
                 complete:function(xhr,status){
                     if(load_anim == true){
-                        $('#loading-progress').remove();
+                        load_animation.removeAnim();
                     }
                 }
             });
@@ -330,7 +341,10 @@
                 data_lists.each(function () {
                     html_text += '<tr>\n' +
                         '                                <td>'+no_num+'</td>\n' +
-                        '                                <td>'+this.t_name+'</td>\n' +
+                        '                                <td><a target="_blank" href="statistic_detail.html?' +
+                        't_ybid='+this.teacher_id+'&paper_id='+this.paper_id+'&t_name='+encodeURIComponent(this.t_name) +
+                        '&bad_per='+encodeURIComponent(this.bad_percent)+'&good_per='+encodeURIComponent(this.good_percent)+
+                        '&dep='+encodeURIComponent(this.t_dep)+'&score='+this.t_dep_average+'&paper_title='+$('#paper-select').find("option:selected").html()+'" >'+this.t_name+'</a></td>\n' +
                         '                                <td>'+this.t_dep+'</td>\n' +
                         '                                <td> </td>\n' +
                         '                                <td>'+this.t_dep_average+'</td>\n' +
@@ -362,7 +376,7 @@
             }
         },
         //老师登陆判断
-        teacherIfLog: function () {
+        teacherIfLog: function (callBack) {
             var _self_ = this;
             $.ajax({
                 url: "php/teacher_log_valid.php",
@@ -379,8 +393,7 @@
                         $('.login-info').html(
                             '<button class="btn btn-primary btn-sm" onclick="logout_request();">(' + t_name + ')注销</button>'
                         );
-                        _self_.statistic_data_request();
-                        _self_.paper_lsit_request();
+                        callBack();
                     }
                 },
                 error: function (result) {
@@ -416,8 +429,12 @@
         },
         //page_init
         page_init:function () {
-            this.bind_func();
-            this.teacherIfLog();
+            var _self_ = this;
+            _self_.bind_func();
+            _self_.teacherIfLog(function () {
+                _self_.statistic_data_request();
+                _self_.paper_lsit_request();
+            });
         }
     };
 

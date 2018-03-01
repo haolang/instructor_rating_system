@@ -18,60 +18,57 @@
     <style>
 
         /*大标题*/
-        .top-container
-        {
-            margin:20px 0;
+        .top-container {
+            margin: 20px 0;
             padding: 10px;
             background-color: #e2e3e5;
             border-radius: .25rem;
         }
+
         /*顶部搜索按钮部分*/
-        .top-control
-        {
+        .top-control {
             margin-bottom: 10px;
         }
+
         /*登陆者相关信息*/
-        .login-info
-        {
+        .login-info {
             background-color: #dddddd;
             padding: 15px;
             bottom: 0;
             /*position: absolute;*/
             border-radius: .25rem;
         }
-        .user-info
-        {
+
+        .user-info {
             height: 50px;
         }
-        .user-info-item
-        {
+
+        .user-info-item {
             float: left;
             padding-right: 30px;
         }
-        .user-info-item strong
-        {
+
+        .user-info-item strong {
             padding-right: 10px;
         }
 
         /*表格***************************************************************************************************/
-        .statistic-data-table
-        {
+        .statistic-data-table {
             width: 100%;
             font-size: 13px;
             text-align: center;
         }
-        .statistic-data-table thead
-        {
+
+        .statistic-data-table thead {
             background-color: #d5d5d5;
 
         }
+
         /***************************************************************************************************表格*/
 
-
-
         @media print {
-            .no-print{
-                display:none;   /*隐藏不打印的部分*/
+            .no-print {
+                display: none; /*隐藏不打印的部分*/
             }
         }
 
@@ -87,7 +84,8 @@
                     <div class="col-md-10">
 
                         <div class="dropdown">
-                            <button style="font-size: 30px" type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                            <button style="font-size: 30px" type="button" class="btn dropdown-toggle"
+                                    data-toggle="dropdown">
                                 详情页面
                             </button>
                             <div class="dropdown-menu">
@@ -100,7 +98,7 @@
                     <div class="col-md-2">
 
                         <div class="login-info">
-                            郎浩（123123）
+
                         </div>
                     </div>
                 </div>
@@ -118,45 +116,45 @@
             </div>
 
             <div class="detail-title text-center">
-                <h1>fudkasdfasdf</h1>
+                <h1 class="tbl-title"></h1>
             </div>
             <div class="user-info">
-                <div class="user-info-item"><p><strong>姓名:</strong><span class="t-name">郎浩</span></p></div>
-                <div class="user-info-item"><p><strong>学院:</strong><span>计算机科学学院</span></p></div>
-                <div class="user-info-item"><p><strong>分数:</strong><span>98.45</span></p></div>
-                <div class="user-info-item"><p><strong>优良率:</strong><span>88.56%阿斯扥啊</span></p></div>
-                <div class="user-info-item"><p><strong>差率:</strong><span>3.123%</span></p></div>
+                <div class="user-info-item"><p><strong>姓名:</strong><span class="tbl-t-name">...</span></p></div>
+                <div class="user-info-item"><p><strong>学院:</strong><span class="tbl-t-dep">...</span></p></div>
+                <div class="user-info-item"><p><strong>分数:</strong><span class="tbl-ave-score">...</span></p></div>
+                <div class="user-info-item"><p><strong>优良率:</strong><span class="tbl-good-per">...</span></p></div>
+                <div class="user-info-item"><p><strong>差率:</strong><span class="tbl-bad-per">...</span></p></div>
             </div>
             <div class="row">
                 <div class="col-md-12 statistic-data-table-div">
                     <div class="table-responsive">
                         <table class="statistic-data-table table table-bordered">
                             <thead>
-                                <tr>
-                                    <td rowspan="2">序号</td>
-                                    <td rowspan="2">题目</td>
-                                    <td rowspan="2">总评数</td>
-                                    <td colspan="2">选择A</td>
-                                    <td colspan="2">选择B</td>
-                                    <td colspan="2">选择C</td>
-                                    <td colspan="2">选择D</td>
-                                    <td colspan="2">选择E</td>
-                                </tr>
-                                <tr>
-                                    <td>数量</td>
-                                    <td>%</td>
-                                    <td>数量</td>
-                                    <td>%</td>
-                                    <td>数量</td>
-                                    <td>%</td>
-                                    <td>数量</td>
-                                    <td>%</td>
-                                    <td>数量</td>
-                                    <td>%</td>
-                                </tr>
+                            <tr id="tbl-thead1">
+                                <!--<td rowspan="2">序号</td>
+                                <td rowspan="2">题目</td>
+                                <td rowspan="2">总评数</td>
+                                <td colspan="2">选择A</td>
+                                <td colspan="2">选择B</td>
+                                <td colspan="2">选择C</td>
+                                <td colspan="2">选择D</td>
+                                <td colspan="2">选择E</td>-->
+                            </tr>
+                            <tr id="tbl-thead2">
+                                <!--<td>数量</td>
+                                <td>%</td>
+                                <td>数量</td>
+                                <td>%</td>
+                                <td>数量</td>
+                                <td>%</td>
+                                <td>数量</td>
+                                <td>%</td>
+                                <td>数量</td>
+                                <td>%</td>-->
+                            </tr>
                             </thead>
-                            <tbody>
-                                <tr>
+                            <tbody id="detail-data-tbl">
+                            <tr>
                                 <td>1</td>
                                 <td>辅导员的理论水平</td>
                                 <td>241</td>
@@ -170,97 +168,7 @@
                                 <td>0.83</td>
                                 <td>3</td>
                                 <td>1.24</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>辅导员的道德品质</td>
-                                    <td>241</td>
-                                    <td>181</td>
-                                    <td>75.10</td>
-                                    <td>37</td>
-                                    <td>15.35</td>
-                                    <td>18</td>
-                                    <td>7.47</td>
-                                    <td>2</td>
-                                    <td>0.83</td>
-                                    <td>3</td>
-                                    <td>1.24</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>你从辅导员工作中感受到的关爱度</td>
-                                    <td>241</td>
-                                    <td>181</td>
-                                    <td>75.10</td>
-                                    <td>37</td>
-                                    <td>15.35</td>
-                                    <td>18</td>
-                                    <td>7.47</td>
-                                    <td>2</td>
-                                    <td>0.83</td>
-                                    <td>3</td>
-                                    <td>1.24</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>辅导员的工作能力</td>
-                                    <td>241</td>
-                                    <td>181</td>
-                                    <td>75.10</td>
-                                    <td>37</td>
-                                    <td>15.35</td>
-                                    <td>18</td>
-                                    <td>7.47</td>
-                                    <td>2</td>
-                                    <td>0.83</td>
-                                    <td>3</td>
-                                    <td>1.24</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>辅导员的工作作风</td>
-                                    <td>241</td>
-                                    <td>181</td>
-                                    <td>75.10</td>
-                                    <td>37</td>
-                                    <td>15.35</td>
-                                    <td>18</td>
-                                    <td>7.47</td>
-                                    <td>2</td>
-                                    <td>0.83</td>
-                                    <td>3</td>
-                                    <td>1.24</td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>辅导员是否经常深入教室、学生寝室</td>
-                                    <td>241</td>
-                                    <td>181</td>
-                                    <td>75.10</td>
-                                    <td>37</td>
-                                    <td>15.35</td>
-                                    <td>18</td>
-                                    <td>7.47</td>
-                                    <td>2</td>
-                                    <td>0.83</td>
-                                    <td>3</td>
-                                    <td>1.24</td>
-                                </tr>
-                                <tr>
-                                    <td>7</td>
-                                    <td>辅导员是否经常与同学谈心</td>
-                                    <td>241</td>
-                                    <td>181</td>
-                                    <td>75.10</td>
-                                    <td>37</td>
-                                    <td>15.35</td>
-                                    <td>18</td>
-                                    <td>7.47</td>
-                                    <td>2</td>
-                                    <td>0.83</td>
-                                    <td>3</td>
-                                    <td>1.24</td>
-                                </tr>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -272,25 +180,220 @@
 
 
 <script>
-    $(".btn-export-Excel").click(function(){
-        var file_name = $(".detail-title h1").text() + '_' + $(".t-name ").text();
-
-        console.log(file_name);
 
 
-        $(".statistic-data-table").table2excel({
-            exclude: ".noExl",  //有class = “noExl” 的行不被导出；
-            name: "Excel Document Name",
-            filename: file_name,
-            exclude_img: true,
-            exclude_links: true,
-            exclude_inputs: true
-        });
+    page_func = {
+        //btn bind function
+        bind_func: function () {
+            var _self_ = this;
+            $(".btn-export-Excel").click(function () {
+                var file_name = $(".detail-title h1").text() + '_' + $(".t-name ").text();
 
-    });
-    $(".btn-print").click(function(){
-        window.print();
-    });
+                console.log(file_name);
+
+
+                $(".statistic-data-table").table2excel({
+                    exclude: ".noExl",  //有class = “noExl” 的行不被导出；
+                    name: "Excel Document Name",
+                    filename: file_name,
+                    exclude_img: true,
+                    exclude_links: true,
+                    exclude_inputs: true
+                });
+
+            });
+            $(".btn-print").click(function () {
+                window.print();
+            });
+        },
+        //get/post请求函数
+        ajax_request: function (req_type, req_url, req_data, load_anim, callBack) {
+            $.ajax({
+                url: req_url,
+                type: req_type,
+                data: req_data,
+                dataType: 'json',
+                beforeSend: function (xhr) {
+                    if (load_anim == true) {
+                        $('body').append('<div style="\n' +
+                            '    width: 100%;\n' +
+                            '    position: fixed;\n' +
+                            '    top: 0; ' +
+                            '    left: 0;' +
+                            '    height: 100%;\n' +
+                            '    background-color: rgba(255, 255, 255, 0.55);\n' +
+                            '" id="loading-progress">\n' +
+                            '    <progress style="\n' +
+                            '    position: relative;\n' +
+                            '    display:  block;\n' +
+                            '    margin:  auto;\n' +
+                            '    margin-top: 20%;\n' +
+                            '"></progress>\n' +
+                            '    <div style="text-align: center;">\n' +
+                            '        加载中...\n' +
+                            '    </div>\n' +
+                            '</div>');
+                    }
+                },
+                success: function (result, status, xhr) {
+                    callBack(result);
+                },
+                complete: function (xhr, status) {
+                    if (load_anim == true) {
+                        $('#loading-progress').remove();
+                    }
+                }
+            });
+        },
+        //统计数据请求
+        detail_data_request: function (paper_id_par, t_id_par) {
+            var _self_ = this;
+            this.ajax_request(
+                'get',
+                'php/statistic_detail_data.php',
+                {
+                    Que_id: paper_id_par,
+                    T_id: t_id_par
+                },
+                true,
+                function (result_data) {
+                    _self_.detail_data_append(result_data);
+                }
+            );
+        },
+        //填充数据表格
+        detail_data_append: function (src_data) {
+            console.log(src_data);
+            if (src_data.Status === 'success') {
+                //元素对象
+                var data_tbl = $('#detail-data-tbl');
+                var tbl_thead1 = $('#tbl-thead1');
+                var tbl_thead2 = $('#tbl-thead2');
+                //数据html
+                var html_text = '';
+                //thead html
+                var thead1_html = '<td rowspan="2">序号</td>\n' +
+                    '                                <td rowspan="2">题目</td>\n' +
+                    '                                <td rowspan="2">总评数</td>';
+                var thead2_html = '';
+                //请求得到的数据
+                var data_lists = $(src_data.Ret_Data);
+                var no_num = 1;//序号
+                var thead_num = 0;//最大选项数量
+                data_lists.each(function () {
+                    var distribute = this.selector_dis.split(';');
+
+                    thead_num = thead_num > distribute.length ? thead_num : distribute.length;
+                    no_num++;
+                });
+
+                data_lists.each(function () {
+                    var tbl_data_dis_html = '';
+                    for(var i = 0; i < thead_num; i++){
+                        var distribute = this.selector_dis.split(';');
+                        var dis_num = distribute[i] === undefined ? '无':distribute[i].split(',')[1];
+                        var dis_per = distribute[i] === undefined ? '无':distribute[i].split(',')[0];
+                        tbl_data_dis_html += '<td>'+dis_num+'</td><td>'+dis_per+'</td>';
+                    }
+
+                    html_text += '<tr>\n' +
+                        '                                <td>'+no_num+'</td>\n' +
+                        '                                <td>'+this.content+'</td>\n' +
+                        '                                <td>'+this.done_num+'</td>\n' +
+                        tbl_data_dis_html +
+                        '                            </tr>';
+                });
+
+                if (no_num === 1) {
+                    html_text = '<tr><td>没有数据</td>' +
+                        '<td>或没有权限</td><td>查看</td>' +
+                        '</tr>';
+                }
+                for(var i = 0; i < thead_num; i++){
+                    thead1_html += '<td colspan="2">选择'+String.fromCharCode(65+i)+'</td>';
+                    thead2_html += '<td>数量</td> <td>%</td>';
+                }
+
+                data_tbl.children().remove();
+                tbl_thead1.children().remove();
+                tbl_thead2.children().remove();
+                tbl_thead1.html(thead1_html);
+                tbl_thead2.html(thead2_html);
+                data_tbl.append(html_text);
+            } else {
+                alert(data.Error);
+            }
+        },
+        //老师登陆判断
+        teacherIfLog: function (callBack) {
+            var _self_ = this;
+            $.ajax({
+                url: "php/teacher_log_valid.php",
+                type: "GET",
+                dataType: 'json',
+                success: function (response) {
+                    var data = response;
+                    if (data.Status === 'failed') {
+                        window.location.href = 'php/yb_log_deal.php';
+                    }
+                    else {
+                        var t_ybid = data.Ret_Data.t_ybid;
+                        var t_name = data.Ret_Data.t_name;
+                        $('.login-info').html(
+                            '<button class="btn btn-primary btn-sm" onclick="logout_request();">(' + t_name + ')注销</button>'
+                        );
+                        callBack();
+                    }
+                },
+                error: function (result) {
+                    console.log("加载错误");
+                }
+            });
+        },
+        //parameter valid
+        parameter_valid: function () {
+            var _self_ = this;
+            return (_self_.GetQueryString('t_ybid') && _self_.GetQueryString('paper_id') && _self_.GetQueryString('t_name')
+            && _self_.GetQueryString('bad_per') && _self_.GetQueryString('good_per') && _self_.GetQueryString('score') && _self_.GetQueryString('dep'));
+        },
+        //获取链接参数//参数为形参名,得到当前页面中的参数
+        GetQueryString: function (name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+
+            if (r != null) {
+                if (decodeURI(r[2]).length == 0) {
+                    return false;
+                }
+                return decodeURI(r[2]);
+            }
+            return false;//没有此参数时
+        },
+        //t_info_request
+        t_info_request: function () {
+            var _self_ = this;
+            _self_.ajax_request('GET','php/statistic_data.php');
+        },
+        //page_init
+        page_init: function () {
+            if(this.parameter_valid()){
+                var _self_ = this;
+                $('.tbl-ave-score').html(_self_.GetQueryString('score'));
+                $('.tbl-good-per').html(_self_.GetQueryString('good_per'));
+                $('.tbl-bad-per').html(_self_.GetQueryString('bad_per'));
+                $('.tbl-t-name').html(_self_.GetQueryString('t_name'));
+                $('.tbl-t-dep').html(_self_.GetQueryString('dep'));
+                $('.tbl-title').html(_self_.GetQueryString('paper_title'));
+                _self_.bind_func();
+                _self_.teacherIfLog(function () {
+                    _self_.detail_data_request(_self_.GetQueryString('paper_id'), _self_.GetQueryString('t_ybid'));
+                    //_self_.t_info_request();
+                });
+            }
+        }
+    };
+
+    page_func.page_init();
 </script>
 </body>
 </html>

@@ -331,8 +331,8 @@
 
                         <div class="col-md-12 examination-title">
                             <div class="input-group">
-                                <span class="input-group-addon" style="font-size: 20px">试卷标题：</span>
-                                <input type="text" value="四川师范大学辅导员工作学生调查问卷" class="form-control title"
+                                <span class="input-group-addon" style="font-size: 20px">模板名称：</span>
+                                <input type="text" value="四川师范大学辅导员工作学生调查问卷模板" class="form-control title"
                                        placeholder="请输入标题">
                             </div>
                         </div>
@@ -493,7 +493,9 @@
         html_paper_id: "paper-questions",
 
         //新建问卷
-        new_paper_request: function (Template_id) {
+        new_paper_request: function (Template_id,btn) {
+            var btn = $(btn);
+            btn.attr('disabled',true);
             $.ajax({
                 url: "php/paper_new.php",
                 type: "POST",
@@ -510,12 +512,15 @@
                     else if (data.Status === "failed" || data.StatusCode === 0) {
                         alert("设为问卷失败！请稍后重试。");
                     }
-
                 },
                 error: function (result) {
                     console.log("数据传输错误!");
+                },
+                complete:function(xhr,status){
+                    btn.attr('disabled',false);
                 }
             });
+            $('#myModal').modal('toggle');
         },
         bindClick: function () {
             var that = this;
@@ -524,7 +529,7 @@
                 var Paper_title = $(this).parent().siblings(".template-title").text();
                 var Template_id = $(this).parent().parent().attr("template_id");
                 $('#myModalLabel').html('由“' + Paper_title + '”新建问卷');
-                $('#new-paper-btn').attr('onclick', 'TempListEvent.new_paper_request(' + Template_id + ')');
+                $('#new-paper-btn').attr('onclick', 'TempListEvent.new_paper_request(' + Template_id + ',this)');
                 $('#myModal').modal('show');
             });
             //删除模板按钮
@@ -590,12 +595,11 @@
             //问卷启用按钮
             $(document).on("click", ".paper-enable", function () {
 
-                if (confirm("是否启用问卷？") === true) {
+                if (confirm("是否启用/禁用问卷？") === true) {
+                    var click_btn = $(this);
                     var paper_list = $(this).parent().parent();
                     var template_id = paper_list.attr("template_id");
                     var paper_id = paper_list.attr("paper_id");
-                    console.log("template_id = " + template_id);
-                    console.log("paper_id = " + paper_id);
                     $.ajax({
                         url: "php/paper_enable.php",
                         type: "GET",
@@ -606,6 +610,12 @@
                             var data = JSON.parse(response);
                             console.log(data);
                             if (data.Status === 'success' || data.StatusCode === 1) {
+                                if(paper_list.css('opacity') === '0.5'){
+                                    paper_list.css('opacity','1');
+                                }else{
+                                    paper_list.css('opacity','0.5');
+                                }
+                                click_btn.html(click_btn.html() === '启用问卷' ? '禁用问卷':'启用问卷');
                                 alert("问卷启用成功！");
                                 //改变按钮为禁用按钮
                             }
@@ -779,11 +789,11 @@
                             var btn_paper_enable_text = "";
                             var paper_list_item_style = "";
                             array_paper_template_id.push(data.Ret_Data[i].template_id);   //用于显示已经设定的
-                            if (data.Ret_Data[i].status === 0) {
+                            if (data.Ret_Data[i].status === '0') {
                                 btn_paper_enable_text = "启用问卷";
                                 paper_list_item_style = "opacity:0.5;";
                             }
-                            else if (data.Ret_Data[i].status === 1) {
+                            else if (data.Ret_Data[i].status === '1') {
                                 btn_paper_enable_text = "禁用问卷";
                             }
 
@@ -824,6 +834,12 @@
                 type: "GET",
                 data: {
                     template_id: template_id
+                },
+                beforeSend:function () {
+                    load_animation.showAnim();
+                },
+                complete:function(xhr,status){
+                    load_animation.removeAnim();
                 },
                 success: function (response) {
                     var data = JSON.parse(response);
@@ -1149,6 +1165,12 @@
                     data: {
                         new_examination: json_str
                     },
+                    beforeSend:function () {
+                        load_animation.showAnim();
+                    },
+                    complete:function(xhr,status){
+                        load_animation.removeAnim();
+                    },
                     success: function (response) {
                         var data = JSON.parse(response);
                         if (data.Status === 'success' || data.StatusCode === 1) {
@@ -1274,7 +1296,9 @@
                 }
                 else if (data.Status === "success" || data.StatusCode === 1) {
                     //TempListEvent.loadTempList();  //异步加载左侧模板列表 todo --ifLog-- 完善登陆后取消注释
-                    $('.login-info').html('<button class="btn btn-primary btn-sm" onclick="logout_request();">('+data.Ret_Data.admin_name+')注销&times;</button>');
+                    $('.login-info').html(
+                        '<button class="btn btn-primary btn-sm" onclick="logout_request();">('+data.Ret_Data.admin_name+')注销</button>'
+                    );
                 }
             },
             error: function (result) {
@@ -1282,7 +1306,31 @@
             }
         });
     }
-
+    load_animation = {
+        showAnim : function () {
+            $('body').append('<div style="\n' +
+                '    width: 100%;\n' +
+                '    position: fixed;\n' +
+                '    top: 0; ' +
+                '    left: 0;' +
+                '    height: 100%;\n' +
+                '    background-color: rgba(255, 255, 255, 0.55);\n' +
+                '" id="loading-progress">\n' +
+                '    <progress style="\n' +
+                '    position: relative;\n' +
+                '    display:  block;\n' +
+                '    margin:  auto;\n' +
+                '    margin-top: 20%;\n' +
+                '"></progress>\n' +
+                '    <div style="text-align: center;">\n' +
+                '        加载中...\n' +
+                '    </div>\n' +
+                '</div>');
+        },
+        removeAnim:function () {
+            $('#loading-progress').remove();
+        }
+    };
     function logout_request() {
         $.get('php/admin_logout.php',function (data) {
             window.location.reload();
