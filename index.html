@@ -95,7 +95,7 @@
             float: left;
         }
         .home-login{
-            width:198px;
+            width:250px;
             height: 60px;
             float: right;
         }
@@ -154,7 +154,7 @@
         }
         /*.q-sub*/
         /*{*/
-            /*margin: 10px;*/
+        /*margin: 10px;*/
         /*}*/
 
 
@@ -183,6 +183,22 @@
     </style>
 </head>
 <body>
+<div style="
+    width: 100%;
+    position: fixed;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.55);
+" id="loading-progress">
+    <progress style="
+    position: relative;
+    display:  block;
+    margin:  auto;
+    margin-top: 20%;
+"></progress>
+    <div style="text-align: center;">
+        加载中...
+    </div>
+</div>
 
 <div id="body-container">
     <div class="hometop show">
@@ -205,7 +221,7 @@
     <div class="clear"></div>
 
     <div class="home-title show">
-        <h2>四川师范大学辅导员工作学生调查问卷</h2>
+        <h2 id="paper_title">四川师范大学辅导员工作学生调查问卷</h2>
     </div>
 
     <div id="form-examination">
@@ -245,62 +261,63 @@
         from_id:"examination",
         //动态加载问卷
         loadExamination:function(questions_id) {
-        $.ajax({
-            url: "php/que_list.php",
-            type:"GET",
-            success : function(response) {
-                var data = JSON.parse(response);
-
-                console.log(data);
-                var que_list = data.Ret_Data;
-                var content = '';
-                for(var i = 0;i < que_list.length; i++)
-                {
-                    var que = que_list[i];
-                    content += '<ul class="question">\n' +
-                        '                <li>\n' +
-                        '                    <div class="question-title">' +(i+1)+'、'+ que.content + '</div>\n' +
-                        '                </li>\n' ;
-                    for(var j = 0;j < que.selectors.length; j++)
+            $.ajax({
+                url: "php/que_list.php",
+                type:"GET",
+                success : function(response) {
+                    var data = JSON.parse(response);
+//                console.log(data);
+                    $('#paper_title').html(data.Description);
+                    var que_list = data.Ret_Data;
+                    var content = '';
+                    for(var i = 0;i < que_list.length; i++)
                     {
-                        var select = que.selectors[j];
-                        content += '<li class="q-answer"><label><input type="radio" name="'+ que.q_id + '" value="'+ select.percent +'" class="q-select">'+select.mark+'、'+select.content+'</label></li>\n';
+                        var que = que_list[i];
+                        content += '<ul class="question">\n' +
+                            '                <li>\n' +
+                            '                    <div class="question-title">' +(i+1)+'、'+ que.content + '</div>\n' +
+                            '                </li>\n' ;
+                        for(var j = 0;j < que.selectors.length; j++)
+                        {
+                            var select = que.selectors[j];
+                            content += '<li class="q-answer"><label><input type="radio" name="'+ que.q_id + '" value="'+ select.percent +'" class="q-select">'+select.mark+'、'+select.content+'</label></li>\n';
+                        }
+                        content +='</ul>';
                     }
-                    content +='            </ul>';
-                }
 
-                $("#" + questions_id).html(content);
+                    $("#" + questions_id).html(content);
+                    $("#loading-progress").remove();
 //                console.log(content);
-            },
-            error : function() {
+                },
+                error : function() {
 //                console.log(result);
-                console.log("加载错误");
-            }
-        });
-    },
+                    console.log("加载错误");
+                }
+            });
+        },
         //用于检查某个问题是否选择，若未选择就自动滚动至第一个未选择位置并弹出自定义标签弹窗
         //form_id : form标签的 id 字符串
         checkAnswer:function() {
-        var return_val = true;
-        $("#" + this.from_id).find(".question").each(function () {
-            var val = $(this).find('input:radio:checked').val();  //通过判断radio元素的值来判断是否选中
-            if(val === undefined){
-                // alert("什么也没选中!");
-                var input_title_offset = $(this).offset().top;   //相对偏移量 用于自动滚动定位
-                console.log(input_title_offset);
-                $("html,body").animate({scrollTop:input_title_offset},500);   //滚动到指定位置
+            var return_val = true;
+            $("#" + this.from_id).find(".question").each(function () {
+                var val = $(this).find('input:radio:checked').val();  //通过判断radio元素的值来判断是否选中
+                if(val === undefined){
+                    // alert("什么也没选中!");
+                    var input_title_offset = $(this).offset().top;   //相对偏移量 用于自动滚动定位
+                    console.log(input_title_offset);
+                    $("html,body").animate({scrollTop:input_title_offset},500);   //滚动到指定位置
 
-                $(this).find(".question-title").append("<div class='alert_box'>请选择！</div>");    //添加自定义提示框
-                $(".alert_box").fadeOut(3000);
-                //return false;   //存在未选择项时返回false
+                    $(this).find(".question-title").append("<div class='alert_box'>请选择！</div>");    //添加自定义提示框
+                    $(".alert_box").fadeOut(3000);
+                    //return false;   //存在未选择项时返回false
 //                console.log("test");
-                return_val = false;
+                    return_val = false;
 
-                return false;   //结束循环，不再判断其他未选择项
-            }
-        });
-        return return_val; //已经全部选择时返回true
-    },
+                    return false;   //结束循环，不再判断其他未选择项
+                }
+            });
+            return return_val; //已经全部选择时返回true
+        },
         //下面的函数仅供参考，我从其他地方复制粘贴的
         //form_id : form标签的 id 字符串
         uploadAnswer:function() {
@@ -310,63 +327,60 @@
             }
             var form = document.getElementById(this.from_id);
             var formdata = new FormData(form);
-
-
-//            var form = new FormData($("form").get(0));
             var ent = formdata.entries();
             var item;
             var data = {};
             while(item = ent.next()){
                 if(item.done) break;
-                console.log(item);
                 data[item.value[0]] = item.value[1];
             }
 
             var data_json = JSON.stringify(data);
             console.log(data_json);
 
-
-
             var url_php = "php/que_result.php";
 
             $.ajax({
                 url: url_php,
-                data:data_json,
+                data:
+                    {
+                        user_paper: data_json
+                    },
                 type: 'POST',
-                // 告诉jQuery不要去处理发送的数据
-                processData : false,
-                // 告诉jQuery不要去设置Content-Type请求头
-                contentType : false,
+                dataType: 'json',
                 success : function(response) {
-                    console.log(response);
-                    var data = JSON.parse(response);
-                    if(data.Status === "success" || parseInt(data.StatusCode) === 1)
+                    if(response.status === "success")
                     {
                         alert("提交成功！");
                     }
-                    else if(data.Status === "failed" || parseInt(data.StatusCode) === 0)
+                    else if(response.status === "failed ")
                     {
-                        alert(data.Error);
-                        console.log(data.Error);
+                        alert(response.Error);
                     }
-                    console.log(data);
                 },
                 error : function(result) {
-                    console.log(result);   //----------------------------------------------------------------------------------------------- delete
                     alert("上传失败，请稍后重试！");
                 }
             });
         }
-
     };
     //基本HTML页面加载完成后
     $(document).ready(function(){
-        //动态加载问卷
-        Examination.loadExamination(Examination.questions_id);
-        //将上传函数绑定至上传函数
-        $("#upload-answer").click(function () {
-            Examination.uploadAnswer();
-        });
+        $.get('php/stu_log_valid.php',function (data) {
+            console.log(data);
+            if(data.Status == 'failed'){
+                window.location.href = 'php/yb_log_deal.php';
+            }else{
+                $('.user-name').html(data.Ret_Data.s_name+'('+data.Ret_Data.s_stuid+')');
+
+                //动态加载问卷
+                Examination.loadExamination(Examination.questions_id);
+                //将上传函数绑定至上传函数
+                $("#upload-answer").click(function () {
+                    Examination.uploadAnswer();
+                });
+            }
+        },'json');
     });
 </script>
 </html>
