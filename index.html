@@ -240,6 +240,8 @@
 </body>
 <script>
     // 试卷相关
+
+    // todo 修改答案的name 和 上传的josn 数据格式
     var Examination = {
         questions_id:"questions-div",
         from_id:"examination",
@@ -250,7 +252,8 @@
             type:"GET",
             success : function(response) {
                 var data = JSON.parse(response);
-//                console.log(data);
+
+                console.log(data);
                 var que_list = data.Ret_Data;
                 var content = '';
                 for(var i = 0;i < que_list.length; i++)
@@ -263,7 +266,7 @@
                     for(var j = 0;j < que.selectors.length; j++)
                     {
                         var select = que.selectors[j];
-                        content += '<li class="q-answer"><label><input type="radio" name="qid_'+ que.q_id + '" value="'+ select.percent +'" class="q-select">'+select.mark+'、'+select.content+'</label></li>\n';
+                        content += '<li class="q-answer"><label><input type="radio" name="'+ que.q_id + '" value="'+ select.percent +'" class="q-select">'+select.mark+'、'+select.content+'</label></li>\n';
                     }
                     content +='            </ul>';
                 }
@@ -309,27 +312,46 @@
             }
             var form = document.getElementById(this.from_id);
             var formdata = new FormData(form);
+
+
+//            var form = new FormData($("form").get(0));
+            var ent = formdata.entries();
+            var item;
+            var data = {};
+            while(item = ent.next()){
+                if(item.done) break;
+                console.log(item);
+                data[item.value[0]] = item.value[1];
+            }
+
+            var data_json = JSON.stringify(data);
+            console.log(data_json);
+
+
+
             var url_php = "php/que_result.php";
 
             $.ajax({
                 url: url_php,
-                data:formdata,
+                data:data_json,
                 type: 'POST',
                 // 告诉jQuery不要去处理发送的数据
                 processData : false,
                 // 告诉jQuery不要去设置Content-Type请求头
                 contentType : false,
                 success : function(response) {
-                    if(response.status === "success")
+                    console.log(response);
+                    var data = JSON.parse(response);
+                    if(data.Status === "success" || parseInt(data.StatusCode) === 1)
                     {
                         alert("提交成功！");
                     }
-                    else if(response.status === "failed ")
+                    else if(data.Status === "failed" || parseInt(data.StatusCode) === 0)
                     {
-                        alert(response.Error);
-                        console.log(response.Error);
+                        alert(data.Error);
+                        console.log(data.Error);
                     }
-                    console.log(response);
+                    console.log(data);
                 },
                 error : function(result) {
                     console.log(result);   //----------------------------------------------------------------------------------------------- delete
