@@ -511,6 +511,7 @@
                         if(data.Status === 'success' || data.StatusCode === 1)
                         {
                             alert("已成功设为问卷！");
+                            location.reload();
                         }
                         else if(data.Status === "failed" || data.StatusCode === 0)
                         {
@@ -615,6 +616,7 @@
                             if(data.Status === 'success' || data.StatusCode === 1)
                             {
                                 alert("问卷启用成功！");
+                                location.reload();
                                 //改变按钮为禁用按钮
                             }
                             else if(data.Status === "failed" || data.StatusCode === 0)
@@ -968,7 +970,6 @@
             });
             return return_val;
         },
-
         //初始化模板html 部分到只有一个问题和两个选项
         InitTemplate:function () {
 
