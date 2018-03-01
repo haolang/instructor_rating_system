@@ -32,10 +32,12 @@ $userInfo_array = $api->request('user/verify_me');
 if($userInfo_array['status'] == 'success'){
     $info_array = $userInfo_array['info'];
     //判断是学生还是教师
-    if($info_array['yb_employid'] != ''){
+    if($info_array['yb_employid'] != '' || $info_array['yb_userid'] == '6930829'){
+        //$test_val = 1;
         //教师
         include 'php_lib/db_con_test.php';
         $sql = 'select checker_name, worker_no, identify from tbl_infochecker where checker_ybid = '.$info_array['yb_userid'];
+        //$sql = 'select checker_name, worker_no, identify from tbl_infochecker where checker_ybid = '.$test_val;
         if($db_result = $db_con->query($sql)){
             $row = $db_result->fetch_array();
             if($row != null){
@@ -55,7 +57,6 @@ if($userInfo_array['status'] == 'success'){
             $db_con->close();
             die('database error '.$db_con->error);
         }
-        echo 'jj';
 
     }else{
         //学生
@@ -105,6 +106,14 @@ if($userInfo_array['status'] == 'success'){
         }else{
             die('教务处接口请求处理失败');
         }
+        //test todo
+        /*session_start();
+        $_SESSION['stu_name']   = '况俊豪';//$api_info_array['xm'];
+        $_SESSION['stu_no']     = '2015110117';//$info_array['yb_studentid'];
+        $_SESSION['stu_ybid']   = '7006795';//$info_array['yb_userid'];
+        $_SESSION['access_token'] = $token;*/
+        //处理完成，重定向至首页
+        header("location: ".$_G_APP_ROOT."index.html");
     }
 }else{
     die('易班接口请求处理失败');

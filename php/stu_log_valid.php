@@ -19,17 +19,18 @@ class requestResponse {
 header('Content-Type:text/json');
 $retResult = new requestResponse();//一个返回对象
 session_start();
-if (isset($_SESSION["admin_id"]) && !empty($_SESSION["admin_id"])+
-    isset($_SESSION["admin_name"])&&!empty($_SESSION["admin_name"])
+if (isset($_SESSION["stu_name"]) && !empty($_SESSION["stu_name"]) &&
+    isset($_SESSION["stu_no"]) && !empty($_SESSION["stu_no"]) &&
+    isset($_SESSION["stu_ybid"])&&!empty($_SESSION["stu_ybid"])
 )
 {//如果成功
     $retResult->Status= "success";
     $retResult->StatusCode = 1;
     $retResult->Description="";
     $retResult->Error="";
-    $retResult->Ret_Data["admin_id"]=$_SESSION["admin_id"];
-    $retResult->Ret_Data["admin_name"]=$_SESSION["admin_name"];
-    $dbcon->close();
+    $retResult->Ret_Data["s_ybid"]=$_SESSION["stu_ybid"];
+    $retResult->Ret_Data["s_stuid"]=$_SESSION["stu_no"];
+    $retResult->Ret_Data["s_name"]=$_SESSION["stu_name"];
     exit(json_encode($retResult));
 }
 else
@@ -37,8 +38,7 @@ else
     $retResult->Status= "failed";
     $retResult->StatusCode = 0;
     $retResult->Description="";
-    $retResult->Error="有相应session为空";
+    $retResult->Error="未登录";
     $retResult->Ret_Data="";
-    $dbcon->close();
     exit(json_encode($retResult));//失败返回相关信息
 }

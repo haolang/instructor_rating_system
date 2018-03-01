@@ -11,26 +11,53 @@
  * 管理员登录界面
  * 账号为id，密码为password
  */
-include_once'json_admin.php';
-$id=$_POST['id'];
-$password=$_POST['password'];
-$sql="select*from tbl_admin where admin_name= '".$id."'and admin_pass='".$password."'";
-if($result=mysqli_query($dbcon,$sql))
-{
-    if(mysqli_fetch_array($result))
-    {
-        $_SESSION["admin_id"]=$id;
-        $_SESSION["admin_name"]=$password;//登陆成功,设置session.
-        // echo "嗯，果然有数据！";
-        header('Location: admin.php');//跳转到admin.php (依次执行模块文档里面的内容，先发送给admin_log_valid)
-    }
-    else//登陆失败 用户名或密码错误
-    {
-        header('Location: admin_log.php');
 
-
+class requestResponse {
+    public $Status = "";
+    public $StatusCode = "";
+    public $Description="";
+    public $Error = "";
+    public $Ret_Data=array(
+        "admin_id"=>"",
+        "admin_name"=>"",
+    );
+}
+header('Content-Type:text/json');
+$retResult = new requestResponse();//一个返回对象
+if(isset($_POST['id']) && isset($_POST['password']) &&
+!empty($_POST['id']) && !empty($_POST['password'])){
+    include_once'json_admin.php';
+    $id         =   $dbcon->real_escape_string($_POST['id']);
+    $password   =   $dbcon->real_escape_string($_POST['password']);
+    $sql = "select * from tbl_admin where admin_name= '".$id."'and admin_pass='".md5($password)."'";
+    if($result=mysqli_query($dbcon,$sql))
+    {
+        if($row = mysqli_fetch_array($result))
+        {
+            session_start();
+            $_SESSION["admin_id"]=$row['admin_id'];
+            $_SESSION["admin_name"]=$row['admin_name'];//登陆成功,设置session.
+            // echo "嗯，果然有数据！";
+            $retResult->StatusCode = 1;
+            $retResult->Status = 'success';
+            $retResult->Ret_Data['admin_id'] = $row['admin_id'];
+            $retResult->Ret_Data['admin_name'] = $row['admin_name'];
+        }
+        else//登陆失败 用户名或密码错误
+        {
+            $retResult->StatusCode = 0;
+            $retResult->Status = 'failed';
+            $retResult->Error = '用户名或者密码不正确';
+        }
     }
+    else{
+        $retResult->StatusCode = 0;
+        $retResult->Status = 'failed';
+        $retResult->Error = '数据库查询出错';
+    }
+}else{
+    $retResult->StatusCode = 0;
+    $retResult->Status = 'failed';
+    $retResult->Error = '请求参数有误';
 }
-else{
-    echo"数据库查询失败";
-}
+echo json_encode($retResult);

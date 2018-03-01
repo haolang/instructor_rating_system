@@ -14,82 +14,70 @@ class requestResponse {
 
     );
 }
-include_once'json_teacher.php';
-include_once'verify.php';
-$retResult = new requestResponse();//一个返回对象
-$detail=array(
-    'que_content'=>'',
-    'all_num'=>'',
-    /*  'distribution1_num'=>'',因为选项的数量不确定，动态添加
-      'distribution2_num'=>'',
-      'distribution3_num'=>'',
-      'distribution4_num'=>''*/
-
-);
-$que_id=$_GET['que_id'];
-$t_id=$_GET['t_id'];
-if(data_validation($t_id,'Number')!=1)//检验是否为纯数字
-{
-    $retResult->Status = "failed";//注意这里
-    $retResult->StatusCode = 0;
-    $retResult->Description="";
-    $retResult->Error = "参数t_id不为纯数字";
-    $retResult->Ret_Data="";
-    $dbcon->close();
-    exit(json_encode($retResult));
-
-}
-if(!empty($que_id)&&!empty($t_id))
-{
-    $retResult->Status = "success";//注意这里
-    $retResult->StatusCode = 1;
-    $retResult->Description="";
-    $retResult->Error = "";
-    $sql='SELECT * FROM view_detail_data WHERE que_publish_id= "'. $que_id .'" and teacher_ybid="'.$t_id.'"  ';
-    if($result=mysqli_query($dbcon,$sql))
-    {
-        while($row=$result->fetch_assoc())
-        {
-            $detail['que_content']=$row['content'];
-            $detail['all_num']=$row['done_num'];//不清楚是需要的数量还是，已经完成的数量
-            $select_result=$row['selector_dis'];//注意选项的个数是不确定的
-            $select=explode(';',$select_result);//用分号分割每一个选项和百分比
-            for($index=0;$index<count($select);$index++)
-            {
-                $selectnum=explode(',',$select[$index]);
-                $name='distribution'.($index+1).'_num';
-                $detail[$name]=$selectnum[0];
+$retResult = new requestResponse();
+if(isset($_GET['Que_id']) && isset($_GET['T_id']) &&
+!empty($_GET['Que_id']) && !empty($_GET['T_id'])){
+    $paper_id = $_GET['Que_id'];
+    $t_id = $_GET['T_id'];
+    if(preg_match('/[0-9]+/',$paper_id.$t_id)){
+        session_start();
+        if (isset($_SESSION["t_ybid"]) && !empty($_SESSION["t_ybid"]) &&
+            isset($_SESSION["t_name"])&&!empty($_SESSION["t_name"]) &&
+            isset($_SESSION["t_no"])&&!empty($_SESSION["t_no"]) &&
+            isset($_SESSION["t_identify"])&&!empty($_SESSION["t_identify"])
+        ) {
+            $ybid = $_SESSION["t_ybid"];
+            $identify = $_SESSION["t_identify"];
+            if($identify == 1){
+                //辅导员
+                $sql = 'select * from view_detail_data where teacher_ybid = '.$ybid;
+            }elseif ($identify == 2){
+                //学院副书记
+                $sql = 'select * from view_detail_data WHERE teacher_ybid in 
+                (SELECT checker_ybid FROM tbl_infochecker where in_depno = 
+                (SELECT in_depno FROM tbl_infochecker WHERE checker_ybid = '.$ybid.'))';
+            }else{
+                //学工部
+                $sql = 'select * from view_detail_data where 1';
             }
-            array_push($retResult->Ret_Data, $detail);
+            $sql .= ' and Que_publish_id = '.$paper_id.' and teacher_ybid = '.$t_id;
+            include_once 'json_teacher.php';
+
+            if($sql_result = $dbcon->query($sql)){
+                $retResult->Status= "success";
+                $retResult->StatusCode = 1;
+                $retResult->Description=$sql;
+                $retResult->Error="";
+                while ($sql_row = $sql_result->fetch_assoc()){
+                    array_push($retResult->Ret_Data, $sql_row);
+                }
+            }else{
+                $retResult->Status= "failed";
+                $retResult->StatusCode = 0;
+                $retResult->Description="";
+                $retResult->Error="数据库错误".$dbcon->error;
+                $retResult->Ret_Data="";
+            }
+            $dbcon->close();
+        }else{
+            $retResult->Status = "failed";
+            $retResult->StatusCode = 0;
+            $retResult->Description = "";
+            $retResult->Error = "管理员未登录";
+            $retResult->Ret_Data = "";
         }
-
-        mysqli_free_result($result);
-        $dbcon->close();
-        exit(json_encode($retResult));
-
-    }
-    else{
-        $retResult->Status = "failed";//注意这里
+    }else{
+        $retResult->Status= "failed";
         $retResult->StatusCode = 0;
         $retResult->Description="";
-        $retResult->Error = "sql view_detail_data 语句执行错误";
+        $retResult->Error="参数不符合要求";
         $retResult->Ret_Data="";
-        $dbcon->close();
-        exit(json_encode($retResult));
-
     }
-
-}
-else{
-    $retResult->Status = "failed";//注意这里
+}else{
+    $retResult->Status= "failed";
     $retResult->StatusCode = 0;
     $retResult->Description="";
-    $retResult->Error = "stastic_detail_data.php请求参数缺少parameter lose";
+    $retResult->Error="缺少参数";
     $retResult->Ret_Data="";
-    $dbcon->close();
-    exit(json_encode($retResult));
-
 }
-
-
-
+echo(json_encode($retResult));

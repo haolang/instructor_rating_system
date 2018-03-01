@@ -112,7 +112,7 @@
 		            return array('status'=>false, 'msg'=>$info['msgCN']);
 		        }
 		    }else {	// 重定向到授权服务器（这里使用header()重定向，可用使用其它方法）
-		        header('location: '.$this->forwardurl());
+		        header('location: '.$this->forwardurl(1));
 		        return array('status'=>false, 'msg'=>'');
 		    }
 		}
