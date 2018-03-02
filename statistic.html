@@ -15,6 +15,8 @@
     <script src="jslib/bootstrap-4.0.0-dist/js/popper.min.js"></script>
 
     <script src="jslib/bootstrap-4.0.0-dist/js/bootstrap.min.js"></script>
+
+    <script src="jslib/Pager.js"></script>
     <style>
         /*大标题*/
         .top-container {
@@ -74,7 +76,60 @@
                 display: none; /*隐藏不打印的部分*/
             }
         }
+        /*翻页样式******************************************************************/
+        .pagelist {
+            display: table;
+            margin: 0 auto;
+            /*margin-left: 106px;*/
+            /*border: 1px solid red;*/
+            /*font-size: 0;*/
+            background: #fff;
+            height: 50px;
+            line-height: 50px;
+        }
 
+        .pagelist ul
+        {
+            list-style:none;
+            /*padding: 10px 0;*/
+        }
+
+        .pagelist ul li
+        {
+            display: inline;
+            background-color: #e2e3e5;
+            height: auto;
+            /*padding: 10px 0;*/
+        }
+        .pagelist ul li:hover
+        {
+            background-color: #dddddd;
+        }
+        .pagelist a
+        {
+            color: #1b1e21;
+            /*padding-top: 5px;*/
+            /*padding-bottom: 5px;*/
+            padding: 10px 10px;
+            text-decoration:none;
+        }
+        .pagelist .active
+        {
+            background-color: #d5d5d5;
+        }
+
+        .pagelist .disabled button
+        {
+            opacity: 0.1;
+        }
+        .pagelist .prev,.pagelist .next
+        {
+            padding-right: 5px;
+            padding-left: 5px;
+        }
+
+
+        /******************************************************************翻页样式*/
     </style>
 </head>
 <body>
@@ -176,7 +231,7 @@
                     <div class="col-md-3 column">
 
                         <button type="button" class="btn btn-sm" id="keyword-search">查询</button>
-                        <button type="button" class="btn btn-sm">重置</button>
+                        <!--<button type="button" class="btn btn-sm">重置</button>-->
                         <button type="button" class="btn btn-sm btn-export-Excel">导出Excel</button>
                         <button type="button" class="btn btn-sm btn-print">打印</button>
 
@@ -228,6 +283,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="pagelist">
+
     </div>
 </div>
 
@@ -338,6 +396,7 @@
                 var html_text = '';
                 var data_lists = $(src_data.Ret_Data);
                 var no_num = 1;
+                var totalCount = src_data.Num || 70;  //TODO 默认数据 70 作为测试用
                 data_lists.each(function () {
                     html_text += '<tr>\n' +
                         '                                <td>'+no_num+'</td>\n' +
@@ -371,6 +430,11 @@
                 }
                 data_tbl.children().remove();
                 data_tbl.append(html_text);
+                console.log(no_num);
+                if(no_num !== 1)
+                {
+                    this.page_turn(totalCount,8,8);
+                }
             }else{
                 alert(data.Error);
             }
@@ -435,8 +499,26 @@
                 _self_.statistic_data_request();
                 _self_.paper_lsit_request();
             });
+        },
+        page_turn:function (totalCount,pageSize,buttonSize){
+            console.log("page_turn");
+            $(".pagelist").html(Pager({
+
+                totalCount:totalCount, //总条数为150
+                pageSize:pageSize,    //每页显示8条内容，默认10
+                buttonSize:buttonSize,   //显示6个按钮，默认10
+                pageParam:'page',   //页码的参数名为\'p\'，默认为\'page\'
+                className:'pagination',    //分页的样式
+                prevButton:'<button class="btn">上一页</button>',       //上一页按钮
+                nextButton:'<button class="btn">下一页</button>'       //下一页按钮
+
+            }));
         }
+
     };
+
+
+
 
     page_func.page_init();
 
