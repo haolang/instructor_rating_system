@@ -112,6 +112,7 @@
             /*padding-bottom: 5px;*/
             padding: 10px 10px;
             text-decoration:none;
+            cursor:pointer;
         }
         .pagelist .active
         {
@@ -292,15 +293,15 @@
 
 <script>
     var __url_page_name__ = 'page';   // URL 中翻页参数的名字
-    var __page__;       //URL 中的参数 page 的值
+    var __page__ = 1;       //URL 中的参数 page 的值
     var __pageSize__ = 15;  //每页显示条数的全局变量
-    $(document).ready(function(){
-        var reg = new RegExp("(^|&)(" + __url_page_name__ + "=)([^&]*)(&|$)", "i");
-        var url_reg = window.location.href.match(reg);
-        __page__ = url_reg === null ? 1 : url_reg[3];  //url中没有 page 参数默认为 1
-        console.log(__page__);
-
-    });
+//    $(document).ready(function(){
+//        var reg = new RegExp("(^|&)(" + __url_page_name__ + "=)([^&]*)(&|$)", "i");
+//        var url_reg = window.location.href.match(reg);
+//        __page__ = url_reg === null ? 1 : url_reg[3];  //url中没有 page 参数默认为 1
+//        console.log(__page__);
+//
+//    });
 
     var load_animation = {
         showAnim : function () {
@@ -356,6 +357,17 @@
             });
             $(".btn-print").click(function () {
                 window.print();
+            });
+
+
+            $(document).on("click", ".pagelist ul li a", function () {
+                var paper_id_par = $('#paper-select').val();
+                var dep_par = $('#dep-select').val();
+                paper_id_par = (paper_id_par === null || paper_id_par == undefined) ? 0 : paper_id_par;
+                dep_par = (dep_par === null || dep_par == undefined) ? 0 : dep_par;
+                __page__ = parseInt($(this).text());
+                console.log(__page__);
+                _self_.statistic_data_request(__page__ - 1,__pageSize__, paper_id_par, dep_par);
             });
         },
         //get/post请求函数
@@ -444,7 +456,7 @@
                 console.log(no_num);
                 if(no_num !== 1)
                 {
-                    this.page_turn(totalCount,8,8);
+                    this.page_turn(totalCount,8);
                 }
             }else{
                 alert(data.Error);
@@ -516,7 +528,7 @@
                 _self_.paper_lsit_request();
             });
         },
-        page_turn:function (totalCount,pageSize,buttonSize){
+        page_turn:function (totalCount,buttonSize){
             console.log("page_turn");
             $(".pagelist").html(Pager({
 
@@ -528,12 +540,10 @@
                 prevButton:'<button class="btn">上一页</button>',       //上一页按钮
                 nextButton:'<button class="btn">下一页</button>'       //下一页按钮
 
-            }));
+            },__page__));
         }
 
     };
-
-
 
 
     page_func.page_init();
