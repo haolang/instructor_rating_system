@@ -37,54 +37,37 @@ if(isset($_GET['paper_id']) && preg_match('/[0-9]{1,}/',$_GET['paper_id']))
         $row = $result->fetch_assoc();
         $able = $row['is_enable'];
         mysqli_free_result($result);
+        $dbcon->begin_transaction();
+        $dbcon->autocommit(false);
         if($able==0)
         {
             $sql="UPDATE tbl_quepublish SET is_enable = 1 WHERE publish_id = '".$paper_id."'";
-            if(!mysqli_query($dbcon,$sql))
-            {
-                $retResult->Status= "failed";
-                $retResult->StatusCode = 0;
-                $retResult->Description="";
-                $retResult->Error="数据库操作is_enable失败";
-                $retResult->Ret_Data="";
-                $dbcon->close();
-                exit(json_encode($retResult));//失败返回相关信息
-
-            }
-            $retResult->Status= "success";
-            $retResult->StatusCode = 1;
-            $retResult->Description="";
-            $retResult->Error="";
-            $retResult->Ret_Data="";
-            $dbcon->close();
-            exit(json_encode($retResult));
-
+            $sql2='update tbl_student set si_done = 0 where student_ybid != 0';
+            $dbcon->query($sql);
+            $dbcon->query($sql2);
         }
         else if($able==1)
         {
             $sql="UPDATE tbl_quepublish SET is_enable = 0 WHERE publish_id = '".$paper_id."'";
-            mysqli_query($dbcon,$sql);
-            if(!mysqli_query($dbcon,$sql))
-            {
-                $retResult->Status= "failed";
-                $retResult->StatusCode = 0;
-                $retResult->Description="";
-                $retResult->Error="数据库操作is_enable失败";
-                $retResult->Ret_Data="";
-                $dbcon->close();
-                exit(json_encode($retResult));//失败返回相关信息
-
-            }
-            $retResult->Status= "success";
-            $retResult->StatusCode = 1;
-            $retResult->Description="";
-            $retResult->Error="";
-            $retResult->Ret_Data="";
-            $dbcon->close();
-            exit(json_encode($retResult));
-
+            $dbcon->query($sql);
         }
-
+//判断执行过程是否出错，如果语句都执行成功则提交事务，否则回滚事务
+        if (!$dbcon->errno) {
+            $dbcon->commit();
+            $retResult->Status = "success";
+            $retResult->StatusCode = 1;
+            $retResult->Description = "";
+            $retResult->Error = "";
+            $retResult->Ret_Data = "";
+        } else {
+            $dbcon->rollback();
+            $retResult->Status = "failed";
+            $retResult->StatusCode = 0;
+            $retResult->Description = "";
+            $retResult->Error = "数据库执行出错";
+            $retResult->Ret_Data = "";
+        }
+        $dbcon->close();
     }
     else{
         $retResult->Status= "failed";
@@ -93,7 +76,6 @@ if(isset($_GET['paper_id']) && preg_match('/[0-9]{1,}/',$_GET['paper_id']))
         $retResult->Error="数据库查询问卷id失败";
         $retResult->Ret_Data="";
         $dbcon->close();
-        exit(json_encode($retResult));//失败返回相关信息
     }
 }
 else{
@@ -102,6 +84,5 @@ else{
     $retResult->Description="";
     $retResult->Error="get接收到的参数为空";
     $retResult->Ret_Data="";
-    $dbcon->close();
-    exit(json_encode($retResult));//失败返回相关信息
 }
+echo json_encode($retResult);

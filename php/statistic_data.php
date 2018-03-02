@@ -10,6 +10,7 @@ class requestResponse {
     public $StatusCode = "";
     public $Description="";
     public $Error = "";
+    public $Num = "";
     public $Ret_Data=array(
 
     );
@@ -81,6 +82,7 @@ if (isset($_SESSION["t_ybid"]) && !empty($_SESSION["t_ybid"]) &&
         $name_keyword = $dbcon->real_escape_string($_GET['name_keyword']);
         $sql .= ' and checker_name like "%'.$name_keyword.'%"';
     }
+    $sql_num = 'select count(*) from ('.$sql.') tbl_temp';
     $sql .= ' limit '.$start.','.$limit;
     if($sql_result = $dbcon->query($sql)){
         while ($sql_row = $sql_result->fetch_assoc()){
@@ -101,9 +103,14 @@ if (isset($_SESSION["t_ybid"]) && !empty($_SESSION["t_ybid"]) &&
             $detail['distribution_D']=$sql_row['number_distribution4'];//选d的人数
             array_push($retResult->Ret_Data,$detail);
         }
+        if($sql_num_result = $dbcon->query($sql_num)){
+            $sql_num_row = $sql_num_result->fetch_array();
+            $retResult->Num = $sql_num_row[0];
+        }
+
         $retResult->Status = "success";
         $retResult->StatusCode = 1;
-        $retResult->Description = "";
+        $retResult->Description = $sql_num;
     }else{
         $retResult->Status = "failed";
         $retResult->StatusCode = 0;

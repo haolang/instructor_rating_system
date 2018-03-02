@@ -210,8 +210,8 @@
             <div class="home-login show">
                 <img src="img/index/person.png" alt="">
                 <div>
-                    <p class="user-name">ID:1336123123</p>
-                    <a href="#">注销</a>
+                    <p class="user-name"></p>
+                    <a href="#" id="log-out-btn">注销</a>
                 </div>
             </div>
         </div>
@@ -221,7 +221,7 @@
     <div class="clear"></div>
 
     <div class="home-title show">
-        <h2 id="paper_title">四川师范大学辅导员工作学生调查问卷</h2>
+        <h2 id="paper_title">...</h2>
     </div>
 
     <div id="form-examination">
@@ -280,7 +280,7 @@
                         for(var j = 0;j < que.selectors.length; j++)
                         {
                             var select = que.selectors[j];
-                            content += '<li class="q-answer"><label><input type="radio" name="'+ que.q_id + '" value="'+ select.percent +'" class="q-select">'+select.mark+'、'+select.content+'</label></li>\n';
+                            content += '<li class="q-answer"><label><input type="radio" name="'+ que.q_id + '" value="'+ select.mark +'" class="q-select">'+select.mark+'、'+select.content+'</label></li>\n';
                         }
                         content +='</ul>';
                     }
@@ -320,11 +320,14 @@
         },
         //下面的函数仅供参考，我从其他地方复制粘贴的
         //form_id : form标签的 id 字符串
-        uploadAnswer:function() {
+        uploadAnswer:function(btn_elem) {
+
             if(this.checkAnswer(this.from_id) === false)  //如果未全部选择完毕
             {
                 return false;
             }
+            var btn = $(btn_elem);
+            btn.attr('disabled',true);
             var form = document.getElementById(this.from_id);
             var formdata = new FormData(form);
             var ent = formdata.entries();
@@ -336,7 +339,6 @@
             }
 
             var data_json = JSON.stringify(data);
-            console.log(data_json);
 
             var url_php = "php/que_result.php";
 
@@ -349,22 +351,31 @@
                 type: 'POST',
                 dataType: 'json',
                 success : function(response) {
-                    var data = JSON.parse(response);
-                    if(data.Status === "success" || parseInt(data.StatusCode) === 1)
+                    if(response.Status === "success")
                     {
                         alert("提交成功！");
                     }
-                    else if(data.Status === "failed " ||  parseInt(data.StatusCode) === 0)
+                    else
                     {
-                        alert(data.Error);
+                        alert(response.Error);
+                        btn.attr('disabled',false);
                     }
                 },
                 error : function(result) {
                     alert("上传失败，请稍后重试！");
+                    btn.attr('disabled',true);
                 }
             });
         }
     };
+    
+    function  log_out() {
+        if(confirm("确认注销？")){
+            $.get('php/admin_logout.php',function (data) {
+                window.location.reload();
+            });
+        }
+    }
     //基本HTML页面加载完成后
     $(document).ready(function(){
         $.get('php/stu_log_valid.php',function (data) {
@@ -378,7 +389,10 @@
                 Examination.loadExamination(Examination.questions_id);
                 //将上传函数绑定至上传函数
                 $("#upload-answer").click(function () {
-                    Examination.uploadAnswer();
+                    Examination.uploadAnswer(this);
+                });
+                $('#log-out-btn').click(function () {
+                    log_out();
                 });
             }
         },'json');
