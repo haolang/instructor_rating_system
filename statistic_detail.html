@@ -282,9 +282,7 @@
                 var thead_num = 0;//最大选项数量
                 data_lists.each(function () {
                     var distribute = this.selector_dis.split(';');
-
                     thead_num = thead_num > distribute.length ? thead_num : distribute.length;
-                    no_num++;
                 });
 
                 data_lists.each(function () {
@@ -302,6 +300,7 @@
                         '                                <td>'+this.done_num+'</td>\n' +
                         tbl_data_dis_html +
                         '                            </tr>';
+                    no_num++;
                 });
 
                 if (no_num === 1) {
