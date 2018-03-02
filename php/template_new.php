@@ -65,7 +65,7 @@ if (isset($_POST['new_examination']) && !empty($_POST['new_examination'])) {
         $retResult->StatusCode = 1;
         $retResult->Description = "";
         $retResult->Error = "";
-        $retResult->Ret_Data = "";
+        $retResult->Ret_Data = array("template_id"=>$template_id);
     } else {
         $dbcon->rollback();
         $retResult->Status = "failed";
