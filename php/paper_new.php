@@ -38,7 +38,10 @@ if(!empty($paper_title) && !empty($template_id))
         $retResult->StatusCode = 1;
         $retResult->Description="";
         $retResult->Error="";
-        $retResult->Ret_Data="";
+        $retResult->Ret_Data=array(
+            "paper_id"=>$dbcon->insert_id,
+            "template_id"=>$template_id
+        );
     }
     else {
         $retResult->Status= "failed";
