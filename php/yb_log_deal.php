@@ -94,6 +94,16 @@ if($userInfo_array['status'] == 'success'){
                     "'.$api_info_array['bjdm'].'"
                     )';
             $db_con->query($sql);
+            $sql_check_done = 'select is_done from tbl_students where student_ybid = '.$info_array['yb_userid'];
+            if($result_check_done = $db_con->query($sql_check_done)){
+                $row_check_done = $result_check_done->fetch_array();
+                if($row_check_done[0] == '1'){
+                    $db_con->close();
+                    exit('本次问卷您已经填写过了，您可以关闭本页面了。');
+                }
+            }else{
+                echo '数据库错误'.$dbcon->error;
+            }
             $db_con->close();
             //将有关信息保存至session
             session_start();
@@ -106,12 +116,6 @@ if($userInfo_array['status'] == 'success'){
         }else{
             die('教务处接口请求处理失败');
         }
-        //test todo
-        /*session_start();
-        $_SESSION['stu_name']   = '况俊豪';//$api_info_array['xm'];
-        $_SESSION['stu_no']     = '2015110117';//$info_array['yb_studentid'];
-        $_SESSION['stu_ybid']   = '7006795';//$info_array['yb_userid'];
-        $_SESSION['access_token'] = $token;*/
         //处理完成，重定向至首页
         header("location: ".$_G_APP_ROOT."index.html");
     }
