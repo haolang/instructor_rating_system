@@ -365,7 +365,7 @@
                 var dep_par = $('#dep-select').val();
                 paper_id_par = (paper_id_par === null || paper_id_par == undefined) ? 0 : paper_id_par;
                 dep_par = (dep_par === null || dep_par == undefined) ? 0 : dep_par;
-                __page__ = parseInt($(this).text());
+                __page__ = parseInt($(this).attr("page_value"));
                 console.log(__page__);
                 _self_.statistic_data_request(__page__ - 1,__pageSize__, paper_id_par, dep_par);
             });
@@ -454,7 +454,11 @@
                 data_tbl.children().remove();
                 data_tbl.append(html_text);
                 console.log(no_num);
-                if(no_num !== 1)
+                if(no_num === 1)
+                {
+                    $(".pagelist").html("");
+                }
+                else
                 {
                     this.page_turn(totalCount,8);
                 }
