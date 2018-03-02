@@ -336,6 +336,7 @@
                 _self_.statistic_data_request(__page__ - 1, __pageSize__, $('#paper-select').val(), $('#dep-select').val());
             });
 
+            //绑定打印按钮事件
             $(".btn-export-Excel").click(function () {
                 var file_name = $(".paper-select option:selected").text();
                 var academy_name = $(".academy-select").val();
@@ -359,7 +360,7 @@
                 window.print();
             });
 
-
+            //绑定翻页相关触发函数
             $(document).on("click", ".pagelist ul li a", function () {
                 var paper_id_par = $('#paper-select').val();
                 var dep_par = $('#dep-select').val();
@@ -523,12 +524,7 @@
             var _self_ = this;
             _self_.bind_func();
             _self_.teacherIfLog(function () {
-                var paper_id_par = $('#paper-select').val();
-                var dep_par = $('#dep-select').val();
-                paper_id_par = paper_id_par === null ? 0 : paper_id_par;
-                dep_par = dep_par === null ? 0 : dep_par;
-
-                _self_.statistic_data_request(__page__ - 1, __pageSize__, paper_id_par, dep_par);
+                _self_.statistic_data_request();
                 _self_.paper_lsit_request();
             });
         },
