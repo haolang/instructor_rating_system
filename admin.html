@@ -506,10 +506,10 @@
                 success: function (response) {
                     var data = JSON.parse(response);
                     console.log(data);
-                    if (data.Status === 'success' || data.StatusCode === 1) {
+                    if (data.Status === 'success' || parseInt(data.StatusCode) === 1) {
                         alert("已成功设为问卷！");
                     }
-                    else if (data.Status === "failed" || data.StatusCode === 0) {
+                    else if (data.Status === "failed" || parseInt(data.StatusCode) === 0) {
                         alert("设为问卷失败！请稍后重试。");
                     }
                 },
@@ -548,13 +548,13 @@
                         success: function (response) {
                             var data = JSON.parse(response);
                             console.log(data);
-                            if (data.Status === 'success' || data.StatusCode === 1) {
+                            if (data.Status === 'success' || parseInt(data.StatusCode) === 1) {
                                 alert("删除模板成功！");
                                 template_list.fadeOut(500, function () {
                                     $(this).remove();
                                 });
                             }
-                            else if (data.Status === "failed" || data.StatusCode === 0) {
+                            else if (data.Status === "failed" || parseInt(data.StatusCode) === 0) {
                                 alert("删除模板失败！");
                             }
 
@@ -609,7 +609,7 @@
                         success: function (response) {
                             var data = JSON.parse(response);
                             console.log(data);
-                            if (data.Status === 'success' || data.StatusCode === 1) {
+                            if (data.Status === 'success' || parseInt(data.StatusCode) === 1) {
                                 if(paper_list.css('opacity') === '0.5'){
                                     paper_list.css('opacity','1');
                                 }else{
@@ -619,7 +619,7 @@
                                 alert("问卷启用成功！");
                                 //改变按钮为禁用按钮
                             }
-                            else if (data.Status === "failed" || data.StatusCode === 0) {
+                            else if (data.Status === "failed" || parseInt(data.StatusCode) === 0) {
                                 alert("问卷启用失败！请稍后重试");
                             }
 
@@ -652,13 +652,13 @@
                         success: function (response) {
                             var data = JSON.parse(response);
                             console.log(data);
-                            if (data.Status === 'success' || data.StatusCode === 1) {
+                            if (data.Status === 'success' || parseInt(data.StatusCode) === 1) {
                                 alert("删除问卷成功！");
                                 paper_list.fadeOut(500, function () {
                                     $(this).remove();
                                 });
                             }
-                            else if (data.Status === "failed" || data.StatusCode === 0) {
+                            else if (data.Status === "failed" || parseInt(data.StatusCode) === 0) {
                                 alert("删除问卷失败！");
                             }
 
@@ -729,7 +729,7 @@
                     //                    console.log(response);
                     var data = JSON.parse(response);
                     //                    console.log(data);
-                    if (data.Status === 'success' || data.StatusCode === 1) {
+                    if (data.Status === 'success' || parseInt(data.StatusCode) === 1) {
                         var html_list = '';
                         //                    console.log( data.Ret_Data[0].template_title.toString() );
                         for (var i = 0; i < data.Ret_Data.length; i++) {
@@ -761,7 +761,7 @@
                         //                    console.log(html_list);
 
                     }
-                    else if (data.Status === 'failed' || data.StatusCode === 0) {
+                    else if (data.Status === 'failed' || parseInt(data.StatusCode) === 0) {
                         alert("模板列表数据请求失败！");
                     }
                 },
@@ -782,18 +782,18 @@
                     var data = JSON.parse(response);
                     var array_paper_template_id = [];
                     //                    console.log(data);
-                    if (data.Status === 'success' || data.StatusCode === 1) {
+                    if (data.Status === 'success' || parseInt(data.StatusCode) === 1) {
                         var html_list = '';
                         //                    console.log( data.Ret_Data[0].template_title.toString() );
                         for (var i = 0; i < data.Ret_Data.length; i++) {
                             var btn_paper_enable_text = "";
                             var paper_list_item_style = "";
                             array_paper_template_id.push(data.Ret_Data[i].template_id);   //用于显示已经设定的
-                            if (data.Ret_Data[i].status === '0') {
+                            if (parseInt(data.Ret_Data[i].status) === 0) {
                                 btn_paper_enable_text = "启用问卷";
                                 paper_list_item_style = "opacity:0.5;";
                             }
-                            else if (data.Ret_Data[i].status === '1') {
+                            else if (parseInt(data.Ret_Data[i].status) === '1') {
                                 btn_paper_enable_text = "禁用问卷";
                             }
 
@@ -816,7 +816,7 @@
                         TempListEvent.loadTempList(array_paper_template_id);  //异步加载左侧模板列表
 
                     }
-                    else if (data.Status === 'failed' || data.StatusCode === 0) {
+                    else if (data.Status === 'failed' || parseInt(data.StatusCode) === 0) {
                         alert("问卷列表数据请求失败！");
                     }
                 },
@@ -843,7 +843,7 @@
                 },
                 success: function (response) {
                     var data = JSON.parse(response);
-                    if (data.Status === 'success' || data.StatusCode === 1) {
+                    if (data.Status === 'success' || parseInt(data.StatusCode) === 1) {
 
                         that.InitTemplate();    //初始化右边新建模板html 部分到只有一个问题和两个选项
                         var que_list = data.Ret_Data;
@@ -889,7 +889,7 @@
 
                         //                            console.log(data);
                     }
-                    else if (data.Status === 'failed' || data.StatusCode === 0) {
+                    else if (data.Status === 'failed' || parseInt(data.StatusCode) === 0) {
                         return_val = false;
                         alert("加载模板失败！");
                     }
@@ -1173,10 +1173,10 @@
                     },
                     success: function (response) {
                         var data = JSON.parse(response);
-                        if (data.Status === 'success' || data.StatusCode === 1) {
+                        if (data.Status === 'success' || parseInt(data.StatusCode) === 1) {
                             alert("新建问卷模板成功！");
                         }
-                        else if (data.Status === 'failed' || data.StatusCode === 0) {
+                        else if (data.Status === 'failed' || parseInt(data.StatusCode) === 0) {
                             alert("新建问卷模板失败！请稍后重试");
                         }
                     },
@@ -1291,10 +1291,10 @@
             type: "GET",
             dataType: "json",
             success: function (data) {
-                if (data.Status === 'failed' || data.StatusCode === 0) {
+                if (data.Status === 'failed' || parseInt(data.StatusCode) === 0) {
                     location.href = 'admin_log.html';
                 }
-                else if (data.Status === "success" || data.StatusCode === 1) {
+                else if (data.Status === "success" || parseInt(data.StatusCode) === 1) {
                     //TempListEvent.loadTempList();  //异步加载左侧模板列表 todo --ifLog-- 完善登陆后取消注释
                     $('.login-info').html(
                         '<button class="btn btn-primary btn-sm" onclick="logout_request();">('+data.Ret_Data.admin_name+')注销</button>'
