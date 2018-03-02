@@ -181,8 +181,7 @@
             url: "php/admin_log.php",
             type: "POST",
             data: fd,
-            success: function (response) {
-                var data = JSON.parse(response);
+            success: function (data) {
                 if(data.Status === "success" || parseInt(data.StatusCode) === 1)
                 {
                     window.location.href = 'admin.html';
@@ -200,8 +199,7 @@
             url: "php/admin_log_valid.php",
             type:"GET",
             dataType:"json",
-            success : function(response) {
-                var data = JSON.parse(response);
+            success : function(data) {
                 if(data.Status === "success" || parseInt(data.StatusCode) === 1)
                 {
                     window.location.href = 'admin.html';
