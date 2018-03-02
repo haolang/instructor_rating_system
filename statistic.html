@@ -291,7 +291,18 @@
 
 
 <script>
-    load_animation = {
+    var __url_page_name__ = 'page';   // URL 中翻页参数的名字
+    var __page__;       //URL 中的参数 page 的值
+    var __pageSize__ = 15;  //每页显示条数的全局变量
+    $(document).ready(function(){
+        var reg = new RegExp("(^|&)(" + __url_page_name__ + "=)([^&]*)(&|$)", "i");
+        var url_reg = window.location.href.match(reg);
+        __page__ = url_reg === null ? 1 : url_reg[3];  //url中没有 page 参数默认为 1
+        console.log(__page__);
+
+    });
+
+    var load_animation = {
         showAnim : function () {
             $('body').append('<div style="\n' +
                 '    width: 100%;\n' +
@@ -316,12 +327,12 @@
             $('#loading-progress').remove();
         }
     };
-    page_func = {
+    var page_func = {
         //btn bind function
         bind_func:function () {
             var _self_ = this;
             $('#keyword-search').click(function (e) {
-                _self_.statistic_data_request(0, 20, $('#paper-select').val(), $('#dep-select').val());
+                _self_.statistic_data_request(__page__ - 1, __pageSize__, $('#paper-select').val(), $('#dep-select').val());
             });
 
             $(".btn-export-Excel").click(function () {
@@ -377,7 +388,7 @@
                 'php/statistic_data.php',
                 {
                     p_start: start_par === undefined ? 0 : start_par,
-                    p_limit: limit_par === undefined ? 20 : limit_par,
+                    p_limit: limit_par === undefined ? __pageSize__ : limit_par,
                     paper_id: paper_id_par === undefined ? 0 : paper_id_par,
                     dep: dep_par === undefined ? 0 : dep_par,
                     name_keyword: $('#name-keyword').val()
@@ -496,7 +507,12 @@
             var _self_ = this;
             _self_.bind_func();
             _self_.teacherIfLog(function () {
-                _self_.statistic_data_request();
+                var paper_id_par = $('#paper-select').val();
+                var dep_par = $('#dep-select').val();
+                paper_id_par = paper_id_par === null ? 0 : paper_id_par;
+                dep_par = dep_par === null ? 0 : dep_par;
+
+                _self_.statistic_data_request(__page__ - 1, __pageSize__, paper_id_par, dep_par);
                 _self_.paper_lsit_request();
             });
         },
@@ -505,9 +521,9 @@
             $(".pagelist").html(Pager({
 
                 totalCount:totalCount, //总条数为150
-                pageSize:pageSize,    //每页显示8条内容，默认10
+                pageSize:__pageSize__,    //每页显示8条内容，默认10
                 buttonSize:buttonSize,   //显示6个按钮，默认10
-                pageParam:'page',   //页码的参数名为\'p\'，默认为\'page\'
+                pageParam:__url_page_name__,   //页码的参数名为\'p\'，默认为\'page\'
                 className:'pagination',    //分页的样式
                 prevButton:'<button class="btn">上一页</button>',       //上一页按钮
                 nextButton:'<button class="btn">下一页</button>'       //下一页按钮
