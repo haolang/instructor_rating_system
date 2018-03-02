@@ -266,20 +266,6 @@
         <div class="col-md-12 column">
             <div class="top-container">
                 <div class="row">
-                    <div class="col-md-10">
-
-                        <div class="dropdown">
-                            <button style="font-size: 30px" type="button" class="btn dropdown-toggle"
-                                    data-toggle="dropdown">
-                                管理页面
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="admin.html">管理页面</a>
-                                <a class="dropdown-item" href="statistic_detail.html">详情页面</a>
-                                <a class="dropdown-item" href="statistic.html">总览页面</a>
-                            </div>
-                        </div>
-                    </div>
                     <div class="col-md-2">
                         <div class="login-info">
 
@@ -311,6 +297,19 @@
                     </div>
                     <div id="collapseTwo" class="collapse show">
                         <div class="card-body paper-list">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card paper">
+                    <div class="card-header">
+                        <a class="collapsed" data-toggle="collapse" href="#collapseThree">
+                            教师信息
+                        </a>
+                    </div>
+                    <div id="collapseThree" class="collapse show">
+                        <div class="card-body">
 
                         </div>
                     </div>
@@ -463,16 +462,6 @@
             <div class="paper-body">
                 <div id="paper-questions" class="paper-questions">
 
-                    <!--                    <div class="question">-->
-                    <!---->
-                    <!--                        <div class="question-title">1、将数据存储于数据库。</div>-->
-                    <!--                        <div class="question-select">-->
-                    <!--                            <label><input type="radio" name="qid_1" value="95" class="q-select">A、好</label>-->
-                    <!--                            <label><input type="radio" name="qid_1" value="80" class="q-select">B、一般</label>-->
-                    <!--                            <label><input type="radio" name="qid_1" value="80" class="q-select">B、一般</label>-->
-                    <!--                            <label><input type="radio" name="qid_1" value="80" class="q-select">B、一般</label>-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
                 </div>
 
             </div>
@@ -495,12 +484,13 @@
         //新建问卷
         new_paper_request: function (Template_id,btn) {
             var btn = $(btn);
+            var paper_title = $('#new-paper-title').val();
             btn.attr('disabled',true);
             $.ajax({
                 url: "php/paper_new.php",
                 type: "POST",
                 data: {
-                    "paper_title": $('#new-paper-title').val(),
+                    "paper_title": paper_title,
                     "template_id": Template_id
                 },
                 success: function (response) {
@@ -508,6 +498,20 @@
                     console.log(data);
                     if (data.Status === 'success' || parseInt(data.StatusCode) === 1) {
                         alert("已成功设为问卷！");
+                        var d = new Date();
+                        var html_list = '<a href="#" style="opacity: 0.5;" class="list-group-item list-group-item-action ' +
+                            'paper-list-item" paper_id="' + data.Ret_Data.paper_id + '" template_id="' + data.Ret_Data.template_id + '">\n' +
+                            '\n' +
+                            '                        <p class="text-left paper-title">' + paper_title + '</p>\n' +
+                            '                        <p class="text-right small">' +
+                            d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()+ '</p>\n' +
+                            '                        <div class="paper-list-buttons-item">' +
+
+                            '<button class="btn btn-success btn-sm paper-enable">启用问卷</button>' +
+                            '<button class="btn btn-warning btn-sm paper-delete">删除</button>' +
+                            '</div>\n' +
+                            '                    </a>';
+                        $(".left-container .paper-list").append(html_list);
                     }
                     else if (data.Status === "failed" || parseInt(data.StatusCode) === 0) {
                         alert("设为问卷失败！请稍后重试。");
@@ -581,7 +585,6 @@
             $(document).on("click", ".template-list-item", function () {
                 console.log("查看模板");
                 if (template_btn_leave) {
-
                     var template_id = $(this).attr("template_id");
                     if (that.loadTemplate(template_id)) {
                         //改变选中的模板列表元素的背景颜色
@@ -683,9 +686,6 @@
 
             //查看问卷
             $(document).on("click", ".paper-list-item", function () {
-                console.log("查看问卷");
-
-
                 if (paper_btn_leave) {
                     var paper_id = $(this).attr("paper_id");
                     if (that.loadPaper(paper_id)) {
@@ -1159,6 +1159,8 @@
             }
             else {
                 var json_str = getExamJsonString(from_id);
+                var json_obj = JSON.parse(json_str);
+                console.log(json_obj);
                 $.ajax({
                     url: "php/template_new.php",
                     type: "POST",
@@ -1175,6 +1177,19 @@
                         var data = JSON.parse(response);
                         if (data.Status === 'success' || parseInt(data.StatusCode) === 1) {
                             alert("新建问卷模板成功！");
+                            var d = new Date();
+                            var html_list = '<a href="#"  ' +
+                                'class="list-group-item list-group-item-action template-list-item" template_id="' + data.Ret_Data.template_id + '">\n' +
+                                '\n' +
+                                '                        <p class="text-left template-title">' + json_obj.Title + '</p>\n' +
+                                '                        <p class="text-right small">' +
+                                d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds() + '</p>\n' +
+                                '                        <div class="template-list-buttons-item">' +
+                                '<button class="btn btn-success btn-sm set-paper-new">设为问卷</button>' +
+                                '<button class="btn btn-warning btn-sm template-delete">删除</button>' +
+                                '</div>\n</a>';
+                            $(".left-container .template-list").append(html_list);
+
                         }
                         else if (data.Status === 'failed' || parseInt(data.StatusCode) === 0) {
                             alert("新建问卷模板失败！请稍后重试");
