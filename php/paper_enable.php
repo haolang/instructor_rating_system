@@ -42,7 +42,7 @@ if(isset($_GET['paper_id']) && preg_match('/[0-9]{1,}/',$_GET['paper_id']))
         if($able==0)
         {
             $sql="UPDATE tbl_quepublish SET is_enable = 1 WHERE publish_id = '".$paper_id."'";
-            $sql2='update tbl_student set si_done = 0 where student_ybid != 0';
+            $sql2="UPDATE tbl_quepublish SET is_enable = 0 WHERE publish_id != '".$paper_id."'";
             $dbcon->query($sql);
             $dbcon->query($sql2);
         }
@@ -64,7 +64,7 @@ if(isset($_GET['paper_id']) && preg_match('/[0-9]{1,}/',$_GET['paper_id']))
             $retResult->Status = "failed";
             $retResult->StatusCode = 0;
             $retResult->Description = "";
-            $retResult->Error = "数据库执行出错";
+            $retResult->Error = "数据库执行出错".$dbcon->error;
             $retResult->Ret_Data = "";
         }
         $dbcon->close();

@@ -2,85 +2,63 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <title>辅导员评价系统</title>
     <script src="jslib/jquery/jquery-3.2.1.min.js"></script>
 
     <!--&lt;!&ndash; 新 Bootstrap4 核心 CSS 文件 &ndash;&gt;-->
-    <!--<link rel="stylesheet" href="jslib/bootstrap-4.0.0-dist/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="jslib/bootstrap-4.0.0-dist/css/bootstrap.min.css">
 
     <!--&lt;!&ndash; 最新的 Bootstrap4 核心 JavaScript 文件 &ndash;&gt;-->
-    <!--<script src="jslib/bootstrap-4.0.0-dist/js/bootstrap.min.js"></script>-->
+    <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+    <script src="jslib/bootstrap-4.0.0-dist/js/bootstrap.min.js"></script>
     <style>
         /*自定义弹出提示框********************************************************************/
-        .alert_box {
-            position: absolute;
-            background: #f2eb0e;
-            color: red;
-            border: 2px solid #fffa6e;
-            z-index: 99;
-            margin: auto;
-            padding: 3px;
-            width: auto;
-            height: auto;
-            border-radius: 4px;
-            top: 30px;
-            left: 0;
+        .popover {
+            background-color: #ffc107 !important;
+            color: white;
         }
 
-        .alert_box:after, .alert_box:before {
-            bottom: 100%;
-            left: 20%;
-            border: solid transparent;
-            content: " ";
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
+        .popover .arrow::after {
+            border-left-color: #ffc107 !important;
+            border-right-color: #ffc107 !important;
         }
 
-        .alert_box:after {
-            /*border-color: rgba(149, 216, 242, 0);*/
-            border-bottom-color: #f2eb0e;
-            border-width: 10px;
-            margin-left: -10px;
-        }
-
-        .alert_box:before {
-            /*border-color: rgba(53, 179, 228, 0);*/
-            border-bottom-color: #f2eb0e;
-            border-width: 13px;
-            margin-left: -13px;
-        }
         /********************************************************************自定义弹出提示框*/
 
         /*选择的标题、设置relative 是让未选择提示框好便于定位*/
-        .question-title
-        {
+        .question-title {
             position: relative;
         }
-        *{
+
+        * {
             margin: 0;
             padding: 0;
         }
-        a{
+
+        a {
             text-decoration: none;
         }
-        li{
+
+        li {
             list-style: none;
         }
-        .show{
+
+        /*.show{
             border: 0 solid black;
-        }
-        .clear{
+        }*/
+        .clear {
             clear: both;
         }
-        #body-container{
-            width: 1024px;
+
+        #body-container {
+            max-width: 1024px;
             margin: 0 auto;
             box-shadow: 0 0 10px darkgray;
-            padding-bottom: 50px;
+            padding-bottom: 0;
         }
-        .hometop{
+
+        .hometop {
             padding: 20px 0;
             /*height: 186px;*/
             width: 100%;
@@ -88,97 +66,105 @@
             float: left;
         }
 
-        .home-logo{
-            width: 150px;
-            height: 62px;
-            margin-left: 50px;
-            float: left;
+        .home-icon {
+            overflow: hidden;
         }
-        .home-login{
-            width:250px;
+
+        .home-logo {
+            max-width: 30%;
+            height: 62px;
+            float: left;
+            width: 30%;
+            padding: 6px 20px;
+        }
+
+        .home-logo > img {
+            max-height: 45px;
+        }
+
+        .home-login {
+            width: 70%;
             height: 60px;
             float: right;
-        }
-        .home-login img{
-            float: left;
-            margin-right: 30px;
-        }
-        .home-login {
             color: white;
             line-height: 30px;
+            padding-right: 20px;
         }
-        .home-login a{
+
+        .home-login img {
+            float: right;
+            margin-right: 20px;
+            margin-top: 8px;
+            width: 45px;
+        }
+
+        .home-login > div {
+            float: right;
+        }
+
+        .home-login a {
             color: white;
         }
-        .home-login .user-name{
+
+        .home-login .user-name {
             overflow: hidden;
 
             text-overflow: ellipsis;
 
-            white-space: nowrap; //文本不换行，这样超出一行的部分被截取，显示...
+            white-space: nowrap;
+            /*文本不换行，这样超出一行的部分被截取，显示 . . .*/
         }
-        .home-title{
-            width: 1024px;
+
+        .home-title {
+            min-height: 38px;;
+            max-width: 1024px;
             text-align: center;
             margin-top: 20px;
         }
-        #form-examination{
-            width:800px;
+
+        #form-examination {
+            padding: 0 20px;
+            max-width: 800px;
             margin: 0 auto;
             margin-top: 20px;
             box-shadow: 0 0 10px darkgray inset;
         }
-        .exam{
-            width: 700px;
+
+        .exam {
+            max-width: 700px;
             margin: 0 auto;
             font-size: 20px;
             color: #696969;
         }
-        .question{
-            margin-top: 50px;
+
+        .question {
+            margin-top: 20px;
+            overflow: hidden;
         }
-        .q-answer{
+
+        .q-answer {
             float: left;
             margin-right: 50px;
             font-size: 18px;
             margin-top: 10px;
         }
-        .question-title{
+
+        .question-title {
             font-size: 20px;
         }
-        .que-block{
-            width: 700px;
+
+        .que-block {
+            width: 100%;
+            max-width: 700px;
             border-bottom: 2px solid #898989;
             padding-bottom: 15px;
             float: left;
-        }
-        /*.q-sub*/
-        /*{*/
-        /*margin: 10px;*/
-        /*}*/
-
-
-        .q-sub button{
-            border: none;
-            outline: none;
-            width: 120px;
-            height:35px;
-            border-radius: 5px;
-            color: white;
-            background-color: #68adce;
-            font-size: 20px;
-            margin: 20px 290px;
-            /*cursor: pointer;*/
+            min-height: 200px;
         }
 
-        .q-sub button:hover {
-            background-color: #5689ac;
-            /*border: none;*/
-        }
-
-        .q-sub button:focus
-        {
-            border: 3px solid #79848a;
+        .q-sub {
+            padding: 15px 0;
+            text-align: center;
         }
     </style>
 </head>
@@ -208,11 +194,11 @@
                 <img src="img/index/yibanlogo.png" alt="">
             </div>
             <div class="home-login show">
-                <img src="img/index/person.png" alt="">
                 <div>
-                    <p class="user-name"></p>
+                    <div class="user-name"></div>
                     <a href="#" id="log-out-btn">注销</a>
                 </div>
+                <img src="img/index/person.png" alt="">
             </div>
         </div>
         <div class="clear"></div>
@@ -221,7 +207,7 @@
     <div class="clear"></div>
 
     <div class="home-title show">
-        <h2 id="paper_title">...</h2>
+        <h4 id="paper_title">...</h4>
     </div>
 
     <div id="form-examination">
@@ -233,19 +219,20 @@
                     <li>
                         <div class="question-title">***********</div>
                     </li>
-                    <li class="q-answer"><label><input type="radio" name="qid_*" value="**" class="q-select">***</label></li>
-                    <li class="q-answer"><label><input type="radio" name="qid_*" value="**" class="q-select">***</label></li>
-                    <li class="q-answer"><label><input type="radio" name="qid_*" value="**" class="q-select">***</label></li>
+                    <li class="q-answer"><label><input type="radio" name="qid_*" value="**" class="q-select">***</label>
+                    </li>
+                    <li class="q-answer"><label><input type="radio" name="qid_*" value="**" class="q-select">***</label>
+                    </li>
+                    <li class="q-answer"><label><input type="radio" name="qid_*" value="**" class="q-select">***</label>
+                    </li>
                 </ul>
                 <div class="clear"></div>
             </div>
             <div class="clear"></div>
 
 
-
-
             <div class="q-sub">
-                <button type="button"  id="upload-answer">提　交</button>
+                <button type="button" class="btn btn-info" id="upload-answer">提　交</button>
             </div>
 
         </form>
@@ -257,60 +244,72 @@
 <script>
     // 试卷相关
     var Examination = {
-        questions_id:"questions-div",
-        from_id:"examination",
+        questions_id: "questions-div",
+        from_id: "examination",
         //动态加载问卷
-        loadExamination:function(questions_id) {
+        loadExamination: function (questions_id) {
             $.ajax({
                 url: "php/que_list.php",
-                type:"GET",
-                success : function(response) {
+                type: "GET",
+                success: function (response) {
                     var data = JSON.parse(response);
 //                console.log(data);
                     $('#paper_title').html(data.Description);
                     var que_list = data.Ret_Data;
                     var content = '';
-                    for(var i = 0;i < que_list.length; i++)
-                    {
+                    for (var i = 0; i < que_list.length; i++) {
                         var que = que_list[i];
                         content += '<ul class="question">\n' +
                             '                <li>\n' +
-                            '                    <div class="question-title">' +(i+1)+'、'+ que.content + '</div>\n' +
-                            '                </li>\n' ;
-                        for(var j = 0;j < que.selectors.length; j++)
-                        {
+                            '                    <div class="question-title" data-toggle="popover" data-placement="left" data-content="请选择">' + (i + 1) + '、' + que.content + '</div>\n' +
+                            '                </li>\n';
+                        for (var j = 0; j < que.selectors.length; j++) {
                             var select = que.selectors[j];
-                            content += '<li class="q-answer"><label><input type="radio" name="'+ que.q_id + '" value="'+ select.mark +'" class="q-select">'+select.mark+'、'+select.content+'</label></li>\n';
+                            content += '<li class="q-answer"><label><input type="radio" name="' + que.q_id + '" value="' + select.mark + '" class="q-select">' + select.mark + '、' + select.content + '</label></li>\n';
                         }
-                        content +='</ul>';
+                        content += '</ul>';
                     }
-
+                    if (que_list.length <= 0) {
+                        $('#upload-answer').attr("disabled", true);
+                        $('#body-container').prepend('<div class="alert alert-warning">\n' +
+                            '\t<a href="#" class="close" data-dismiss="alert">\n' +
+                            '\t\t&times;\n' +
+                            '\t</a>\n' +
+                            '\t<strong>！</strong>没有启用的问卷。\n' +
+                            '</div>');
+                    }
                     $("#" + questions_id).html(content);
                     $("#loading-progress").remove();
-//                console.log(content);
+                    var poper = $('[data-toggle="popover"]');
+                    poper.popover({
+                        delay: {show: 2000, hide: 1000},
+                        animation: true,
+                        trigger: 'manual'
+                    });
+                    poper.on('shown.bs.popover', function () {
+                        var pop_elem = this;
+                        setTimeout(function () {
+                            $(pop_elem).popover('hide')
+                        }, 3000);
+                    });
                 },
-                error : function() {
-//                console.log(result);
+                error: function () {
                     console.log("加载错误");
                 }
             });
         },
         //用于检查某个问题是否选择，若未选择就自动滚动至第一个未选择位置并弹出自定义标签弹窗
         //form_id : form标签的 id 字符串
-        checkAnswer:function() {
+        checkAnswer: function () {
             var return_val = true;
             $("#" + this.from_id).find(".question").each(function () {
                 var val = $(this).find('input:radio:checked').val();  //通过判断radio元素的值来判断是否选中
-                if(val === undefined){
+                if (val === undefined) {
                     // alert("什么也没选中!");
                     var input_title_offset = $(this).offset().top;   //相对偏移量 用于自动滚动定位
-                    console.log(input_title_offset);
-                    $("html,body").animate({scrollTop:input_title_offset},500);   //滚动到指定位置
-
-                    $(this).find(".question-title").append("<div class='alert_box'>请选择！</div>");    //添加自定义提示框
-                    $(".alert_box").fadeOut(3000);
-                    //return false;   //存在未选择项时返回false
-//                console.log("test");
+                    $("html,body").animate({scrollTop: input_title_offset}, 500);   //滚动到指定位置
+                    var que_title = $(this).find('.question-title');
+                    que_title.popover('show');
                     return_val = false;
 
                     return false;   //结束循环，不再判断其他未选择项
@@ -320,21 +319,21 @@
         },
         //下面的函数仅供参考，我从其他地方复制粘贴的
         //form_id : form标签的 id 字符串
-        uploadAnswer:function(btn_elem) {
+        uploadAnswer: function (btn_elem) {
 
-            if(this.checkAnswer(this.from_id) === false)  //如果未全部选择完毕
+            if (this.checkAnswer(this.from_id) === false)  //如果未全部选择完毕
             {
                 return false;
             }
             var btn = $(btn_elem);
-            btn.attr('disabled',true);
+            btn.attr('disabled', true);
             var form = document.getElementById(this.from_id);
             var formdata = new FormData(form);
             var ent = formdata.entries();
             var item;
             var data = {};
-            while(item = ent.next()){
-                if(item.done) break;
+            while (item = ent.next()) {
+                if (item.done) break;
                 data[item.value[0]] = item.value[1];
             }
 
@@ -350,41 +349,58 @@
                     },
                 type: 'POST',
                 dataType: 'json',
-                success : function(response) {
-                    if(response.Status === "success")
-                    {
+                success: function (response) {
+                    if (response.Status === "success") {
                         alert("提交成功！");
                     }
-                    else
-                    {
+                    else {
                         alert(response.Error);
-                        btn.attr('disabled',false);
+                        if (response.StatusCode !== 2)
+                            btn.attr('disabled', false);
                     }
                 },
-                error : function(result) {
+                error: function (result) {
                     alert("上传失败，请稍后重试！");
-                    btn.attr('disabled',true);
+                    btn.attr('disabled', true);
                 }
             });
         }
     };
-    
-    function  log_out() {
-        if(confirm("确认注销？")){
-            $.get('php/admin_logout.php',function (data) {
+
+    function log_out() {
+        if (confirm("确认注销？")) {
+            $.get('php/yb_log_out.php', function (data) {
+                alert(data.alertInfo);
                 window.location.reload();
-            });
+            }, 'json');
         }
     }
-    //基本HTML页面加载完成后
-    $(document).ready(function(){
-        $.get('php/stu_log_valid.php',function (data) {
-            console.log(data);
-            if(data.Status == 'failed'){
-                window.location.href = 'php/yb_log_deal.php';
-            }else{
-                $('.user-name').html(data.Ret_Data.s_name+'('+data.Ret_Data.s_stuid+')');
 
+    //基本HTML页面加载完成后
+    $(document).ready(function () {
+        $.get('php/stu_log_valid.php', function (data) {
+            console.log(data);
+            if (data.Status == 'failed') {
+                window.location.href = 'php/yb_log_deal.php';
+            } else {
+                $('.user-name').html(data.Ret_Data.s_name + '(' + data.Ret_Data.s_stuid + ')');
+
+                $.post('php/que_result.php?done_valid=1',
+                    {
+                        user_paper: '{}'
+                    },
+                    function (data) {
+                        if (data.StatusCode === 2) {
+                            $('#body-container').prepend('<div class="alert alert-warning">\n' +
+                                '\t<a href="#" class="close" data-dismiss="alert">\n' +
+                                '\t\t&times;\n' +
+                                '\t</a>\n' +
+                                '\t<strong>！</strong>' + data.Error + '。\n' +
+                                '</div>');
+                        }
+                    },
+                    'json'
+                );
                 //动态加载问卷
                 Examination.loadExamination(Examination.questions_id);
                 //将上传函数绑定至上传函数
@@ -395,7 +411,12 @@
                     log_out();
                 });
             }
-        },'json');
+        }, 'json');
+        var now_date = new Date();
+        $('#body-container').append('<div style="text-align: center;padding: 25px 0;">Copyright © 2018-'+
+            (now_date.getFullYear() === 2018 ? '':now_date.getFullYear())+
+            ' <a href="http://www.yiban.cn/school/index/id/5349548" target="_blank">四川师范大学易班</a>' +
+            '   All Rights Reserved.</div>');
     });
 </script>
 </html>

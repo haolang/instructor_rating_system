@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Title</title>
+    <title>管理员登陆</title>
     <script type="text/javascript" src="jslib/jquery/jquery-3.2.1.min.js"></script>
     <style>
         /**{*/
@@ -60,10 +60,6 @@
             position: absolute;
             top: 10px;
             right: 2px;
-            /* z-index: 999; */
-        }
-        .password-eye:hover {
-            background-image: url(img/login/background.png);
             /* z-index: 999; */
         }
         /*.password-eye*/
@@ -211,8 +207,11 @@
         });
     }
     ifLog();
-
-
+    var now_date = new Date();
+    $('body').append('<div style="text-align: center;padding: 25px 0;">Copyright © 2018-'+
+        (now_date.getFullYear() === 2018 ? '':now_date.getFullYear())+
+        ' <a href="http://www.yiban.cn/school/index/id/5349548" target="_blank">四川师范大学易班</a>' +
+        '   All Rights Reserved.</div>');
 </script>
 
 </html>

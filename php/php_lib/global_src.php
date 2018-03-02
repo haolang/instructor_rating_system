@@ -9,7 +9,7 @@
 $config = array(
     'AppID'         => '08d85c3b31fd7aea',  //此处填写你的appid
     'AppSecret'     => 'fd9a6d25ad92f0f2567f522d2cc6ee13',  //此处填写你的AppSecret
-    'CallBack'      => 'http://202.115.195.224/news_sys/index.html&state=1',  //此处填写你的授权回调地址
+    'CallBack'      => 'http://202.115.195.224/news_sys/index.html',  //此处填写你的授权回调地址
     'AppUrlRoot'    => '',  //app网络地址根地址
 );
 

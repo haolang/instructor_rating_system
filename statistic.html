@@ -241,9 +241,9 @@
                                 <td rowspan="2">平均分</td>
                                 <td rowspan="2">考评参与人数</td>
                                 <td rowspan="2">在校学生人数</td>
-                                <td rowspan="2">评价学生比例</td>
-                                <td rowspan="2">优良率</td>
-                                <td rowspan="2">差率</td>
+                                <td rowspan="2">评价学生比例(%)</td>
+                                <td rowspan="2">优良率(%)</td>
+                                <td rowspan="2">差率(%)</td>
                                 <td colspan="2">(95--85)分</td>
                                 <td colspan="2">(84--75)分</td>
                                 <td colspan="2">(74--60)分</td>
@@ -423,13 +423,13 @@
                         '                                <td>'+this.good_percent+'</td>\n' +
                         '                                <td>'+this.bad_percent+'</td>\n' +
                         '                                <td>'+this.distribution_A+'</td>\n' +
-                        '                                <td>'+this.distribution_A / this.all_num+'</td>\n' +
+                        '                                <td>'+this.distribution_A / this.all_num * 100+'</td>\n' +
                         '                                <td>'+this.distribution_B+'</td>\n' +
-                        '                                <td>'+this.distribution_B / this.all_num+'</td>\n' +
+                        '                                <td>'+this.distribution_B / this.all_num * 100+'</td>\n' +
                         '                                <td>'+this.distribution_C+'</td>\n' +
-                        '                                <td>'+this.distribution_C / this.all_num+'</td>\n' +
+                        '                                <td>'+this.distribution_C / this.all_num * 100+'</td>\n' +
                         '                                <td>'+this.distribution_D+'</td>\n' +
-                        '                                <td>'+this.distribution_D / this.all_num+'</td>\n' +
+                        '                                <td>'+this.distribution_D / this.all_num * 100+'</td>\n' +
                         '                            </tr>'
                     no_num++;
                 });
@@ -528,10 +528,21 @@
 
             },__page__));
         }
-
     };
-
+    function logout_request() {
+        if(confirm("确认注销退出？")){
+            $.get('php/yb_log_out.php',function (data) {
+                alert(data.alertInfo);
+                window.location.reload();
+            },'json');
+        }
+    }
     page_func.page_init();
+    var now_date = new Date();
+    $('body').append('<div style="text-align: center;padding: 25px 0;">Copyright © 2018-'+
+        (now_date.getFullYear() === 2018 ? '':now_date.getFullYear())+
+        ' <a href="http://www.yiban.cn/school/index/id/5349548" target="_blank">四川师范大学易班</a>' +
+        '   All Rights Reserved.</div>');
 </script>
 
 </body>

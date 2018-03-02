@@ -265,7 +265,10 @@ Selector_score
 >
 >保存对老师评价的问卷结果。
 >
->影响：tbl_resultdetail对应行中的selectoed_num字段将会加一；tbl_queresults中相应行中的done_num字段和number_distribution字段会加一；tbl_students中的is_done会被置为1。
+>影响：
+>tbl_resultdetail对应行中的selectoed_num字段将会加一；
+>tbl_queresults中相应行中的done_num字段和number_distribution字段会加一；
+>tbl_isdone中的会增加一条记录。
 >
 >返回值：(sp_rst)，1，保存完成；0，表示出错。
 

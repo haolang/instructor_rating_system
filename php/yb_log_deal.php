@@ -25,7 +25,6 @@ if(!$info['status']) {//授权失败
 }
 $token = $info['token'];//网站接入获取的token
 
-//var_dump($info);
 $api->bind($token);
 $userInfo_array = $api->request('user/verify_me');
 
@@ -57,8 +56,7 @@ if($userInfo_array['status'] == 'success'){
             $db_con->close();
             die('database error '.$db_con->error);
         }
-
-    }else{
+    }elseif($info_array['yb_schoolid'] == 22006 && $info_array['yb_enteryear'] >= intval(date("Y")) - 6){
         //学生
         //根据学号从教务处接口获取学籍信息
         $url = 'http://202.115.195.224/api/get_stuinfo.php?studentid='.$info_array['yb_studentid'].'&valid_c=test_api_pass';
@@ -94,16 +92,6 @@ if($userInfo_array['status'] == 'success'){
                     "'.$api_info_array['bjdm'].'"
                     )';
             $db_con->query($sql);
-            $sql_check_done = 'select is_done from tbl_students where student_ybid = '.$info_array['yb_userid'];
-            if($result_check_done = $db_con->query($sql_check_done)){
-                $row_check_done = $result_check_done->fetch_array();
-                if($row_check_done[0] == '1'){
-                    $db_con->close();
-                    exit('本次问卷您已经填写过了，您可以关闭本页面了。');
-                }
-            }else{
-                echo '数据库错误'.$dbcon->error;
-            }
             $db_con->close();
             //将有关信息保存至session
             session_start();
@@ -118,6 +106,8 @@ if($userInfo_array['status'] == 'success'){
         }
         //处理完成，重定向至首页
         header("location: ".$_G_APP_ROOT."index.html");
+    }else{
+        die('非本校学生');
     }
 }else{
     die('易班接口请求处理失败');

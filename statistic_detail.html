@@ -377,8 +377,20 @@
             }
         }
     };
-
+    function logout_request() {
+        if(confirm("确认注销退出？")){
+            $.get('php/yb_log_out.php',function (data) {
+                alert(data.alertInfo);
+                window.location.reload();
+            },'json');
+        }
+    }
     page_func.page_init();
+    var now_date = new Date();
+    $('body').append('<div style="text-align: center;padding: 25px 0;">Copyright © 2018-'+
+        (now_date.getFullYear() === 2018 ? '':now_date.getFullYear())+
+        ' <a href="http://www.yiban.cn/school/index/id/5349548" target="_blank">四川师范大学易班</a>' +
+        '   All Rights Reserved.</div>');
 </script>
 </body>
 </html>

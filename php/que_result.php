@@ -32,18 +32,20 @@ if (!(isset($_SESSION["stu_name"]) &&
     exit(json_encode($retResult));
 }
 
-if(isset($_POST['user_paper']) && !empty($_POST['user_paper'])){
+if((isset($_POST['user_paper']) && !empty($_POST['user_paper'])) || isset($_GET['done_valid'])){
     $paper_data_json = json_decode($_POST['user_paper'],true);
     if($paper_data_json !== null){
         $s_ybid = $_SESSION["stu_ybid"];
         include_once 'json_student.php';
-        $sql_check_done = 'select is_done from tbl_students where student_ybid = '.$s_ybid;
+        $sql_check_done = 'select is_done from tbl_isdone where yb_id = '.$s_ybid.' and 
+                          paper_id = (select publish_id from tbl_quepublish where is_enable = 1)';
         if($result_check_done = $dbcon->query($sql_check_done)){
             $row_check_done = $result_check_done->fetch_array();
-            if($row_check_done[0] == '1'){
+            if($row_check_done[0] != null){
                 $retResult->Description = "";
+                $retResult->StatusCode = 2;
                 $retResult->Error = "您已经填写过该问卷了";
-            }else{
+            }elseif(!isset($_GET['done_valid'])){
                 $sql1 = 'select que_id, selector_mark, selector_id from view_selectors_enabled';
                 if($sql1_result = $dbcon->query($sql1)){
                     if($sql1_result != null){
@@ -98,6 +100,12 @@ if(isset($_POST['user_paper']) && !empty($_POST['user_paper'])){
                     $retResult->Description = "";
                     $retResult->Error = "数据库错误2".$dbcon->error;
                 }
+            }else{
+                $retResult->Status = "success";
+                $retResult->StatusCode = 1;
+                $retResult->Description = "";
+                $retResult->Error = "";
+                $retResult->Ret_Data = "";
             }
         }else{
             $retResult->Description = "";

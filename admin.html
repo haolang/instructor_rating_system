@@ -450,7 +450,34 @@
     </div><!-- /.modal -->
 </div>
 
-<div class="alert-modal">
+<!-- 模态框 -->
+<div class="modal fade" id="myModal2">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- 模态框头部 -->
+            <div class="modal-header">
+                <h4 class="modal-title">模态框头部</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- 模态框主体 -->
+            <div class="modal-body">
+                <div id="paper-questions">
+
+                </div>
+            </div>
+
+            <!-- 模态框底部 -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--<div class="alert-modal">
     <div class="alert-paper-content">
         <div class="alert-paper">
             <div class="paper-head">
@@ -470,7 +497,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 
 
 </body>
@@ -539,7 +566,7 @@
             //删除模板按钮
             $(document).on("click", ".template-delete", function () {
 
-                if (confirm("是否删除模板？\n   不可撤销！") === true) {
+                if (confirm("是否删除模板？\n 由此模板创建的问卷会被删除，相关问卷的数据也将被删除。") === true) {
                     var template_list = $(this).parent().parent();
                     var template_id = template_list.attr("template_id");
                     console.log("template_id = " + template_id);
@@ -598,7 +625,7 @@
             //问卷启用按钮
             $(document).on("click", ".paper-enable", function () {
 
-                if (confirm("是否启用/禁用问卷？") === true) {
+                if (confirm("是否启用/禁用问卷？\n若启用该问卷，所有其它问卷将被禁用\n") === true) {
                     var click_btn = $(this);
                     var paper_list = $(this).parent().parent();
                     var template_id = paper_list.attr("template_id");
@@ -619,11 +646,11 @@
                                     paper_list.css('opacity','0.5');
                                 }
                                 click_btn.html(click_btn.html() === '启用问卷' ? '禁用问卷':'启用问卷');
-                                alert("问卷启用成功！");
+                                alert("问卷启用/禁用成功！");
                                 //改变按钮为禁用按钮
                             }
                             else if (data.Status === "failed" || parseInt(data.StatusCode) === 0) {
-                                alert("问卷启用失败！请稍后重试");
+                                alert("问卷启用/禁用失败！请稍后重试");
                             }
 
                         },
@@ -640,7 +667,7 @@
             //问卷删除按钮
             $(document).on("click", ".paper-delete", function () {
 
-                if (confirm("是否删除问卷？") === true) {
+                if (confirm("是否删除问卷？\n 该问卷相关的数据也会被删除") === true) {
                     var paper_list = $(this).parent().parent();
                     var template_id = paper_list.attr("template_id");
                     var paper_id = paper_list.attr("paper_id");
@@ -664,7 +691,6 @@
                             else if (data.Status === "failed" || parseInt(data.StatusCode) === 0) {
                                 alert("删除问卷失败！");
                             }
-
                         },
                         error: function (result) {
                             console.log("问卷数据传输错误!");
@@ -688,23 +714,17 @@
             $(document).on("click", ".paper-list-item", function () {
                 if (paper_btn_leave) {
                     var paper_id = $(this).attr("paper_id");
+                    var modal2 = $('#myModal2')
                     if (that.loadPaper(paper_id)) {
 
 //                    $(".alert-modal").css("display","block");
                         //改变选中的问卷列表元素的背景颜色
                         $(".paper-list-item").css("background-color", "#ffffff");
                         $(this).css("background-color", "#e2e3e5");
-
-                        $(".alert-modal").css("display", "block");
-                        $(".alert-modal").animate({
-                            opacity: 1
-                        }, 500);
-
+                        modal2.modal('show');
+                        modal2.find('.modal-title').html($(this).find('.paper-title:eq(0)').html());
                     }
-
                 }
-
-
             });
 
             $(document).on("click", ".paper-alert-close-button-foot,.paper-alert-close-button-top", function () {
@@ -903,7 +923,6 @@
         },
         //根据问卷id加载问卷到自定义弹窗
         loadPaper: function (paper_id) {
-
             var return_val = true;
             var that = this;
             $.ajax({
@@ -915,26 +934,20 @@
                 success: function (response) {
                     var data = JSON.parse(response);
                     //todo 添加failed 判断
-//                console.log(data);
+                    console.log(data);
                     var que_list = data.Ret_Data;
                     var content = '';
                     for (var i = 0; i < que_list.length; i++) {
                         var que = que_list[i];
-
-
                         content +=
                             '                    <div class="question">\n' +
-                            '\n' +
                             '                        <div class="question-title">' + (i + 1) + '、' + que.content + '</div>\n' +
                             '                        <div class="question-select">\n';
                         for (var j = 0; j < que.selectors.length; j++) {
                             var select = que.selectors[j];
                             content += '<label><input type="radio" name="qid_' + que.q_id + '" value="' + select.percent + '" class="q-select">' + select.mark + '、' + select.content + '</label>\n';
                         }
-
-                        content += '                        </div>\n' +
-                            '                    </div>';
-
+                        content += '</div></div>';
                     }
 
                     $("#" + that.html_paper_id).html(content);
@@ -1347,11 +1360,17 @@
         }
     };
     function logout_request() {
-        $.get('php/admin_logout.php',function (data) {
-            window.location.reload();
-        });
+        if(confirm("确认注销退出？")){
+            $.get('php/admin_logout.php',function (data) {
+                window.location.reload();
+            });
+        }
     }
     ifLog();
-
+    var now_date = new Date();
+    $('body').append('<div style="text-align: center;padding: 25px 0;">Copyright © 2018-'+
+        (now_date.getFullYear() === 2018 ? '':now_date.getFullYear())+
+        ' <a href="http://www.yiban.cn/school/index/id/5349548" target="_blank">四川师范大学易班</a>' +
+        '   All Rights Reserved.</div>');
 </script>
 </html>
