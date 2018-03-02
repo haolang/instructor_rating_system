@@ -112,6 +112,7 @@
             /*padding-bottom: 5px;*/
             padding: 10px 10px;
             text-decoration:none;
+            cursor:pointer;
         }
         .pagelist .active
         {
@@ -291,7 +292,18 @@
 
 
 <script>
-    load_animation = {
+    var __url_page_name__ = 'page';   // URL 中翻页参数的名字
+    var __page__ = 1;       //URL 中的参数 page 的值
+    var __pageSize__ = 15;  //每页显示条数的全局变量
+//    $(document).ready(function(){
+//        var reg = new RegExp("(^|&)(" + __url_page_name__ + "=)([^&]*)(&|$)", "i");
+//        var url_reg = window.location.href.match(reg);
+//        __page__ = url_reg === null ? 1 : url_reg[3];  //url中没有 page 参数默认为 1
+//        console.log(__page__);
+//
+//    });
+
+    var load_animation = {
         showAnim : function () {
             $('body').append('<div style="\n' +
                 '    width: 100%;\n' +
@@ -316,14 +328,15 @@
             $('#loading-progress').remove();
         }
     };
-    page_func = {
+    var page_func = {
         //btn bind function
         bind_func:function () {
             var _self_ = this;
             $('#keyword-search').click(function (e) {
-                _self_.statistic_data_request(0, 20, $('#paper-select').val(), $('#dep-select').val());
+                _self_.statistic_data_request(__page__ - 1, __pageSize__, $('#paper-select').val(), $('#dep-select').val());
             });
 
+            //绑定打印按钮事件
             $(".btn-export-Excel").click(function () {
                 var file_name = $(".paper-select option:selected").text();
                 var academy_name = $(".academy-select").val();
@@ -345,6 +358,17 @@
             });
             $(".btn-print").click(function () {
                 window.print();
+            });
+
+            //绑定翻页相关触发函数
+            $(document).on("click", ".pagelist ul li a", function () {
+                var paper_id_par = $('#paper-select').val();
+                var dep_par = $('#dep-select').val();
+                paper_id_par = (paper_id_par === null || paper_id_par == undefined) ? 0 : paper_id_par;
+                dep_par = (dep_par === null || dep_par == undefined) ? 0 : dep_par;
+                __page__ = parseInt($(this).attr("page_value"));
+                console.log(__page__);
+                _self_.statistic_data_request(__page__ - 1,__pageSize__, paper_id_par, dep_par);
             });
         },
         //get/post请求函数
@@ -377,7 +401,7 @@
                 'php/statistic_data.php',
                 {
                     p_start: start_par === undefined ? 0 : start_par,
-                    p_limit: limit_par === undefined ? 20 : limit_par,
+                    p_limit: limit_par === undefined ? __pageSize__ : limit_par,
                     paper_id: paper_id_par === undefined ? 0 : paper_id_par,
                     dep: dep_par === undefined ? 0 : dep_par,
                     name_keyword: $('#name-keyword').val()
@@ -396,7 +420,7 @@
                 var html_text = '';
                 var data_lists = $(src_data.Ret_Data);
                 var no_num = 1;
-                var totalCount = src_data.Num || 70;  //TODO 默认数据 70 作为测试用
+                var totalCount = src_data.Num;
                 data_lists.each(function () {
                     html_text += '<tr>\n' +
                         '                                <td>'+no_num+'</td>\n' +
@@ -431,9 +455,13 @@
                 data_tbl.children().remove();
                 data_tbl.append(html_text);
                 console.log(no_num);
-                if(no_num !== 1)
+                if(no_num === 1)
                 {
-                    this.page_turn(totalCount,8,8);
+                    $(".pagelist").html("");
+                }
+                else
+                {
+                    this.page_turn(totalCount,8);
                 }
             }else{
                 alert(data.Error);
@@ -500,24 +528,22 @@
                 _self_.paper_lsit_request();
             });
         },
-        page_turn:function (totalCount,pageSize,buttonSize){
+        page_turn:function (totalCount,buttonSize){
             console.log("page_turn");
             $(".pagelist").html(Pager({
 
                 totalCount:totalCount, //总条数为150
-                pageSize:pageSize,    //每页显示8条内容，默认10
+                pageSize:__pageSize__,    //每页显示8条内容，默认10
                 buttonSize:buttonSize,   //显示6个按钮，默认10
-                pageParam:'page',   //页码的参数名为\'p\'，默认为\'page\'
+                pageParam:__url_page_name__,   //页码的参数名为\'p\'，默认为\'page\'
                 className:'pagination',    //分页的样式
                 prevButton:'<button class="btn">上一页</button>',       //上一页按钮
                 nextButton:'<button class="btn">下一页</button>'       //下一页按钮
 
-            }));
+            },__page__));
         }
 
     };
-
-
 
 
     page_func.page_init();
