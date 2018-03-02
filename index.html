@@ -349,13 +349,14 @@
                 type: 'POST',
                 dataType: 'json',
                 success : function(response) {
-                    if(response.status === "success")
+                    var data = JSON.parse(response);
+                    if(data.Status === "success" || parseInt(data.StatusCode) === 1)
                     {
                         alert("提交成功！");
                     }
-                    else if(response.status === "failed ")
+                    else if(data.Status === "failed " ||  parseInt(data.StatusCode) === 0)
                     {
-                        alert(response.Error);
+                        alert(data.Error);
                     }
                 },
                 error : function(result) {
