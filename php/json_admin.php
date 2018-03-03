@@ -1,5 +1,6 @@
 <?php
-$dbcon=mysqli_connect('45.78.24.43','test','testqwe147','counselorquestionnaire');
+include_once 'php_lib/global_src.php';
+$dbcon=mysqli_connect($_G_DB_SERVER,'test','testqwe147',$_G_DB_NAME);
 if($dbcon->connect_error){
     die('{"status":"failed","reason":"'.$dbcon->connect_error.'"}');
 }
