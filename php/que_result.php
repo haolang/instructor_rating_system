@@ -69,20 +69,19 @@ if((isset($_POST['user_paper']) && !empty($_POST['user_paper'])) || isset($_GET[
                         }
                         $que_seq = substr($que_seq,0,-1);
                         if($valid_flag == false && !empty($que_seq) && count($sql1_assoc_rows) == count($paper_data_json)){
-                            $sql_save_que = 'call sp_save_que('.$s_ybid.',(select publish_id from tbl_quepublish where is_enable = 1),
-                                    "'.$que_seq.'", @sp_result)';
+                            $sql_save_que = 'call sp_save_que('.$s_ybid.',(select publish_id from tbl_quepublish where is_enable = 1),"'.$que_seq.'", @sp_result)';
                             $dbcon->query($sql_save_que);
                             if($sql2_result = $dbcon->query('select @sp_result')){
                                 $sql2_row =  $sql2_result->fetch_array();
                                 if($sql2_row[0] === '1'){
                                     $retResult->Status = "success";
                                     $retResult->StatusCode = 1;
-                                    $retResult->Description = "";
+                                    $retResult->Description = "".$sql_save_que;
                                     $retResult->Error = "";
                                     $retResult->Ret_Data = "";
                                 }else{
                                     $retResult->Description = "";
-                                    $retResult->Error = "存储过程错误";
+                                    $retResult->Error = "存储过程错误".$sql2_row[0];
                                 }
                             }else{
                                 $retResult->Description = "";

@@ -91,16 +91,22 @@ if($userInfo_array['status'] == 'success'){
                     "'.$api_info_array['zydm'].'",
                     "'.$api_info_array['bjdm'].'"
                     )';
-            $db_con->query($sql);
-            $db_con->close();
-            //将有关信息保存至session
-            session_start();
-            $_SESSION['stu_name']   = $api_info_array['xm'];
-            $_SESSION['stu_no']     = $info_array['yb_studentid'];
-            $_SESSION['stu_ybid']   = $info_array['yb_userid'];
-            $_SESSION['access_token'] = $token;
-            //处理完成，重定向至首页
-            header("location: ".$_G_APP_ROOT."index.html");
+            if($db_con->query($sql)){
+                //将有关信息保存至session
+                session_start();
+                $_SESSION['stu_name']   = $api_info_array['xm'];
+                $_SESSION['stu_no']     = $info_array['yb_studentid'];
+                $_SESSION['stu_ybid']   = $info_array['yb_userid'];
+                $_SESSION['access_token'] = $token;
+                echo $sql;
+                //处理完成，重定向至首页
+                header("location: ".$_G_APP_ROOT."index.html");
+                $db_con->close();
+            }else{
+                $db_err = $db_con->error;
+                $db_con->close();
+                die($db_err);
+            }
         }else{
             die('教务处接口请求处理失败');
         }

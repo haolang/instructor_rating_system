@@ -272,7 +272,8 @@
             top: 38px;
             z-index: 1;
             display: none;
-            left: 42px;
+            left: 0px;
+            width: 100%;
         }
         .input-mid-span > input{
             /*display: block!important;*/
@@ -280,6 +281,9 @@
         }
         .percent-val{
             padding: 5px 0px;
+        }
+        .row.question-item > div {
+            margin-bottom: 22px;
         }
     </style>
 </head>
@@ -333,7 +337,13 @@
                     </div>
                     <div id="collapseThree" class="collapse show">
                         <div class="card-body">
-
+                            <form action="php/xls2db_checker.php" method="post" enctype="multipart/form-data" target="_blank">
+                                <div class="form-group">
+                                    <label class="sr-only" for="inputfile">文件输入</label>
+                                    <input type="file" id="inputfile" name="file">
+                                </div>
+                                <button type="submit" class="btn btn-info btn-sm">提交</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -370,7 +380,6 @@
                                                            placeholder="选项分值" style="width: 120px">
                                             </span>
                                             <input type="text" class="form-control content" placeholder="请输入问题">
-
                                         </div>
                                     </div>
 
@@ -395,18 +404,13 @@
                                             <input type="text" class="form-control content" placeholder="请输入选项">
                                         </div>
                                     </div>
-
                                 </div>
-
-
-                                <div class="col-md-12 add-select" style="text-align: center;margin-top: 22px">
+                                <div class="col-md-12 add-select" style="text-align: center;">
                                     <button type="button" class="btn btn-info btn-sm btn-add-select">添加选项</button>
                                     <button type="button" class="btn btn-warning btn-sm btn-delete-select">删除选项</button>
                                 </div>
                                 <hr>
                             </div>
-
-
                         </div>
 
                         <div class="col-md-12 add-question" style="text-align: center;margin-bottom: 10px">
@@ -868,19 +872,19 @@
                                 JQ_que_selects.eq(j).find(".percent").val(select.percent);
                                 JQ_que_selects.eq(j).find(".percent-val").html(select.percent+'%');
                                 JQ_que_selects.eq(j).find(".content").val(select.content);
+                                var percent_slider = JQ_que_selects.eq(j).find('input.percent-slider');
+                                percent_slider.slider(
+                                    {
+                                        min: 0,
+                                        max: 100,
+                                        value: parseInt(select.percent),
+                                        tooltip_position: 'bottom'
+                                    }
+                                );
+                                percent_slider.on("slide", function(slideEvt) {
+                                    $(this).siblings('.percent-val').html(slideEvt.value+'%');
+                                });
                             }
-                            var percent_slider = JQ_que_selects.find('input.percent-slider');
-                            percent_slider.slider(
-                                {
-                                    min: 0,
-                                    max: 100,
-                                    value: 95,
-                                    tooltip_position: 'bottom'
-                                }
-                            );
-                            percent_slider.on("slide", function(slideEvt) {
-                                $(this).siblings('.percent-val').html(slideEvt.value+'%');
-                            });
                         }
                     }
                     else if (data.Status === 'failed' || parseInt(data.StatusCode) === 0) {
