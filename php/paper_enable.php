@@ -39,17 +39,20 @@ if(isset($_GET['paper_id']) && preg_match('/[0-9]{1,}/',$_GET['paper_id']))
         mysqli_free_result($result);
         $dbcon->begin_transaction();
         $dbcon->autocommit(false);
+        include 'php_lib/getRemoteIP.php';
         if($able==0)
         {
             $sql="UPDATE tbl_quepublish SET is_enable = 1 WHERE publish_id = '".$paper_id."'";
             $sql2="UPDATE tbl_quepublish SET is_enable = 0 WHERE publish_id != '".$paper_id."'";
             $dbcon->query($sql);
             $dbcon->query($sql2);
+            setLogToDB($dbcon,$_SESSION["admin_name"]."开启了id为".$paper_id."的问卷",$_SESSION['admin_id']);
         }
         else if($able==1)
         {
             $sql="UPDATE tbl_quepublish SET is_enable = 0 WHERE publish_id = '".$paper_id."'";
             $dbcon->query($sql);
+            setLogToDB($dbcon,$_SESSION["admin_name"]."禁用了id为".$paper_id."的问卷",$_SESSION['admin_id']);
         }
 //判断执行过程是否出错，如果语句都执行成功则提交事务，否则回滚事务
         if (!$dbcon->errno) {

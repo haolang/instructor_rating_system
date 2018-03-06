@@ -42,6 +42,8 @@ if(!empty($paper_title) && !empty($template_id))
             "paper_id"=>$dbcon->insert_id,
             "template_id"=>$template_id
         );
+        include 'php_lib/getRemoteIP.php';
+        setLogToDB($dbcon,$_SESSION["admin_name"]."由id为".$template_id."的模板新建了id为".$dbcon->insert_id."的问卷《".$paper_title."》",$_SESSION['admin_id']);
     }
     else {
         $retResult->Status= "failed";

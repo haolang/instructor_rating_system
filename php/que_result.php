@@ -79,6 +79,9 @@ if((isset($_POST['user_paper']) && !empty($_POST['user_paper'])) || isset($_GET[
                                     $retResult->Description = "".$sql_save_que;
                                     $retResult->Error = "";
                                     $retResult->Ret_Data = "";
+
+                                    include 'php_lib/getRemoteIP.php';
+                                    setLogToDB($dbcon,"问卷填写提交成功","stu_".$s_ybid);
                                 }else{
                                     $retResult->Description = "";
                                     $retResult->Error = "存储过程错误".$sql2_row[0];

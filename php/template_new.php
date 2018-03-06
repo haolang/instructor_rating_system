@@ -66,6 +66,8 @@ if (isset($_POST['new_examination']) && !empty($_POST['new_examination'])) {
         $retResult->Description = "";
         $retResult->Error = "";
         $retResult->Ret_Data = array("template_id"=>$template_id);
+        include 'php_lib/getRemoteIP.php';
+        setLogToDB($dbcon,$_SESSION["admin_name"]."新建了id为".$template_id."的模板《".$temp_title."》",$_SESSION['admin_id']);
     } else {
         $dbcon->rollback();
         $retResult->Status = "failed";

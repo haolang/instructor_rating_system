@@ -15,7 +15,7 @@ class requestResponse {
 }
 
 $retResult = new requestResponse();//一个返回对象
-$template_id=$_GET['template_id'];//
+
 session_start();
 if (!(isset($_SESSION["admin_id"]) && !empty($_SESSION["admin_id"]) &&
     isset($_SESSION["admin_name"]) && !empty($_SESSION["admin_name"])
@@ -28,9 +28,10 @@ if (!(isset($_SESSION["admin_id"]) && !empty($_SESSION["admin_id"]) &&
     $retResult->Ret_Data="";
     exit(json_encode($retResult));//失败返回相关信息
 }
-include_once'json_admin.php';
-if(!empty($template_id))
+if(isset($_GET['template_id']) && !empty($_GET['template_id']) && preg_match('/[0-9]{1,}/',$_GET['template_id']))
 {
+    $template_id=$_GET['template_id'];//
+    include_once'json_admin.php';
     $sql='DELETE  FROM tbl_quetemplate WHERE template_id = "'.$template_id.'"';//利用教师yb_id来查找其身份
     if($result=mysqli_query($dbcon,$sql))
     {
@@ -39,8 +40,8 @@ if(!empty($template_id))
         $retResult->Description = "";
         $retResult->Error = "";
         $retResult->Ret_Data = "";
-        $dbcon->close();
-        exit(json_encode($retResult));
+        include 'php_lib/getRemoteIP.php';
+        setLogToDB($dbcon,$_SESSION["admin_name"]."删除了id为".$template_id."的模板",$_SESSION['admin_id']);
     }
     else{
         $retResult->Status= "failed";
@@ -48,11 +49,8 @@ if(!empty($template_id))
         $retResult->Description="";
         $retResult->Error="sql语句执行出错";
         $retResult->Ret_Data="";
-        $dbcon->close();
-        exit(json_encode($retResult));//失败返回相关信息
-
     }
-
+    $dbcon->close();
 }
 else{
     $retResult->Status= "failed";
@@ -60,7 +58,5 @@ else{
     $retResult->Description="";
     $retResult->Error="template_delete.php参数缺少";
     $retResult->Ret_Data="";
-    $dbcon->close();
-    exit(json_encode($retResult));//失败返回相关信息
 }
-
+echo json_encode($retResult);

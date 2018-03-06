@@ -37,11 +37,12 @@ if(isset($_POST['id']) && isset($_POST['password']) &&
             session_start();
             $_SESSION["admin_id"]=$row['admin_id'];
             $_SESSION["admin_name"]=$row['admin_name'];//登陆成功,设置session.
-            // echo "嗯，果然有数据！";
             $retResult->StatusCode = 1;
             $retResult->Status = 'success';
             $retResult->Ret_Data['admin_id'] = $row['admin_id'];
             $retResult->Ret_Data['admin_name'] = $row['admin_name'];
+            include 'php_lib/getRemoteIP.php';
+            setLogToDB($dbcon,$row['admin_name']."登陆",$row['admin_id']);
         }
         else//登陆失败 用户名或密码错误
         {
@@ -55,6 +56,7 @@ if(isset($_POST['id']) && isset($_POST['password']) &&
         $retResult->Status = 'failed';
         $retResult->Error = '数据库查询出错';
     }
+    $dbcon->close();
 }else{
     $retResult->StatusCode = 0;
     $retResult->Status = 'failed';

@@ -39,6 +39,8 @@ if(isset($_GET['paper_id']) && preg_match('/[0-9]{1,}/',$_GET['paper_id']))
         $retResult->Description="";
         $retResult->Error="";
         $retResult->Ret_Data="";
+        include 'php_lib/getRemoteIP.php';
+        setLogToDB($dbcon,$_SESSION["admin_name"]."删除了id为".$paper_id."的问卷",$_SESSION['admin_id']);
     }
     else {
         $retResult->Status= "failed";
